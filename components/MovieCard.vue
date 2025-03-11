@@ -34,4 +34,30 @@
   </div>
 </template>
 
-<script></script>
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  year: {
+    type: Number,
+    required: true,
+  },
+  genres: {
+    type: Array,
+  },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  description: {
+    type: String,
+    default: "",
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+});
+</script>

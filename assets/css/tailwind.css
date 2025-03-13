@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+/* @layer utilities {
+  .btn-custom {
+    @apply px-6 py-3 bg-customColor text-white font-bold rounded-lg shadow-md hover:bg-opacity-90;
+  }
+} */
+
+/* 
+Color Name	Hex Code	Tailwind Class	Usage
+Cinematic Black	#121212	bg-[#121212]	Main Background (Dark Mode)
+Deep Gray	#1A1A1A	bg-[#1A1A1A]	Secondary Background (Sections, Cards)
+Gunmetal Gray	#23272A	bg-[#23272A]	Navbar / Footer (Subtle contrast)
+Neon Yellow	#FFD700	text-[#FFD700]	Accent Color (Star Ratings, Highlights)
+Electric Blue	#00A6FB	text-[#00A6FB]	Secondary Accent (Links, Hover Effects)
+Crimson Red	#E50914	bg-[#E50914]	Primary CTA Buttons (Watch Now, Add to Favorites)
+Emerald Green	#10B981	bg-[#10B981]	Success Color (Watched, Liked)
+Light Gray	#B3B3B3	text-[#B3B3B3]	Muted Text (Descriptions, Small Text)
+Pure White	#FFFFFF	text-white	Primary Text Color
+🎬 How to Use These Colors
+Background (#121212) → Main dark background
+Sections / Cards (#1A1A1A) → Slightly lighter contrast
+Navbar / Footer (#23272A) → Separate header & footer from content
+Titles (#FFFFFF) → White text for clear readability
+Links & Hover Effects (#00A6FB) → Electric blue for interactive elements
+CTA Buttons (#E50914) → Netflix-style red for action buttons
+Highlight Elements (#FFD700) → Golden color for ratings/stars
+Muted Text (#B3B3B3) → Use for descriptions or less important text
+Success Messages (#10B981) → Green for positive actions (watched, liked)
+ */
+
+@theme {
+  /* --font-display: "Satoshi", "sans-serif";
+    --breakpoint-3xl: 120rem; */
+
+  /* Colors */
+  --color-primary: #ef4444;
+  --color-secondary: #6366f1;
+  --color-accent: #38bdf8;
+
+  --color-surface-dark: #111827;
+  --color-surface-card: #1f2937;
+  --color-surface-hover: #374151;
+
+  --color-status-success: #10b981;
+  --color-status-warning: #f59e0b;
+  --color-status-error: #e11d48;
+
+  /* Fonts */
+
+  /* --font-display: "Oswald", "sans-serif"; */
+}

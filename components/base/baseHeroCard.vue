@@ -1,14 +1,31 @@
 <template>
   <div class="relative rounded-2xl overflow-hidden w-fit font-sans">
-    <div class="absolute left-4 top-4">some stuff</div>
-    <img src="https://picsum.photos/250/175" alt="" />
+    <div class="absolute left-4 top-4">...</div>
+    <!-- <img src="https://picsum.photos/250/175" alt="" /> -->
+    <img :src="posterUrl" alt="" />
     <div class="absolute flex flex-col left-4 bottom-4 text-white">
       <div>
-        <span class="text-xl">{{ rating }} asd</span> / 10
+        <span class="text-xl">{{ rating }}</span> / 10
       </div>
       <div>icon</div>
-      <div class="text-5xl font-bold">{{ movietitle }} dasd</div>
+      <div class="text-2xl font-bold">{{ movietitle }}</div>
     </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+const props = defineProps({
+  movietitle: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  posterUrl: {
+    type: String,
+    required: true,
+  },
+});
+</script>

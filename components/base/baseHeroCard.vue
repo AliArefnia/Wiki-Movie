@@ -8,24 +8,14 @@
         <span class="text-xl">{{ rating }}</span> / 10
       </div>
       <div>icon</div>
-      <div class="text-2xl font-bold">{{ movietitle }}</div>
+      <div class="text-2xl font-bold">{{ movieTitle }}</div>
     </div>
   </div>
 </template>
-<script setup>
-const props = defineProps({
-  movietitle: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  posterUrl: {
-    type: String,
-    required: true,
-  },
-});
+<script setup lang="ts">
+const props = defineProps<{
+  movieTitle: string;
+  rating: number;
+  posterUrl: string;
+}>();
 </script>

@@ -1,3 +1,5 @@
+import type { MoviesByGenre } from "@/types/types";
+
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const genreId = query.genreId;
@@ -10,7 +12,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig();
-  const response = await $fetch(
+  const response = await $fetch<MoviesByGenre>(
     `https://api.themoviedb.org/3/discover/movie?language=en-US&with_genres=${genreId}`,
     {
       method: "GET",
@@ -20,6 +22,14 @@ export default defineEventHandler(async (event) => {
       },
     }
   );
-
-  return response;
+  return response.results.map(
+    ({ id, title, vote_average, poster_path, release_date, genre_ids }) => ({
+      id,
+      title,
+      vote_average,
+      poster_path,
+      release_date,
+      genre_ids,
+    })
+  );
 });

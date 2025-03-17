@@ -2,7 +2,7 @@
   <!-- Need to add dynamic font size for movie names -->
   <div class="relative rounded-t-2xl overflow-hidden w-[100px] font-sans h-fit">
     <div>
-      <img class="" :src="posterUrl" alt="" />
+      <img class="" :src="posterUrl" :alt="movieTitle" />
     </div>
     <div class="flex flex-col left-4 bottom-4 text-white">
       <div class="dynamic-font-container font-bold tex">
@@ -17,26 +17,13 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  movieTitle: {
-    type: String,
-    required: false,
-  },
-  releaseDate: {
-    type: Number,
-    required: false,
-  },
-  rating: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  posterUrl: {
-    type: String,
-    required: true,
-  },
-});
+<script setup lang="ts">
+const props = defineProps<{
+  movieTitle: string;
+  releaseDate: string;
+  rating: number;
+  posterUrl: string;
+}>();
 </script>
 
 <style scoped>

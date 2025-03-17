@@ -10,44 +10,44 @@
       :key="movie.id"
       :movieTitle="movie.title"
       :rating="movie.vote_average"
-      :releaseData="movie.release_date"
+      :releaseDate="movie.release_date"
       :posterUrl="`${imageUrl}${movie.poster_path}`"
     />
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import BaseMovieCardSmall from "@/components/base/BaseMovieCardsmall.vue";
 import { useFormatNumber } from "@/composables/useFormatRatingNumber";
-
+import type { Movie, MoviesByGenre } from "@/types/types";
 const { formatNumber } = useFormatNumber();
 
-const imageUrl = ref("https://image.tmdb.org/t/p/w154");
-const genreMovie = ref([]);
-const props = defineProps({
-  genreId: {
-    type: Number,
-    required: true,
-  },
-  genreName: {
-    type: String,
-    required: true,
-  },
-});
+const imageUrl = "https://image.tmdb.org/t/p/w154";
+const genreMovie = ref<Movie[]>([]);
+const props = defineProps<{
+  genreId: number;
+  genreName: String;
+}>();
 
-async function fetchMoviesByGenre(genreId) {
-  const data = await $fetch(`/api/MoviesByGenre?genreId=${genreId}`);
-  console.log(data.results);
-  genreMovie.value = data.results.map((movie) => ({
+async function fetchMoviesByGenre(genreId: number) {
+  let data = await $fetch<Movie[]>(`/api/MoviesByGenre?genreId=${genreId}`);
+  console.log(data);
+
+  genreMovie.value = data.map((movie) => ({
     id: movie.id,
     title: movie.title,
+    genre_ids: movie.genre_ids,
     vote_average: formatNumber(movie.vote_average),
     poster_path: movie.poster_path,
     release_date: movie.release_date.split("-")[0],
   }));
 }
 
-onMounted(() => {
-  console.log(props.genreId);
-  fetchMoviesByGenre(props.genreId);
+onMounted(async () => {
+  try {
+    console.log(props.genreId);
+    await fetchMoviesByGenre(props.genreId);
+  } catch (error) {
+    console.error("Failed to fetch movies:", error);
+  }
 });
 </script>

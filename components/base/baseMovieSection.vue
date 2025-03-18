@@ -1,7 +1,12 @@
 <template>
-  <div class="flex justify-between items-center px-4 py-2">
+  <div class="flex justify-between items-center px-4 py-2 mt-2">
     <p class="text-white">{{ genreName }}</p>
-    <BaseButton class="text-primary mt-2">more -></BaseButton>
+
+    <NuxtLink
+      class="text-primary bg-surface-card rounded-md p-2 cursor-pointer"
+      :to="`/genre/${genreName}`"
+      >more -></NuxtLink
+    >
   </div>
   <div class="flex overflow-auto">
     <BaseMovieCardSmall
@@ -18,7 +23,8 @@
 <script setup lang="ts">
 import BaseMovieCardSmall from "@/components/base/BaseMovieCardsmall.vue";
 import { useFormatNumber } from "@/composables/useFormatRatingNumber";
-import type { Movie, MoviesByGenre } from "@/types/types";
+import type { Movie } from "@/types/types";
+
 const { formatNumber } = useFormatNumber();
 
 const imageUrl = "https://image.tmdb.org/t/p/w154";

@@ -12,12 +12,11 @@
   <Footer />
 </template>
 <script setup>
-const genres = ref([
-  { id: 28, name: "Action" },
-  { id: 12, name: "Adventure" },
-  { id: 16, name: "Animation" },
-  { id: 18, name: "Drama" },
-]);
+import { useMovieStore } from "~/store/store";
+
+const movieStore = useMovieStore();
+
+const genres = movieStore.movieGenres;
 </script>
 <!-- 
 genres : Array(19) 0 : {id: 28, name: 'Action'} 1 : {id: 12, name: 'Adventure'}

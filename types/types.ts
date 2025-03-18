@@ -1,10 +1,13 @@
 export interface Movie {
   id: number;
   title: string;
-  genre_ids: number[] | number;
+  genre_ids: number[];
   vote_average: number;
   poster_path: string;
   release_date: string;
+}
+export interface MovieWithTrailer extends Movie {
+  officialTrailerKey: string | null;
 }
 
 export interface TrendingMoviesResponse {
@@ -22,4 +25,11 @@ export interface Genre {
 
 export interface GenresResponse {
   genres: Genre[];
+}
+
+export interface MovieGet {
+  results: Movie[];
+}
+export interface MovieListWithTrailer {
+  results: MovieWithTrailer[];
 }

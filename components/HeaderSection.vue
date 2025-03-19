@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-surface-dark text-white shadow-lg">
+  <header class="bg-surface-dark text-white shadow-lg sticky top-0 z-10">
     <div>
       <div class="container mx-auto flex justify-between items-center p-4">
         <!-- Logo -->

@@ -18,6 +18,10 @@
   </div>
 </template>
 <script setup lang="ts">
+definePageMeta({
+  layout: "genre-pages",
+});
+
 import { useInfiniteScroll } from "@vueuse/core";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "~/store/store";

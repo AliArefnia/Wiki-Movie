@@ -1,6 +1,5 @@
 <template>
   <Hero></Hero>
-  <div class="text-white">{{ x }} , {{ y }}</div>
   <TrailerSection />
   <BaseMovieSection
     v-for="genre in genres"

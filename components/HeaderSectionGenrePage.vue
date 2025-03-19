@@ -3,7 +3,7 @@
     <div>
       <div class="container mx-auto flex justify-between items-center p-4">
         <NuxtLink to="/" class="flex items-center space-x-2 text-xl font-bold">
-          <BaseButton @click="toggleNav">
+          <BaseButton @click="goBack">
             <svg
               class="w-6 h-6 text-primary"
               fill="none"
@@ -25,6 +25,9 @@
 </template>
 
 <script setup>
+const goBack = () => {
+  $router.push("/"); // or $router.back() for going back
+};
 let openNavigation = ref(false);
 
 const toggleNav = () => {

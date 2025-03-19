@@ -9,15 +9,19 @@
     >
   </div>
   <div class="flex overflow-auto">
-    <BaseMovieCardSmall
-      class="shrink-0 mx-2"
+    <NuxtLink
       v-for="movie in genreMovie"
       :key="movie.id"
-      :movieTitle="movie.title"
-      :rating="movie.vote_average"
-      :releaseDate="movie.release_date"
-      :posterUrl="`${imageUrl}${movie.poster_path}`"
-    />
+      :to="`/${movie.title}`"
+    >
+      <BaseMovieCardSmall
+        class="shrink-0 mx-2"
+        :movieTitle="movie.title"
+        :rating="movie.vote_average"
+        :releaseDate="movie.release_date"
+        :posterUrl="`${imageUrl}${movie.poster_path}`"
+      />
+    </NuxtLink>
   </div>
 </template>
 <script setup lang="ts">

@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
     const genreId = query.genreId;
+    const page = query.page;
 
     if (!genreId) {
       throw createError({
@@ -14,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
     const config = useRuntimeConfig();
     const response = await $fetch<MoviesByGenre>(
-      `https://api.themoviedb.org/3/discover/movie?language=en-US&with_genres=${genreId}`,
+      `https://api.themoviedb.org/3/discover/movie?language=en-US&with_genres=${genreId}&page=${page}`,
       {
         method: "GET",
         headers: {
@@ -23,6 +24,7 @@ export default defineEventHandler(async (event) => {
         },
       }
     );
+
     return response.results.map(
       ({ id, title, vote_average, poster_path, release_date, genre_ids }) => ({
         id,

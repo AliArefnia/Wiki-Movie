@@ -21,8 +21,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseMovieCardSmall from "@/components/base/BaseMovieCardsmall.vue";
-import { useFormatNumber } from "@/composables/useFormatRatingNumber";
+import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
+import { useFormatNumber } from "~/composables/useFormatRatingNumber";
 import type { Movie } from "@/types/types";
 
 const { formatNumber } = useFormatNumber();
@@ -35,7 +35,9 @@ const props = defineProps<{
 }>();
 
 async function fetchMoviesByGenre(genreId: number) {
-  let data = await $fetch<Movie[]>(`/api/MoviesByGenre?genreId=${genreId}`);
+  let data = await $fetch<Movie[]>(
+    `/api/MoviesByGenre?genreId=${genreId}&page=1`
+  );
   console.log(data);
 
   genreMovie.value = data.map((movie) => ({

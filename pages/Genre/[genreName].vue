@@ -1,16 +1,74 @@
 <template>
-  <div class="grid grid-cols-3 gap-2 bg-surface-card justify-items-center">
-    <div style="background-color: brown; width: 100px">1</div>
-    <div style="background-color: brown; width: 100px">2</div>
-    <div style="background-color: brown; width: 100px">3</div>
-    <div style="background-color: brown; width: 100px">4</div>
-    <div style="background-color: brown; width: 100px">5</div>
-    <div style="background-color: brown; width: 100px">6</div>
-    <div style="background-color: brown; width: 100px">7</div>
-    <div style="background-color: brown; width: 100px">8</div>
-    <div style="background-color: brown; width: 100px">9</div>
-    <div style="background-color: brown; width: 100px">10</div>
-    <div style="background-color: brown; width: 100px">11</div>
+  <div class="bg-surface-card pt-2">
+    <h3 class="text-white text-lg font-bold ml-6 mb-2">
+      {{ route.params.genreName }} Movies
+    </h3>
+
+    <div class="grid grid-cols-3 gap-2 justify-items-center pt-2">
+      <BaseMovieCardSmall
+        class="shrink-0 mx-2"
+        v-for="movie in genreMovie"
+        :key="movie.id"
+        :movieTitle="movie.title"
+        :rating="movie.vote_average"
+        :releaseDate="movie.release_date"
+        :posterUrl="`${imageUrl}${movie.poster_path}`"
+      />
+    </div>
   </div>
 </template>
-<script setup></script>
+<script setup lang="ts">
+import { useInfiniteScroll } from "@vueuse/core";
+import { useRoute } from "vue-router";
+import { useMovieStore } from "~/store/store";
+
+import type { Movie } from "@/types/types";
+
+const imageUrl = "https://image.tmdb.org/t/p/w154";
+
+const movieStore = useMovieStore();
+const route = useRoute();
+
+const genres = movieStore.movieGenres;
+
+const genreMovie = ref<Movie[]>([]);
+const page = ref(1);
+const isLoading = ref(false);
+
+async function fetchMoviesByGenre() {
+  if (isLoading.value || page.value > 500) return;
+
+  isLoading.value = true;
+
+  const genre = genres.find((genre) => {
+    return genre.name === route.params.genreName;
+  });
+
+  if (!genre) {
+    console.error("Genre not found!");
+    return;
+  }
+
+  let data = await $fetch<Movie[]>(
+    `/api/MoviesByGenre?genreId=${genre.id}&page=${page.value}`
+  );
+
+  console.log(data);
+  genreMovie.value.push(...data);
+  console.log(genreMovie.value);
+  page.value++;
+  isLoading.value = false;
+}
+
+useInfiniteScroll(
+  document,
+  () => {
+    fetchMoviesByGenre();
+  },
+  { distance: 100 }
+);
+
+onMounted(async () => {
+  await fetchMoviesByGenre();
+});
+</script>

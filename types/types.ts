@@ -33,3 +33,18 @@ export interface MovieGet {
 export interface MovieListWithTrailer {
   results: MovieWithTrailer[];
 }
+
+export interface MovieDetail {
+  id: number;
+  title: string;
+  genre_ids: number[];
+  vote_average: number;
+  poster_path: string;
+  backdrop_path: string;
+  release_date: string;
+  popularity: number;
+  runtime: number;
+  overview: string;
+  genres: Genre[];
+  tagline: string;
+}

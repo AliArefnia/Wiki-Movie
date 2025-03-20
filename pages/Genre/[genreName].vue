@@ -56,10 +56,7 @@ async function fetchMoviesByGenre() {
   let data = await $fetch<Movie[]>(
     `/api/MoviesByGenre?genreId=${genre.id}&page=${page.value}`
   );
-
-  console.log(data);
   genreMovie.value.push(...data);
-  console.log(genreMovie.value);
   page.value++;
   isLoading.value = false;
 }

@@ -9,11 +9,7 @@
     >
   </div>
   <div class="flex overflow-auto">
-    <NuxtLink
-      v-for="movie in genreMovie"
-      :key="movie.id"
-      :to="`/${movie.title}`"
-    >
+    <NuxtLink v-for="movie in genreMovie" :key="movie.id" :to="`/${movie.id}`">
       <BaseMovieCardSmall
         class="shrink-0 mx-2"
         :movieTitle="movie.title"
@@ -42,7 +38,6 @@ async function fetchMoviesByGenre(genreId: number) {
   let data = await $fetch<Movie[]>(
     `/api/MoviesByGenre?genreId=${genreId}&page=1`
   );
-  console.log(data);
 
   genreMovie.value = data.map((movie) => ({
     id: movie.id,
@@ -56,7 +51,6 @@ async function fetchMoviesByGenre(genreId: number) {
 
 onMounted(async () => {
   try {
-    console.log(props.genreId);
     await fetchMoviesByGenre(props.genreId);
   } catch (error) {
     console.error("Failed to fetch movies:", error);

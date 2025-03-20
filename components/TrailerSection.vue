@@ -19,9 +19,7 @@ async function getMoviesWithTrailer() {
   const moviesWithTrailer = await $fetch<MovieListWithTrailer>(
     "/api/MovieTrailer"
   );
-  console.log(moviesWithTrailer.results);
   movies.value = moviesWithTrailer.results;
-  console.log(movies.value);
 }
 
 onMounted(async () => {

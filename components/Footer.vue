@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 pb-4"
+    class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 pb-4 z-20"
   >
     <BaseButton>1</BaseButton>
     <BaseButton>2</BaseButton>

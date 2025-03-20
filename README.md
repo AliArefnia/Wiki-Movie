@@ -1,75 +1,17 @@
-# Nuxt Minimal Starter
+# Wiki Movie 🚀
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Welcome to my project! This repository is public for **portfolio purposes only**.  
+**❌ You are NOT allowed to copy, modify, or distribute this code.**
 
-## Setup
+## 📜 License
 
-Make sure to install dependencies:
+**Copyright (c) 2025 [Your Name]. All Rights Reserved.**
 
-```bash
-# npm
-npm install
+- This project is for **showcasing my work only**.
+- Unauthorized use of this code is strictly **prohibited**.
+- Contact me if you need permission.
 
-# pnpm
-pnpm install
+## 📬 Contact
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Email: AliArefniam@gmail.com
+- GitHub: github.com/AliArefnia

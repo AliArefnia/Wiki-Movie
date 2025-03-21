@@ -113,6 +113,19 @@ async function fetchMovieDetail() {
 onMounted(async () => {
   await fetchMovieDetail();
 });
+
+const posterUrl = computed(() =>
+  movieDetail.value?.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movieDetail.value.poster_path}`
+    : "/placeholder.jpg"
+);
+
+const backdropUrl = computed(() =>
+  movieDetail.value?.backdrop_path
+    ? `https://image.tmdb.org/t/p/w1280${movieDetail.value.backdrop_path}`
+    : "/placeholder.jpg"
+);
+
 definePageMeta({
   layout: "genre-pages",
 });

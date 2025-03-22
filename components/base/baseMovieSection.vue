@@ -3,12 +3,19 @@
     <p class="text-white">{{ genreName }}</p>
 
     <NuxtLink
-      class="text-primary bg-surface-card rounded-md p-2 cursor-pointer"
+      class="text-primary cursor-pointer group w-fit"
       :to="`/genre/${genreName}`"
-      >more -></NuxtLink
     >
+      <div class="flex">
+        <span class="mr-2">more</span>
+        <span
+          ><ArrowRight
+            class="w-5 mr-2 group-hover:mr-0 group-hover:ml-2 transition-all"
+        /></span>
+      </div>
+    </NuxtLink>
   </div>
-  <div class="flex overflow-auto">
+  <div class="flex overflow-auto py-4">
     <NuxtLink v-for="movie in genreMovie" :key="movie.id" :to="`/${movie.id}`">
       <BaseMovieCardSmall
         class="shrink-0 mx-2"
@@ -24,6 +31,7 @@
 import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
 import { useFormatNumber } from "~/composables/useFormatRatingNumber";
 import type { Movie } from "@/types/types";
+import { ArrowRight } from "lucide-vue-next";
 
 const { formatNumber } = useFormatNumber();
 

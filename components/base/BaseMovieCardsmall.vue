@@ -1,16 +1,22 @@
 <template>
   <!-- Need to add dynamic font size for movie names -->
-  <div class="relative rounded-t-2xl overflow-hidden w-[100px] font-sans h-fit">
+  <div
+    class="relative rounded-t-2xl overflow-hidden w-[100px] font-sans h-fit hover:scale-110 transition-transform"
+  >
     <div>
       <img class="" :src="posterUrl" :alt="movieTitle" />
     </div>
-    <div class="flex flex-col left-4 bottom-4 text-white">
-      <div class="dynamic-font-container font-bold tex">
+    <div
+      class="flex flex-col left-4 bottom-4 text-white font-display items-center"
+    >
+      <div
+        class="dynamic-font-container font-bold line-clamp-2 text-center text-sm my-1"
+      >
         {{ movieTitle }}
       </div>
 
-      <div class="text-[10px]">
-        <span>icon</span> <span>{{ releaseDate }}</span
+      <div class="text-[10px] font-mono w-fit">
+        <span></span> <span>{{ releaseDate }}</span
         >-<span>{{ rating }}/10 </span><span class="text-yellow-500">★</span>
       </div>
     </div>

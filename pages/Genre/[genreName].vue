@@ -5,15 +5,19 @@
     </h3>
 
     <div class="grid grid-cols-3 gap-2 justify-items-center pt-2">
-      <BaseMovieCardSmall
-        class="shrink-0 mx-2"
+      <NuxtLink
         v-for="movie in genreMovie"
         :key="movie.id"
-        :movieTitle="movie.title"
-        :rating="movie.vote_average"
-        :releaseDate="movie.release_date"
-        :posterUrl="`${imageUrl}${movie.poster_path}`"
-      />
+        :to="`/${movie.id}`"
+      >
+        <BaseMovieCardSmall
+          class="shrink-0 mx-2"
+          :movieTitle="movie.title"
+          :rating="movie.vote_average"
+          :releaseDate="movie.release_date"
+          :posterUrl="`${imageUrl}${movie.poster_path}`"
+        />
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -64,7 +68,9 @@ async function fetchMoviesByGenre() {
 useInfiniteScroll(
   document,
   () => {
-    fetchMoviesByGenre();
+    if (!isLoading.value) {
+      fetchMoviesByGenre();
+    }
   },
   { distance: 100 }
 );

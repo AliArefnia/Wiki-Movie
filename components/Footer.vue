@@ -1,10 +1,21 @@
 <template>
   <div
-    class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 pb-4 z-20"
+    class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 py-2 z-20"
   >
-    <BaseButton>1</BaseButton>
-    <BaseButton>2</BaseButton>
-    <BaseButton>3</BaseButton>
-    <BaseButton>4</BaseButton>
+    <NuxtLink to="/"
+      ><BaseButton><LayoutGrid /></BaseButton
+    ></NuxtLink>
+    <NuxtLink to="search">
+      <BaseButton><Search /></BaseButton>
+    </NuxtLink>
+    <NuxtLink to="wishList">
+      <BaseButton><Heart /></BaseButton>
+    </NuxtLink>
+    <NuxtLink to="user">
+      <BaseButton><User /></BaseButton>
+    </NuxtLink>
   </div>
 </template>
+<script setup>
+import { LayoutGrid, Search, Heart, User } from "lucide-vue-next";
+</script>

@@ -20,8 +20,7 @@
           <span class="">WikiMovie</span>
         </NuxtLink>
 
-        <!-- Dark Mode Toggle -->
-        <BaseButton @click="toggleNav">
+        <!-- <BaseButton>
           <svg
             class="w-6 h-6 text-primary"
             fill="none"
@@ -35,7 +34,8 @@
               d="M12 3v1m0 16v1m8-9h1M4 12H3m16.07-7.07l-.71.71M7.05 7.05l-.7-.7M16.95 16.95l.7.7M7.05 16.95l-.7.7M12 5a7 7 0 0 1 0 14 7 7 0 0 1 0-14"
             ></path>
           </svg>
-        </BaseButton>
+        </BaseButton> -->
+        <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton>
 
         <transition name="navTransition">
           <div
@@ -62,6 +62,7 @@
 </template>
 
 <script setup>
+import { AlignJustify } from "lucide-vue-next";
 let openNavigation = ref(false);
 
 const toggleNav = () => {

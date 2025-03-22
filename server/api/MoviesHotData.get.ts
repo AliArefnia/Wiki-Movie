@@ -17,9 +17,9 @@ export default defineEventHandler(async (event) => {
       ({ id, title, vote_average, poster_path, release_date, genre_ids }) => ({
         id,
         title,
-        vote_average,
+        vote_average: Number(vote_average.toFixed(1)),
         poster_path,
-        release_date,
+        release_date: release_date.slice(0, 4),
         genre_ids,
       })
     );

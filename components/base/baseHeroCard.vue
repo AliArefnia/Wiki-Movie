@@ -1,13 +1,8 @@
 <template>
-  <div class="relative rounded-2xl overflow-hidden w-fit font-sans">
+  <div
+    class="relative rounded-2xl overflow-hidden w-fit font-sans hover:scale-110 transition-transform"
+  >
     <div class="absolute left-4 top-4">...</div>
-    <div class="absolute flex flex-col left-4 bottom-4 text-white">
-      <div>
-        <span class="text-xl">{{ rating }}</span> / 10
-      </div>
-      <div>icon</div>
-      <div class="text-2xl font-bold">{{ movieTitle }}</div>
-    </div>
     <NuxtImg
       :src="posterUrl"
       :alt="movieTitle"

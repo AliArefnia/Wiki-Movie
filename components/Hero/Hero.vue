@@ -2,7 +2,7 @@
 import type { Movie, TrendingMoviesResponse } from "@/types/types";
 
 const HotMovies = ref<Movie[]>([]);
-const imageUrl = "https://image.tmdb.org/t/p/w154";
+const imageUrl = "https://image.tmdb.org/t/p/w342";
 
 onMounted(async () => {
   try {
@@ -16,14 +16,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex overflow-auto">
-    <BaseHeroCard
-      class="shrink-0 mx-2"
+  <div class="flex overflow-auto py-4">
+    <NuxtLink
       v-for="movie in HotMovies"
       :key="movie.id"
-      :movieTitle="movie.title"
-      :rating="movie.vote_average"
-      :posterUrl="`${imageUrl}${movie.poster_path}`"
-    ></BaseHeroCard>
+      :to="`/${movie.id}`"
+      class="shrink-0 mx-2"
+    >
+      <BaseHeroCard
+        class="shrink-0 mx-2"
+        :movieTitle="movie.title"
+        :rating="movie.vote_average"
+        :posterUrl="`${imageUrl}${movie.poster_path}`"
+      ></BaseHeroCard>
+    </NuxtLink>
   </div>
 </template>

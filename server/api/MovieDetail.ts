@@ -17,7 +17,13 @@ export default defineEventHandler(async (event) => {
         },
       }
     );
-    return response;
+
+    return {
+      ...response,
+      vote_average: Number(response.vote_average.toFixed(1)),
+      popularity: Number(response.popularity.toFixed(2)),
+      release_date: response.release_date.slice(0, 4),
+    };
   } catch (error) {
     console.error("Error fetching movie Detail:", error);
     return { error: "Failed to fetch movie Detail" };

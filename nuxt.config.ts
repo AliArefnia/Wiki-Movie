@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       TMDB_API_KEY: process.env.NUXT_PUBLIC_TMDB_API_KEY,
     },
   },
-  modules: ["@pinia/nuxt", "@vueuse/nuxt"],
+  modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
   css: ["@/assets/css/tailwind.css"],
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },

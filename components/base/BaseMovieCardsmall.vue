@@ -4,7 +4,11 @@
     class="relative rounded-t-2xl overflow-hidden w-[100px] font-sans h-fit hover:scale-110 transition-transform"
   >
     <div>
-      <img class="" :src="posterUrl" :alt="movieTitle" />
+      <NuxtImg
+        class="w-full h-auto object-cover"
+        :src="posterUrl"
+        :alt="movieTitle"
+      />
     </div>
     <div
       class="flex flex-col left-4 bottom-4 text-white font-display items-center"

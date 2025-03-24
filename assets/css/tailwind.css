@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Oswald:wght@200..700&display=swap");
 @import "tailwindcss";
 
 /* @layer utilities {
@@ -28,7 +29,6 @@ Highlight Elements (#FFD700) → Golden color for ratings/stars
 Muted Text (#B3B3B3) → Use for descriptions or less important text
 Success Messages (#10B981) → Green for positive actions (watched, liked)
  */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Oswald:wght@200..700&display=swap");
 
 @theme {
   /* --font-display: "Satoshi", "sans-serif";

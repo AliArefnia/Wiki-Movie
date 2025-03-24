@@ -4,9 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   runtimeConfig: {
     TMDB_API_KEY: process.env.TMDB_API_KEY,
-    public: {
-      TMDB_API_KEY: process.env.NUXT_PUBLIC_TMDB_API_KEY,
-    },
+    SUPABASE_KEY: process.env.SUPABASE_KEY,
+    SUPABASE_URL: process.env.SUPABASE_URL,
   },
   modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
   css: ["@/assets/css/tailwind.css"],

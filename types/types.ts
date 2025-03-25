@@ -48,3 +48,9 @@ export interface MovieDetail {
   genres: Genre[];
   tagline: string;
 }
+
+export interface userData {
+  id: string;
+  email: string;
+  wishList: number[];
+}

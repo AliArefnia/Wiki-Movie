@@ -53,6 +53,14 @@ import { useRouter } from "nuxt/app";
 const email = ref("");
 const password = ref("");
 const router = useRouter();
+
+const Login = async () => {
+  try {
+    const data = await $fetch("/api/auth/login");
+  } catch (err) {
+    console.error(err);
+  }
+};
 </script>
 
 <style scoped></style>

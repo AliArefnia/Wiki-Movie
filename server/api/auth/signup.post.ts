@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
   const { error: insertError } = await supabase.from("users").insert([
     {
       email,
+      wish_list: [],
     },
   ]);
 

@@ -42,6 +42,22 @@
             </span>
           </div>
 
+          <div>
+            <!-- <button
+              :disabled="loading"
+              @click="toggleMovie(movie)"
+              class="text-white p-2 rounded-full"
+            >
+              <Icon
+                :name="isInWishList(movie) ? 'heart-filled' : 'heart-outline'"
+                class="text-red-500"
+              />
+            </button> -->
+            <button @click="toggleMovieWishList()">
+              <Heart :size="50" class="text-red-500" />
+            </button>
+          </div>
+
           <!-- Overview -->
           <div class="bg-surface-card/50 p-4 rounded-lg shadow-md">
             <h2 class="text-xl font-light mb-2 text-primary">Overview</h2>
@@ -91,10 +107,16 @@
 </template>
 
 <script setup lang="ts">
+import { Heart } from "lucide-vue-next";
 import type { MovieDetail } from "~/types/types";
+import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
 
+const userData = useUserData();
 const route = useRoute();
+
+const isLoadingWishList = ref(false);
+
 const movieDetail = ref<MovieDetail | null>(null);
 
 async function fetchMovieDetail() {
@@ -107,6 +129,17 @@ async function fetchMovieDetail() {
   } catch (error) {
     console.error("Failed to fetch movie details:", error);
   } finally {
+  }
+}
+
+async function toggleMovieWishList() {
+  try {
+    const movieId = Number(route.params?.movieId);
+    isLoadingWishList.value = true;
+    await userData.toggleMovieWishList({ movieId });
+    isLoadingWishList.value = false;
+  } catch (error) {
+    console.error("Failed to toggle movie wish list:", error);
   }
 }
 

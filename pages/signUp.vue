@@ -34,7 +34,16 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "default",
+});
+
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserData } from "~/store/user";
+
+const userData = useUserData();
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
@@ -51,11 +60,14 @@ async function signUp() {
       },
     });
 
+    userData.setUserData({ id: res.user.id, email: res.user.email });
+
     if (res.error) {
       error.value = res.error;
     } else {
       message.value = "User signed up successfully!";
     }
+    router.push("/");
   } catch (err) {
     error.value = "Something went wrong!";
   }

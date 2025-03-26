@@ -3,13 +3,9 @@ import { defineStore } from "pinia";
 
 export const useUserData = defineStore("userData", {
   state: () => ({
-    user: null as null | userData,
-    // user: {
-    user: {
-      id: "e7f775e1-a517-4f3a-bd9d-336680ed68f7",
-      email: "kirkiri@gmail.com",
-      wishList: [1, 2],
-    },
+    // user: null as null | userData,
+    user: null as userData | null,
+    error: "",
   }),
 
   getters: {
@@ -19,24 +15,20 @@ export const useUserData = defineStore("userData", {
 
   actions: {
     setUserData(userData: userData) {
+      console.log(userData);
       this.user = userData;
     },
 
     async toggleMovieWishList({ movieId }: { movieId: number }) {
-      console.log(movieId);
-      console.log(this.user);
       if (!this.user) return;
-
       let alreadyIsInList;
       const originalList = [...this.user.wishList];
 
       if (this.user?.wishList.includes(movieId)) {
         this.user.wishList = this.user.wishList.filter((id) => id !== movieId);
         alreadyIsInList = true;
-        console.log(this.user.wishList);
       } else {
         this.user?.wishList.push(movieId);
-        console.log(this.user.wishList);
       }
 
       try {
@@ -57,5 +49,46 @@ export const useUserData = defineStore("userData", {
       }
     },
 
+    async fetchUser() {
+      console.log("fetchUser");
+      const supabase: any = useNuxtApp().$supabase;
+      const { data, error } = await supabase.auth.getUser();
+      const userWishList: number[] = await this.getUserWishList(data.user.id);
+      if (error) {
+        this.error = error.message;
+      } else {
+        this.user = {
+          id: data.user.id,
+          email: data.user.email as string,
+          wishList: userWishList || [],
+        };
+        console.log("user and wishList is here");
+      }
+    },
 
+    async getUserWishList(userId: number) {
+      try {
+        const supabase: any = useNuxtApp().$supabase;
+
+        const { data, error } = await supabase
+          .from("users")
+          .select("wish_list")
+          .eq("id", userId)
+          .single();
+
+        console.log(data);
+
+        if (error) {
+          throw error;
+        }
+
+        console.log("User:", data);
+        return data.wish_list;
+      } catch (error: any) {
+        console.error("Error fetching user wishList:", error.message);
+        return null;
+      }
+    },
+
+    logOut() {
 });

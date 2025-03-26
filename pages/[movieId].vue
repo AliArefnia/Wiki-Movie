@@ -54,7 +54,19 @@
               />
             </button> -->
             <button @click="toggleMovieWishList()">
-              <Heart :size="50" class="text-red-500" />
+              <Heart
+                :size="50"
+                :class="[
+                  isInWishList ? 'fill-red-500' : 'fill-none stroke-gray-600',
+                  'transition-transform duration-300 ease-in-out',
+                  isInWishList
+                    ? 'scale-110 brightness-125'
+                    : 'scale-100 brightness-100',
+                  isInWishList ? 'animate-pulse' : '',
+                ]"
+                class=""
+                color="red"
+              />
             </button>
           </div>
 
@@ -114,8 +126,9 @@ import { useRoute } from "vue-router";
 
 const userData = useUserData();
 const route = useRoute();
-
+console.log(userData);
 const isLoadingWishList = ref(false);
+const isInWishList = ref(false);
 
 const movieDetail = ref<MovieDetail | null>(null);
 
@@ -138,6 +151,7 @@ async function toggleMovieWishList() {
     isLoadingWishList.value = true;
     await userData.toggleMovieWishList({ movieId });
     isLoadingWishList.value = false;
+    isInWishList.value = !isInWishList.value;
   } catch (error) {
     console.error("Failed to toggle movie wish list:", error);
   }

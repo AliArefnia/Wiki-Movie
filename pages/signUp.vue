@@ -41,6 +41,7 @@ definePageMeta({
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserData } from "~/store/user";
+import { createClient } from "@supabase/supabase-js";
 
 const userData = useUserData();
 const router = useRouter();
@@ -51,22 +52,42 @@ const message = ref("");
 const error = ref("");
 
 async function signUp() {
+  const config = useRuntimeConfig();
+
+  const supabase = createClient(
+    `${config.public.SUPABASE_URL}`,
+    `${config.public.SUPABASE_KEY}`
+  );
   try {
-    const res = await $fetch("/api/auth/signup", {
-      method: "POST",
-      body: {
-        email: email.value,
-        password: password.value,
-      },
+    const { data, error } = await supabase.auth.signUp({
+      email: email.value,
+      password: password.value,
     });
 
-    userData.setUserData({ id: res.user.id, email: res.user.email });
+    console.log(data, error);
 
-    if (res.error) {
-      error.value = res.error;
-    } else {
-      message.value = "User signed up successfully!";
+    if (error) {
+      return { error: error.message };
     }
+
+    const { error: insertError } = await supabase.from("users").insert([
+      {
+        email: email.value,
+        wish_list: [],
+      },
+    ]);
+
+    if (insertError) {
+      return { error: insertError.message };
+    }
+
+    console.log(data.user.id);
+    userData.setUserData({
+      id: data.user.id,
+      email: data.user.email,
+      wishList: [],
+    });
+
     router.push("/");
   } catch (err) {
     error.value = "Something went wrong!";

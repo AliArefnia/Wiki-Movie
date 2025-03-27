@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-surface-card pt-2">
+  <div class="bg-surface-dark pt-2">
     <h3 class="text-white text-lg font-bold ml-6 mb-2">
       {{ route.params.genreName }} Movies
     </h3>

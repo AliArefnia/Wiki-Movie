@@ -1,9 +1,11 @@
 <template>
-  <HeaderSection />
-  <main class="bg-surface-dark min-h-[100vh]">
-    <slot></slot>
-  </main>
-  <Footer />
+  <div class="min-h-screen flex flex-col">
+    <HeaderSection class="flex" />
+    <main class="bg-surface-dark flex-grow">
+      <slot></slot>
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <script setup>

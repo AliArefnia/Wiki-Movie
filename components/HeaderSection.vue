@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-surface-dark text-white shadow-lg sticky top-0 z-20">
+  <header class="bg-surface-card text-white shadow-lg sticky top-0 z-20">
     <div>
       <div class="container mx-auto flex justify-between items-center p-4">
         <!-- Logo -->
@@ -35,8 +35,9 @@
             ></path>
           </svg>
         </BaseButton> -->
-        <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton>
 
+        <!-- <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton> -->
+        <!-- 
         <transition name="navTransition">
           <div
             :class="{ flex: openNavigation, hidden: !openNavigation }"
@@ -54,8 +55,13 @@
             <NuxtLink to="">a link</NuxtLink>
             <BaseButton>Log Out</BaseButton>
             <BaseButton>Toggle Dark mode</BaseButton>
+            <ClientOnly>
+              <p v-if="isUserLoaded && userEmail">
+                {{ userEmail }}
+              </p>
+            </ClientOnly>
           </div>
-        </transition>
+        </transition> -->
       </div>
     </div>
   </header>
@@ -63,11 +69,17 @@
 
 <script setup>
 import { AlignJustify } from "lucide-vue-next";
+
+import { useUserData } from "~/store/user";
+
+const userData = useUserData();
+const userEmail = computed(() => userData.userEmail);
+const isUserLoaded = computed(() => userData.getIsUserLoaded);
+
 let openNavigation = ref(false);
 
 const toggleNav = () => {
   openNavigation.value = !openNavigation.value;
-  console.log(openNavigation.value);
   if (openNavigation.value) {
     document.body.style.overflow = "hidden";
   } else {

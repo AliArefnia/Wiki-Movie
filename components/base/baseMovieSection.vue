@@ -41,11 +41,18 @@ const props = defineProps<{
 }>();
 
 async function fetchMoviesByGenre(genreId: number) {
+  if (sessionStorage.getItem(`Genre-${props.genreName}-movies`)) {
+    genreMovie.value = JSON.parse(
+      sessionStorage.getItem(`Genre-${props.genreName}-movies`)!
+    );
+    return;
+  }
+
   let data = await $fetch<Movie[]>(
     `/api/MoviesByGenre?genreId=${genreId}&page=1`
   );
 
-  genreMovie.value = data.map((movie) => ({
+  const clearedMovie = data.map((movie) => ({
     id: movie.id,
     title: movie.title,
     genre_ids: movie.genre_ids,
@@ -53,6 +60,12 @@ async function fetchMoviesByGenre(genreId: number) {
     poster_path: movie.poster_path,
     release_date: movie.release_date.split("-")[0],
   }));
+  genreMovie.value = clearedMovie;
+
+  sessionStorage.setItem(
+    `Genre-${props.genreName}-movies`,
+    JSON.stringify(clearedMovie)
+  );
 }
 
 onMounted(async () => {

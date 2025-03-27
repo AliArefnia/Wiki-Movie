@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${config.TMDB_API_KEY} `,
+          Authorization: `Bearer ${config.public.TMDB_API_KEY} `,
         },
       }
     );

@@ -3,8 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 const config = useRuntimeConfig();
 
 const supabase = createClient(
-  `${config.SUPABASE_URL}`,
-  `${config.SUPABASE_KEY}`
+  `${config.public.SUPABASE_URL}`,
+  `${config.public.SUPABASE_KEY}`
 );
 
 export default defineEventHandler(async (event) => {

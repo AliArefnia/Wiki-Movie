@@ -15,7 +15,7 @@
           :movieTitle="movie.title"
           :rating="movie.vote_average"
           :releaseDate="movie.release_date"
-          :posterUrl="`${imageUrl}${movie.poster_path}`"
+          :posterUrl="movie.poster_path"
         />
       </NuxtLink>
     </div>
@@ -31,8 +31,6 @@ import { useRoute } from "vue-router";
 import { useMovieStore } from "~/store/store";
 
 import type { Movie } from "@/types/types";
-
-const imageUrl = "https://image.tmdb.org/t/p/w154";
 
 const movieStore = useMovieStore();
 const route = useRoute();

@@ -7,6 +7,7 @@
       :src="posterUrl"
       :alt="movieTitle"
       class="w-full h-auto object-cover"
+      loading="lazy"
     />
   </div>
 </template>

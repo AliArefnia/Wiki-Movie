@@ -1,5 +1,7 @@
 import type { TrendingMoviesResponse } from "@/types/types";
 
+const IMAGE_URL = "https://image.tmdb.org/t/p/w342";
+
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig();
@@ -18,7 +20,7 @@ export default defineEventHandler(async (event) => {
         id,
         title,
         vote_average: Number(vote_average.toFixed(1)),
-        poster_path,
+        poster_path: `${IMAGE_URL}${poster_path}`,
         release_date: release_date.slice(0, 4),
         genre_ids,
       })

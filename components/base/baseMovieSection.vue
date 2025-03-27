@@ -22,7 +22,7 @@
         :movieTitle="movie.title"
         :rating="movie.vote_average"
         :releaseDate="movie.release_date"
-        :posterUrl="`${imageUrl}${movie.poster_path}`"
+        :posterUrl="movie.poster_path"
       />
     </NuxtLink>
   </div>
@@ -34,8 +34,6 @@ import type { Movie } from "@/types/types";
 import { ArrowRight } from "lucide-vue-next";
 
 const { formatNumber } = useFormatNumber();
-
-const imageUrl = "https://image.tmdb.org/t/p/w154";
 const genreMovie = ref<Movie[]>([]);
 const props = defineProps<{
   genreId: number;

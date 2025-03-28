@@ -6,11 +6,14 @@ export const useUserData = defineStore("userData", {
     // user: null as null | userData,
     user: null as userData | null,
     error: "",
+    isUserLoaded: false,
   }),
 
   getters: {
     isLoggedIn: (state) => !!state.user?.id,
+    getIsUserLoaded: (state) => !!state.isUserLoaded,
     userEmail: (state) => state.user?.email,
+    userWishList: (state) => state.user?.wishList,
   },
 
   actions: {
@@ -50,9 +53,15 @@ export const useUserData = defineStore("userData", {
     },
 
     async fetchUser() {
-      console.log("fetchUser");
+      if (this.isUserLoaded) return;
       const supabase: any = useNuxtApp().$supabase;
       const { data, error } = await supabase.auth.getUser();
+      if (!data.user) {
+        console.warn("No user is currently logged in");
+        this.user = null;
+        this.isUserLoaded = true;
+        return;
+      }
       const userWishList: number[] = await this.getUserWishList(data.user.id);
       if (error) {
         this.error = error.message;
@@ -62,27 +71,24 @@ export const useUserData = defineStore("userData", {
           email: data.user.email as string,
           wishList: userWishList || [],
         };
-        console.log("user and wishList is here");
       }
+      this.isUserLoaded = true;
     },
 
     async getUserWishList(userId: number) {
+      if (!userId) return null;
       try {
         const supabase: any = useNuxtApp().$supabase;
-
         const { data, error } = await supabase
           .from("users")
           .select("wish_list")
           .eq("id", userId)
           .single();
 
-        console.log(data);
-
         if (error) {
           throw error;
         }
 
-        console.log("User:", data);
         return data.wish_list;
       } catch (error: any) {
         console.error("Error fetching user wishList:", error.message);

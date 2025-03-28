@@ -63,16 +63,16 @@ export const useUserData = defineStore("userData", {
         this.isUserLoaded = true;
         return;
       }
-      const userWishList: number[] = await this.getUserWishList(data.user.id);
       if (error) {
         this.error = error.message;
       } else {
         this.user = {
           id: data.user.id,
           email: data.user.email as string,
-          wishList: userWishList || [],
+          wishList: [],
         };
       }
+      await this.getUserWishList(data.user.id);
       this.isUserLoaded = true;
     },
 
@@ -89,15 +89,16 @@ export const useUserData = defineStore("userData", {
         if (error) {
           throw error;
         }
-
-        return data.wish_list;
+        this.user?.wishList.push(...data.wish_list);
       } catch (error: any) {
         console.error("Error fetching user wishList:", error.message);
         return null;
       }
     },
 
-    logOut() {
+    async logOut() {
+      const supabase: any = useNuxtApp().$supabase;
+      await supabase.auth.signOut();
       this.user = null;
     },
   },

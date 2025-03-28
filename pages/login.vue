@@ -1,66 +1,91 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-surface-dark">
-    <div class="w-full max-w-md p-8 space-y-6 bg-surface-card rounded-lg">
-      <h2 class="text-2xl font-bold text-center text-white">Login</h2>
-      <form @submit.prevent="Login" class="space-y-4">
-        <div>
-          <label for="email" class="block text-sm font-medium text-white"
-            >Email</label
-          >
+  <div class="flex justify-center min-h-[500px]">
+    <div class="flex items-center justify-center bg-surface-dark text-white">
+      <div class="w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg">
+        <h2 class="text-2xl font-bold mb-6 text-center">Log In</h2>
+        <form @submit.prevent="logIn" class="space-y-4">
           <input
             v-model="email"
             type="email"
-            id="email"
-            class="w-full px-4 py-2 mt-1 rounded-md bg-surface-hover text-white focus:ring focus:ring-blue-500 focus:outline-none"
-            placeholder="Enter your email"
+            placeholder="Email"
             required
+            class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-        <div>
-          <label for="password" class="block text-sm font-medium text-white"
-            >Password</label
-          >
           <input
             v-model="password"
             type="password"
-            id="password"
-            class="w-full px-4 py-2 mt-1 rounded-md bg-surface-hover text-white focus:ring focus:ring-blue-500 focus:outline-none"
-            placeholder="Enter your password"
+            placeholder="Password"
             required
+            class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-        <button
-          type="submit"
-          class="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500"
-        >
-          Login
-        </button>
-      </form>
-      <p class="text-sm text-center text-gray-400">
-        Don't have an account?
-        <NuxtLink to="/signup" class="text-blue-400 hover:underline"
-          >Register</NuxtLink
-        >
-      </p>
+
+          <button
+            type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+          >
+            Log In
+          </button>
+        </form>
+
+        <p class="text-sm text-center text-gray-400">
+          Don't have an account?
+          <NuxtLink to="/signup" class="text-blue-400 hover:underline"
+            >Register</NuxtLink
+          >
+        </p>
+
+        <p v-if="message" class="mt-4 text-green-400">{{ message }}</p>
+        <p v-if="error" class="mt-4 text-red-400">{{ error }}</p>
+      </div>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+definePageMeta({
+  layout: "default",
+});
 
-<script setup>
 import { ref } from "vue";
-import { useRouter } from "nuxt/app";
+import { useRouter, useRoute } from "vue-router";
+import { useUserData } from "~/store/user";
+
+const userData = useUserData();
+const router = useRouter();
+const route = useRoute();
+const previousPageLink = computed(() => route.query.from || "/");
 
 const email = ref("");
 const password = ref("");
-const router = useRouter();
+const message = ref("");
+const error = ref("");
 
-const Login = async () => {
+async function logIn() {
+  const supabase: any = useNuxtApp().$supabase;
   try {
-    const data = await $fetch("/api/auth/login");
-  } catch (err) {
-    console.error(err);
-  }
-};
-</script>
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    });
 
-<style scoped></style>
+    console.log(data);
+
+    if (error) {
+      error.value = error.message;
+      return { error: error.message };
+    }
+    console.log(data.user.id);
+
+    userData.setUserData({
+      id: data.user.id,
+      email: data.user.email,
+      wishList: [],
+    });
+
+    await userData.getUserWishList(data.user.id);
+
+    router.push(`${previousPageLink.value}`);
+  } catch (err) {
+    error.value = "Something went wrong!";
+  }
+}
+</script>

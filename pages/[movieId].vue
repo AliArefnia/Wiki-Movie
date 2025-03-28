@@ -159,6 +159,9 @@ async function toggleMovieWishList() {
 
 onMounted(async () => {
   await fetchMovieDetail();
+  if (userData.userWishList?.includes(Number(route.params?.movieId))) {
+    isInWishList.value = true;
+  }
 });
 
 const posterUrl = computed(() =>

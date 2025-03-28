@@ -8,7 +8,7 @@
       <NuxtLink
         v-for="movie in genreMovie"
         :key="movie.id"
-        :to="`/${movie.id}`"
+        :to="`/${movie.id}?from=/genre/${route.params.genreName}`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"

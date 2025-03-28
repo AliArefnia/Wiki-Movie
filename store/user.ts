@@ -54,6 +54,7 @@ export const useUserData = defineStore("userData", {
 
     async fetchUser() {
       if (this.isUserLoaded) return;
+      this.isUserLoaded = false;
       const supabase: any = useNuxtApp().$supabase;
       const { data, error } = await supabase.auth.getUser();
       if (!data.user) {
@@ -97,4 +98,7 @@ export const useUserData = defineStore("userData", {
     },
 
     logOut() {
+      this.user = null;
+    },
+  },
 });

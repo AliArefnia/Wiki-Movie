@@ -19,7 +19,4 @@ const movieStore = useMovieStore();
 
 const genres = movieStore.movieGenres;
 
-onMounted(async () => {
-  await userData.fetchUser();
-});
 </script>

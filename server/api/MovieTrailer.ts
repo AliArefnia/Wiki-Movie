@@ -39,7 +39,6 @@ export default defineEventHandler(async (event) => {
       ),
     };
 
-    console.log(moviesResponse);
     return moviesWithTrailers;
   } catch (error) {
     console.error("Error fetching movie Trailer:", error);

@@ -126,7 +126,6 @@ import { useRoute } from "vue-router";
 
 const userData = useUserData();
 const route = useRoute();
-console.log(userData);
 const isLoadingWishList = ref(false);
 const isInWishList = ref(false);
 
@@ -137,7 +136,6 @@ async function fetchMovieDetail() {
     const data = await $fetch<MovieDetail>(
       `/api/MovieDetail?movieId=${route.params.movieId}`
     );
-    console.log(data);
     movieDetail.value = data;
   } catch (error) {
     console.error("Failed to fetch movie details:", error);

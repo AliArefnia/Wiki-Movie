@@ -84,7 +84,6 @@ async function getMovieBySearch() {
     let data = await $fetch<Movie[]>(
       `/api/MovieBySearch?searchTerm=${searchQuery.value}&page=${page.value}`
     );
-    console.log(data);
     searchMovie.value.push(...data);
 
     page.value++;

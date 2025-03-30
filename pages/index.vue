@@ -16,7 +16,5 @@ import { useMovieStore } from "~/store/store";
 import { useUserData } from "~/store/user";
 const userData = useUserData();
 const movieStore = useMovieStore();
-
 const genres = movieStore.movieGenres;
-
 </script>

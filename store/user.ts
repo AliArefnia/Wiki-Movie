@@ -18,7 +18,6 @@ export const useUserData = defineStore("userData", {
 
   actions: {
     setUserData(userData: userData) {
-      console.log(userData);
       this.user = userData;
     },
 

@@ -11,14 +11,11 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { userId, movieId, action } = body;
 
-  console.log(userId, movieId, action);
   const { data: user, error: getError } = await supabase
     .from("users")
     .select("wish_list")
     .eq("id", userId)
     .single();
-
-  console.log(user);
 
   if (getError || !user)
     return { error: getError?.message || "User not found" };

@@ -58,8 +58,6 @@ async function signUp() {
       password: password.value,
     });
 
-    console.log(data, error);
-
     if (error) {
       error.value = error.message;
       return { error: error.message };
@@ -76,7 +74,6 @@ async function signUp() {
       return { error: insertError.message };
     }
 
-    console.log(data.user.id);
     userData.setUserData({
       id: data.user.id,
       email: data.user.email,

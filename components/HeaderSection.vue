@@ -1,43 +1,41 @@
 <template>
   <header class="bg-surface-card text-white shadow-lg sticky top-0 z-20">
-    <div>
-      <div class="container mx-auto flex justify-between items-center p-4">
-        <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center space-x-2 text-xl font-bold">
-          <svg
-            class="w-7 h-7 text-primary"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3 3v18l9-6 9 6V3"
-            ></path>
-          </svg>
-          <span class="">WikiMovie</span>
-        </NuxtLink>
+    <div class="container mx-auto flex justify-between items-center p-4">
+      <!-- Logo -->
+      <NuxtLink to="/" class="flex items-center space-x-2 text-xl font-bold">
+        <svg
+          class="w-7 h-7 text-primary"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 3v18l9-6 9 6V3"
+          ></path>
+        </svg>
+        <span class="">WikiMovie</span>
+      </NuxtLink>
 
-        <!-- <BaseButton>
-          <svg
-            class="w-6 h-6 text-primary"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 3v1m0 16v1m8-9h1M4 12H3m16.07-7.07l-.71.71M7.05 7.05l-.7-.7M16.95 16.95l.7.7M7.05 16.95l-.7.7M12 5a7 7 0 0 1 0 14 7 7 0 0 1 0-14"
-            ></path>
-          </svg>
-        </BaseButton> -->
+      <NuxtLink v-if="isUserLoggedIn" to="/user"
+        ><div
+          class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md"
+        >
+          <img
+            v-if="userImgSrc"
+            src=""
+            alt="User Avatar"
+            class="w-full h-full object-cover"
+          /></div
+      ></NuxtLink>
+      <NuxtLink v-else to="/login"
+        ><BaseButton variant="primary">Log In</BaseButton></NuxtLink
+      >
 
-        <!-- <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton> -->
-        <!-- 
+      <!-- <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton> -->
+      <!-- 
         <transition name="navTransition">
           <div
             :class="{ flex: openNavigation, hidden: !openNavigation }"
@@ -62,7 +60,6 @@
             </ClientOnly>
           </div>
         </transition> -->
-      </div>
     </div>
   </header>
 </template>
@@ -75,6 +72,7 @@ import { useUserData } from "~/store/user";
 const userData = useUserData();
 const userEmail = computed(() => userData.userEmail);
 const isUserLoaded = computed(() => userData.getIsUserLoaded);
+const isUserLoggedIn = computed(() => userData.isLoggedIn);
 
 let openNavigation = ref(false);
 

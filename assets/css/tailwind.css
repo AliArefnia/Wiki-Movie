@@ -43,6 +43,13 @@ Success Messages (#10B981) → Green for positive actions (watched, liked)
   --color-surface-card: #1f2937;
   --color-surface-hover: #374151;
 
+  --color-btn-primary: #155dfc;
+  --color-btn-primary-hover: #0048e1;
+  --color-btn-accent: #e7000b;
+  --color-btn-accent-hover: #c1000a;
+  /* --color-button-secondary:
+  --color-button-footer: */
+
   --color-status-success: #10b981;
   --color-status-warning: #f59e0b;
   --color-status-error: #e11d48;

@@ -35,7 +35,7 @@
       <NuxtLink
         v-for="movie in wishListMovies"
         :key="movie.id"
-        :to="`/${movie.id}?from=wishlist`"
+        :to="`/${movie.id}?from=wishList`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"
@@ -75,6 +75,59 @@ async function getWishListMovies(movieId: Number) {
     isInitialLoadDone.value = true;
   }
 }
+
+// const debouncedSearch = useDebounceFn(async () => {
+//   if (searchQuery.value.length > 2) {
+//     page.value = 1;
+//     searchMovie.value = [];
+//     await getMovieBySearch();
+//   } else {
+//     return;
+//   }
+// }, 400);
+
+// watch(searchQuery, debouncedSearch);
+
+// async function getMovieBySearch() {
+//   if (page.value > 10 || searchQuery.value === "") return;
+//   try {
+//     isLoading.value = true;
+//     let data = await $fetch<Movie[]>(
+//       `/api/MovieBySearch?searchTerm=${searchQuery.value}&page=${page.value}`
+//     );
+//     console.log(data);
+//     searchMovie.value.push(...data);
+
+//     page.value++;
+//   } catch (error) {
+//     console.log("error fetching searched movie");
+//   } finally {
+//     isLoading.value = false;
+//   }
+// }
+
+// async function getWishListMovies() {
+//   let data = await $fetch("/api/user/getUserWishList");
+// }
+
+// useInfiniteScroll(
+//   document,
+//   () => {
+//     if (!isLoading.value) {
+//       getWishListMovies();
+//     }
+//   },
+//   { distance: 100 }
+// );
+
+// watch(
+//   () => userData.isUserLoaded,
+//   (loaded) => {
+//     if (loaded) {
+//       console.log(userData.userWishList);
+//     }
+//   }
+// );
 
 onMounted(async () => {
   isLoading.value = true;

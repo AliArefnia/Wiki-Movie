@@ -67,13 +67,10 @@ async function logIn() {
       password: password.value,
     });
 
-    console.log(data);
-
     if (error) {
       error.value = error.message;
       return { error: error.message };
     }
-    console.log(data.user.id);
 
     userData.setUserData({
       id: data.user.id,

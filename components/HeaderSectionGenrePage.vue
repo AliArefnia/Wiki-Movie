@@ -30,8 +30,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
-const previousPage = computed(() => route.query.from);
-const previousPageLink = computed(() => previousPage.value || "/");
+const previousPageLink = computed(() => route.query.from || "/");
 
 let openNavigation = ref(false);
 

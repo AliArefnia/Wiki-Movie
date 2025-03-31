@@ -19,93 +19,77 @@
         <span class="">WikiMovie</span>
       </NuxtLink>
 
-      <NuxtLink v-if="isUserLoggedIn" to="/user"
-        ><div
-          class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md"
-        >
-          <img
-            v-if="userImgSrc"
-            src=""
-            alt="User Avatar"
-            class="w-full h-full object-cover"
-          /></div
-      ></NuxtLink>
-      <NuxtLink v-else to="/login"
-        ><BaseButton variant="primary">Log In</BaseButton></NuxtLink
-      >
-
-      <!-- <BaseButton @click="toggleNav"><AlignJustify /> </BaseButton> -->
-      <!-- 
-        <transition name="navTransition">
+      <ClientOnly>
+        <div v-if="isUserLoggedIn" @click="isUserCardOpen = !isUserCardOpen">
           <div
-            :class="{ flex: openNavigation, hidden: !openNavigation }"
-            class="flex flex-col w-2/3 md:w-1/3 lg:w-1/4 justify-center items-center h-screen fixed right-0 top-0 bottom-[56px] z-10 bg-surface-hover"
+            class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md"
           >
-            <BaseButton
-              class="absolute top-2 left-2 bg-surface-dark"
-              @click="closeNav"
-              >Close</BaseButton
-            >
-            <p>{{ openNavigation }}</p>
-            <NuxtLink to="">Profile</NuxtLink>
-            <NuxtLink to="">a link</NuxtLink>
-            <NuxtLink to="">a link</NuxtLink>
-            <NuxtLink to="">a link</NuxtLink>
-            <BaseButton>Log Out</BaseButton>
-            <BaseButton>Toggle Dark mode</BaseButton>
-            <ClientOnly>
-              <p v-if="isUserLoaded && userEmail">
-                {{ userEmail }}
-              </p>
-            </ClientOnly>
+            <img src="" alt="User Avatar" class="w-full h-full object-cover" />
           </div>
-        </transition> -->
+          <transition name="fade">
+            <div
+              v-if="isUserCardOpen"
+              ref="dropdown"
+              class="absolute right-0 mt-2 w-56 bg-surface-card text-white shadow-lg rounded-lg overflow-hidden"
+            >
+              <div class="p-4 flex items-center gap-3 border-b border-gray-700">
+                <div>
+                  <p class="font-semibold">userName</p>
+                  <p class="text-sm text-gray-400">
+                    {{ userInformation.email }}
+                  </p>
+                </div>
+              </div>
+              <div class="p-2">
+                <NuxtLink
+                  to="/user"
+                  class="block px-4 py-2 hover:bg-surface-hover rounded"
+                >
+                  User
+                </NuxtLink>
+                <NuxtLink
+                  to="/wishList"
+                  class="block px-4 py-2 hover:bg-surface-hover rounded"
+                >
+                  Wish List
+                </NuxtLink>
+                <BaseButton variant="danger" @click="logOut"
+                  >Log Out</BaseButton
+                >
+              </div>
+            </div>
+          </transition>
+        </div>
+        <NuxtLink v-else to="/login"
+          ><BaseButton variant="primary">Log In</BaseButton></NuxtLink
+        >
+      </ClientOnly>
     </div>
   </header>
 </template>
 
 <script setup>
-import { AlignJustify } from "lucide-vue-next";
-
 import { useUserData } from "~/store/user";
 
 const userData = useUserData();
-const userEmail = computed(() => userData.userEmail);
-const isUserLoaded = computed(() => userData.getIsUserLoaded);
 const isUserLoggedIn = computed(() => userData.isLoggedIn);
+const isUserCardOpen = ref(false);
+const userInformation = userData.userInfo;
 
-let openNavigation = ref(false);
-
-const toggleNav = () => {
-  openNavigation.value = !openNavigation.value;
-  if (openNavigation.value) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
-};
-
-const closeNav = () => {
-  openNavigation.value = false;
-  document.body.style.overflow = "auto";
-};
-// const openNavi = computed(() => openNavigation);
+function logOut() {
+  userData.logOut();
+  router.push("/");
+}
 </script>
 
 <style scoped>
-.navTransition-enter-to,
-.navTransition-leave-from {
-  opacity: 1;
-  max-width: 400px;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
-.navTransition-enter-from,
-.navTransition-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
-  max-width: 0;
-}
-
-.navTransition-enter-active,
-.navTransition-leave-active {
-  transition: all 0.3s ease-in;
+  transform: translateY(-10px);
 }
 </style>

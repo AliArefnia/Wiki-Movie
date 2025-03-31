@@ -10,6 +10,12 @@ export const useUserData = defineStore("userData", {
   }),
 
   getters: {
+    userInfo: (state) => {
+      return {
+        id: state.user?.id,
+        email: state.user?.email,
+      };
+    },
     isLoggedIn: (state) => !!state.user?.id,
     getIsUserLoaded: (state) => !!state.isUserLoaded,
     userEmail: (state) => state.user?.email,

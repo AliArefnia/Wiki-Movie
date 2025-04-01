@@ -1,7 +1,9 @@
 <template>
   <div
-    class="relative rounded-2xl overflow-hidden w-fit font-sans hover:scale-110 transition-transform"
+    class="relative rounded-2xl overflow-hidden font-sans transition-transform"
+    :style="{ width: imageWidth + 'px' }"
   >
+    <!-- :class="`w-[${imageWidth}] , hover:scale-${hoverScale}`" -->
     <div class="absolute left-4 top-4">...</div>
     <NuxtImg
       :src="posterUrl"
@@ -17,4 +19,14 @@ const props = defineProps<{
   rating: number;
   posterUrl: string;
 }>();
+
+const imageWidth = ref(getCardWidth());
+
+function getCardWidth() {
+  const vw = window.innerWidth;
+  if (vw >= 768) return 342;
+  return 185;
+}
 </script>
+
+<style scoped></style>

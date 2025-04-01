@@ -1,8 +1,10 @@
 <template>
   <!-- Need to add dynamic font size for movie names -->
   <div
-    class="relative rounded-t-2xl overflow-hidden w-[100px] font-sans h-fit hover:scale-110 transition-transform"
+    class="relative rounded-t-2xl overflow-hidden font-sans h-fit hover:scale-110 transition-transform"
+    :style="{ width: imageWidth + 'px' }"
   >
+    <!-- :class="`w-[100px]`" -->
     <div>
       <NuxtImg
         class="w-full h-auto object-cover"
@@ -34,50 +36,15 @@ const props = defineProps<{
   rating: number;
   posterUrl: string;
 }>();
-</script>
 
-<style scoped>
-/* .dynamic-font-container {
-  width: 100%;
-  white-space: nowrap; /* Prevent text wrapping 
-  /* font-size: 8px; */
-/* font-size: clamp(8px, 48px); 
-} */
-</style>
+const imageWidth = ref(getCardWidth());
 
-<!-- <template>
-  <div ref="dynamicText" class="dynamic-font-container">
-    This is some dynamic text that will resize.
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted } from 'vue';
-
-const dynamicText = ref(null);
-
-const resizeText = () => {
-  const containerWidth = dynamicText.value.offsetWidth;
-  const fontSize = Math.max(containerWidth / 10, 12); // Adjust scaling factor (10) as needed
-  dynamicText.value.style.fontSize = `${fontSize}px`;
-};
-
-onMounted(() => {
-  // Initialize font size on mount
-  resizeText();
-
-  // Observe container resize events
-  const resizeObserver = new ResizeObserver(resizeText);
-  resizeObserver.observe(dynamicText.value);
-});
-</script>
-
-<style scoped>
-.dynamic-font-container {
-  width: 80%; /* Container width */
-  max-width: 500px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+function getCardWidth() {
+  const vw = window.innerWidth;
+  if (vw >= 1280) return 150;
+  if (vw >= 768) return 125;
+  return 100;
 }
-</style> -->
+</script>
+
+<style scoped></style>

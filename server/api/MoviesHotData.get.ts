@@ -1,10 +1,12 @@
 import type { TrendingMoviesResponse } from "@/types/types";
-
-const IMAGE_URL = "https://image.tmdb.org/t/p/w342";
+const config = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig();
+    const query = getQuery(event);
+    const posterWidth = query.width;
+    const IMAGE_URL = `https://image.tmdb.org/t/p/w${posterWidth}`;
+
     const response = await $fetch<TrendingMoviesResponse>(
       "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
       {

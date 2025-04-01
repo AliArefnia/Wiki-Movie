@@ -17,7 +17,7 @@ export interface TrendingMoviesResponse {
 export interface MoviesByGenre {
   results: Movie[];
 }
-
+export interface SimilarMovies extends MoviesByGenre {}
 export interface Genre {
   id: number;
   name: string;

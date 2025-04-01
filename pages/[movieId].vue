@@ -122,6 +122,9 @@
         :trailerName="officialTrailerName"
       />
     </div>
+    <BaseSimilarMoviesSection
+      :movieId="Number(route.params.movieId)"
+    ></BaseSimilarMoviesSection>
   </div>
 
   <!-- Loading State -->

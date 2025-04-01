@@ -110,6 +110,18 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <h3 class="font-display mx-4 text-2xl">Official Trailer</h3>
+      <BaseTrailerCard
+        v-if="officialTrailerKey"
+        class="shrink-0 mx-2"
+        :soloMovie="true"
+        :trailerUrl="`${movieTrailerUrl}${officialTrailerKey.value}/videos`"
+        :fallBackThumbnail="backdropUrl"
+        :trailerName="officialTrailerName"
+      />
+    </div>
   </div>
 
   <!-- Loading State -->
@@ -120,7 +132,7 @@
 
 <script setup lang="ts">
 import { Heart } from "lucide-vue-next";
-import type { MovieDetail } from "~/types/types";
+import type { MovieDetail, trailer } from "~/types/types";
 import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
 
@@ -128,6 +140,9 @@ const userData = useUserData();
 const route = useRoute();
 const isLoadingWishList = ref(false);
 const isInWishList = ref(false);
+const officialTrailerKey = ref();
+const officialTrailerName = ref("");
+const movieTrailerUrl = "https://www.youtube.com/embed/";
 
 const movieDetail = ref<MovieDetail | null>(null);
 
@@ -160,6 +175,11 @@ onMounted(async () => {
   if (userData.userWishList?.includes(Number(route.params?.movieId))) {
     isInWishList.value = true;
   }
+  let data = await $fetch<trailer>(
+    `/api/MovieTrailer?movieId=${Number(route.params.movieId)}`
+  );
+  officialTrailerKey.value = data.key;
+  officialTrailerName.value = data.name;
 });
 
 const posterUrl = computed(() =>

@@ -54,3 +54,15 @@ export interface userData {
   email: string;
   wishList: number[];
 }
+
+export interface trailer {
+  name: string;
+  official: boolean;
+  key: string;
+  id: string;
+  type: string;
+}
+
+export interface trailerOfMovie {
+  results: trailer[];
+}

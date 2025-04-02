@@ -1,5 +1,7 @@
 <template>
   <div
+    @mouseenter="stopAutoScroll"
+    @mouseleave="startAutoScroll"
     class="relative px-0 md:px-8"
   >
     <!-- Left Btn -->
@@ -47,6 +49,8 @@ import { CircleChevronLeft, CircleChevronRight } from "lucide-vue-next";
 const HotMovies = ref<Movie[]>([]);
 const carousel = ref<HTMLElement | null>(null);
 const scrollAmount = 300;
+const scrollInterval = 3000; // Auto-scroll every 3 seconds
+let autoScrollTimer: NodeJS.Timeout;
 
 const imageWidth = ref(0);
 
@@ -72,6 +76,15 @@ const scrollRight = () => {
 };
 
 const startAutoScroll = () => {
+  autoScrollTimer = setInterval(() => {
+    scrollRight();
+  }, scrollInterval);
+};
+
+const stopAutoScroll = () => {
+  clearInterval(autoScrollTimer);
+};
+
 // Update scroll position and adjust for rounding issue
 const isAtEnd = ref(false);
 const updateScrollState = () => {
@@ -83,6 +96,11 @@ const updateScrollState = () => {
 
 onMounted(async () => {
   imageWidth.value = getCardWidth();
+  startAutoScroll();
+  if (carousel.value) {
+    carousel.value.addEventListener("scroll", updateScrollState);
+  }
+
   try {
     if (sessionStorage.getItem("hotMovies")) {
       HotMovies.value = JSON.parse(sessionStorage.getItem("hotMovies")!);

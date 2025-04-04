@@ -66,3 +66,22 @@ export interface trailer {
 export interface trailerOfMovie {
   results: trailer[];
 }
+
+export interface MovieCastCrew {
+  cast: CastMember[];
+  crew: CrewMember[];
+}
+
+export interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+export interface CrewMember {
+  id: number;
+  name: string;
+  job: string;
+  profile_path: string | null;
+}

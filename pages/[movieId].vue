@@ -125,6 +125,9 @@
     <BaseSimilarMoviesSection
       :movieId="Number(route.params.movieId)"
     ></BaseSimilarMoviesSection>
+    <BaseCastCrewSection
+      :movieId="Number(route.params.movieId)"
+    ></BaseCastCrewSection>
   </div>
 
   <!-- Loading State -->
@@ -138,6 +141,7 @@ import { Heart } from "lucide-vue-next";
 import type { MovieDetail, trailer } from "~/types/types";
 import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
+import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
 
 const userData = useUserData();
 const route = useRoute();

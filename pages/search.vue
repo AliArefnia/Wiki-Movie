@@ -85,7 +85,10 @@ async function getMovieBySearch() {
     let data = await $fetch<Movie[]>(
       `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}`
     );
-    searchMovie.value.push(...data);
+
+    const movieIds = new Set(searchMovie.value.map((m) => m.id));
+    const newMovies = data.filter((m) => !movieIds.has(m.id));
+    searchMovie.value.push(...newMovies);
 
     page.value++;
   } catch (error) {

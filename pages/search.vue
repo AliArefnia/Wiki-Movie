@@ -81,8 +81,9 @@ async function getMovieBySearch() {
   if (page.value > 10 || searchQuery.value === "") return;
   try {
     isLoading.value = true;
+    const encodedTerm = encodeURIComponent(searchQuery.value);
     let data = await $fetch<Movie[]>(
-      `/api/MovieBySearch?searchTerm=${searchQuery.value}&page=${page.value}`
+      `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}`
     );
     searchMovie.value.push(...data);
 

@@ -43,7 +43,7 @@
           :movieTitle="movie.title"
           :rating="movie.vote_average"
           :releaseDate="movie.release_date"
-          :posterUrl="`${imageUrl}${movie.poster_path}`"
+          :posterUrl="movie.poster_path"
         />
       </NuxtLink>
     </div>
@@ -54,7 +54,6 @@
 import type { Movie } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
 
-const imageUrl = "https://image.tmdb.org/t/p/w154";
 const searchMovie = ref<Movie[]>([]);
 const page = ref(1);
 const isLoading = ref(false);
@@ -109,6 +108,7 @@ useInfiniteScroll(
 );
 
 onMounted(async () => {
+  imageWidth.value = getCardWidth();
   await getHotNewMovies();
 });
 </script>

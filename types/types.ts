@@ -30,6 +30,9 @@ export interface GenresResponse {
 export interface MovieGet {
   results: Movie[];
 }
+export interface MultipleSearchGet {
+  results: Movie[];
+}
 export interface MovieListWithTrailer {
   results: MovieWithTrailer[];
 }
@@ -84,4 +87,26 @@ export interface CrewMember {
   name: string;
   job: string;
   profile_path: string | null;
+}
+
+export interface Person {
+  id: number;
+  name: string;
+  profile_path: string | null;
+  known_for: Movie[];
+  media_type: "person";
+}
+
+export interface MultiSearchResult {
+  id: number;
+  media_type: "movie" | "tv" | "person";
+
+  title?: string;
+  name?: string;
+  vote_average?: number;
+  poster_path?: string;
+  profile_path?: string;
+  release_date?: string;
+  genre_ids?: number[];
+  known_for?: Movie[];
 }

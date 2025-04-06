@@ -71,8 +71,19 @@ const debouncedSearch = useDebounceFn(async () => {
 
 watch(searchQuery, debouncedSearch);
 
+const imageWidth = ref(92);
+
+function getCardWidth() {
+  const vw = window.innerWidth;
+  if (vw >= 1280) return 342;
+  if (vw >= 768) return 185;
+  return 154;
+}
+
 async function getHotNewMovies() {
-  let data = await $fetch<Movie[]>("/api/MoviesHotData");
+  let data = await $fetch<Movie[]>(
+    `/api/MoviesHotData?width=${imageWidth.value}`
+  );
   searchMovie.value.push(...data);
 }
 

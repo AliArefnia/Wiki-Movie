@@ -111,6 +111,9 @@
         :fallBackThumbnail="backdropUrl"
         :trailerName="officialTrailerName"
       />
+      <p v-else class="text-gray-400 text-center font-display mt-6">
+        {{ officialTrailerName }}
+      </p>
     </div>
     <BaseSimilarMoviesSection
       :movieId="Number(route.params.movieId)"
@@ -176,6 +179,11 @@ onMounted(async () => {
   let data = await $fetch<trailer>(
     `/api/MovieTrailer?movieId=${Number(route.params.movieId)}`
   );
+  if (!data) {
+    officialTrailerKey.value = null;
+    officialTrailerName.value = "No trailer available";
+    return;
+  }
   officialTrailerKey.value = data.key;
   officialTrailerName.value = data.name;
 });

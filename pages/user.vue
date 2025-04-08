@@ -1,4 +1,28 @@
 <template>
+  <BaseAlertModule :show="loggingOut" @close="logOut(false)">
+    <template #header>Logging Out</template>
+    <template #default>
+      <p class="!text-xl">Are You sure you want to log out?</p>
+    </template>
+    <template #actions="{ close }">
+      <BaseButton
+        @click="
+          close;
+          logOut(true);
+        "
+        class="border-2 w-[5rem]"
+        >Yes</BaseButton
+      >
+      <BaseButton
+        @click="
+          close;
+          logOut(false);
+        "
+        class="!bg-btn-accent w-[5rem] ml-2 text-white"
+        >No</BaseButton
+      >
+    </template>
+  </BaseAlertModule>
   <div>
     <div
       class="max-w-4xl w-10/12 mt-8 mx-auto p-6 bg-surface-card text-white shadow-md rounded-lg"
@@ -28,7 +52,7 @@
         </div>
       </div>
       <BaseButton varient="primary"> Edit Profile </BaseButton>
-      <BaseButton variant="danger" full-width @click="logOut"
+      <BaseButton variant="danger" full-width @click="logOutAlert"
         >Log Out</BaseButton
       >
     </div>
@@ -38,13 +62,23 @@
 <script setup lang="ts">
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
+import BaseAlertModule from "~/components/base/BaseAlertModule.vue";
 const userData = useUserData();
 const email = computed(() => userData.userEmail);
+const loggingOut = ref(false);
 
 const router = useRouter();
 
-function logOut() {
-  userData.logOut();
-  router.push("/");
+function logOutAlert() {
+  loggingOut.value = true;
+}
+
+function logOut(choice: boolean) {
+  if (choice) {
+    userData.logOut();
+    router.push("/");
+  } else {
+    loggingOut.value = false;
+  }
 }
 </script>

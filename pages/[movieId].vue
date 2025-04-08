@@ -53,21 +53,11 @@
                 class="text-red-500"
               />
             </button> -->
-            <button @click="toggleMovieWishList()">
-              <Heart
-                :size="50"
-                :class="[
-                  isInWishList ? 'fill-red-500' : 'fill-none stroke-gray-600',
-                  'transition-transform duration-300 ease-in-out',
-                  isInWishList
-                    ? 'scale-110 brightness-125'
-                    : 'scale-100 brightness-100',
-                  isInWishList ? 'animate-pulse' : '',
-                ]"
-                class=""
-                color="red"
-              />
-            </button>
+
+            <BaseHeartButton
+              :isInWishList="isInWishList"
+              @toggleMovieWishList="toggleMovieWishList()"
+            ></BaseHeartButton>
           </div>
 
           <!-- Overview -->
@@ -142,6 +132,7 @@ import type { MovieDetail, trailer } from "~/types/types";
 import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
 import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
+import BaseHeartButton from "~/components/base/BaseHeartButton.vue";
 
 const userData = useUserData();
 const route = useRoute();

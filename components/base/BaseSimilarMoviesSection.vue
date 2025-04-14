@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-surface-dark opacity-100 mt-10">
+  <div class="mt-10">
     <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
     <div class="flex overflow-auto py-4">
       <NuxtLink

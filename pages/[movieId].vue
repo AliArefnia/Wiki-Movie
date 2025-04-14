@@ -99,31 +99,31 @@
           </div>
         </div>
       </div>
+
+      <div>
+        <h3 class="font-display mx-4 text-2xl">Official Trailer</h3>
+        <BaseTrailerCard
+          v-if="officialTrailerKey"
+          class="shrink-0 mx-2"
+          :soloMovie="true"
+          :trailerUrl="`${movieTrailerUrl}${officialTrailerKey.value}/videos`"
+          :fallBackThumbnail="backdropUrl"
+          :trailerName="officialTrailerName"
+        />
+        <p v-else class="text-gray-400 text-center font-display mt-6">
+          {{ officialTrailerName }}
+        </p>
+      </div>
+      <BaseSimilarMoviesSection
+        :movieId="Number(route.params.movieId)"
+      ></BaseSimilarMoviesSection>
+      <BaseCastCrewSection
+        :movieId="Number(route.params.movieId)"
+      ></BaseCastCrewSection>
     </div>
 
-    <div>
-      <h3 class="font-display mx-4 text-2xl">Official Trailer</h3>
-      <BaseTrailerCard
-        v-if="officialTrailerKey"
-        class="shrink-0 mx-2"
-        :soloMovie="true"
-        :trailerUrl="`${movieTrailerUrl}${officialTrailerKey.value}/videos`"
-        :fallBackThumbnail="backdropUrl"
-        :trailerName="officialTrailerName"
-      />
-      <p v-else class="text-gray-400 text-center font-display mt-6">
-        {{ officialTrailerName }}
-      </p>
-    </div>
-    <BaseSimilarMoviesSection
-      :movieId="Number(route.params.movieId)"
-    ></BaseSimilarMoviesSection>
-    <BaseCastCrewSection
-      :movieId="Number(route.params.movieId)"
-    ></BaseCastCrewSection>
+    <!-- Loading State -->
   </div>
-
-  <!-- Loading State -->
   <div v-else class="flex items-center justify-center min-h-screen text-white">
     <p>Loading movie details...</p>
   </div>

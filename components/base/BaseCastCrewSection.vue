@@ -1,6 +1,6 @@
 <!-- /components/sections/CastCrewSection.vue -->
 <template>
-  <div class="bg-surface-dark mt-10 text-white">
+  <div class="mt-10 text-white">
     <h3 class="font-display mx-4 text-2xl">Top Cast</h3>
     <div class="flex overflow-auto py-4">
       <div v-for="person in cast" :key="person.id" class="shrink-0 mx-2">

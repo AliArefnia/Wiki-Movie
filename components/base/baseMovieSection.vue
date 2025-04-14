@@ -1,13 +1,13 @@
 <template>
   <div class="flex justify-between items-center px-4 py-2 mt-2">
-    <p class="text-white">{{ genreName }}</p>
+    <p class="text-white text-xl font-special">{{ genreName }}</p>
 
     <NuxtLink
       class="text-primary cursor-pointer group w-fit"
       :to="`/genre/${genreName}`"
     >
       <div class="flex">
-        <span class="mr-2">more</span>
+        <span class="mr-2 font-special text-sm">more</span>
         <span
           ><ArrowRight
             class="w-5 mr-2 group-hover:mr-0 group-hover:ml-2 transition-all"

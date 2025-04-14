@@ -2,9 +2,12 @@ import type { Movie } from "~/types/types";
 
 export default defineEventHandler(async (event) => {
   try {
-    const query = getQuery(event);
+    const { movieId } = getQuery(event);
     const config = useRuntimeConfig();
-    const movieId = query.movieId;
+
+    if (!movieId) {
+      return { error: "Movie ID is required" };
+    }
 
     const IMAGE_URL = "https://image.tmdb.org/t/p/w154";
 
@@ -20,11 +23,11 @@ export default defineEventHandler(async (event) => {
     );
     return {
       id: response.id,
-      title: response.title,
-      vote_average: Number(response.vote_average.toFixed(1)),
+      title: response.title ?? "Untitled",
+      vote_average: Number(response.vote_average.toFixed(1) || 0),
       poster_path: `${IMAGE_URL}${response.poster_path}`,
-      release_date: response.release_date.slice(0, 4),
-      genre_ids: response.genre_ids,
+      release_date: response.release_date.slice(0, 4) || "N/A",
+      genre_ids: response.genre_ids || [],
     };
   } catch (error) {
     console.log(error);

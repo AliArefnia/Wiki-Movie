@@ -20,11 +20,11 @@ export default defineEventHandler(async (event) => {
     return response.results.map(
       ({ id, title, vote_average, poster_path, release_date, genre_ids }) => ({
         id,
-        title,
-        vote_average: Number(vote_average.toFixed(1)),
-        poster_path,
-        release_date: release_date.slice(0, 4),
-        genre_ids,
+        title: title ?? "Untitled",
+        vote_average: Number(vote_average.toFixed(1) || 0),
+        poster_path: `${IMAGE_URL}${poster_path}`,
+        release_date: release_date.slice(0, 4) || "N/A",
+        genre_ids: genre_ids || [],
       })
     );
   } catch (error) {

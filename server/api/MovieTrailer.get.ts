@@ -3,8 +3,7 @@ import type { trailerOfMovie } from "@/types/types";
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig();
-    const query = getQuery(event);
-    const movieId = query.movieId;
+    const { movieId } = getQuery(event);
 
     const moviesResponse = await $fetch<trailerOfMovie>(
       `https://api.themoviedb.org/3/movie/${movieId}/videos`,

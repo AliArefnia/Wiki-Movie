@@ -1,9 +1,7 @@
 import type { MovieDetail } from "~/types/types";
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  const movieId = query.movieId;
-
+  const { movieId } = getQuery(event);
   const config = useRuntimeConfig();
 
   try {
@@ -20,9 +18,9 @@ export default defineEventHandler(async (event) => {
 
     return {
       ...response,
-      vote_average: Number(response.vote_average.toFixed(1)),
-      popularity: Number(response.popularity.toFixed(2)),
-      release_date: response.release_date.slice(0, 4),
+      vote_average: Number(response.vote_average.toFixed(1) || 0),
+      popularity: Number(response.popularity.toFixed(2) || 0),
+      release_date: response.release_date.slice(0, 4) || "N/A",
     };
   } catch (error) {
     console.error("Error fetching movie Detail:", error);

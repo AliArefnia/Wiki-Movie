@@ -1,12 +1,11 @@
-import type { Movie, MovieGet } from "~/types/types";
+import type { MovieGet } from "~/types/types";
 
 export default defineEventHandler(async (event) => {
   try {
-    const query = getQuery(event);
     const config = useRuntimeConfig();
+    const { width, searchTerm, page } = getQuery(event);
 
-    const searchTerm = query.searchTerm;
-    const page = query.page;
+    const IMAGE_URL = `https://image.tmdb.org/t/p/w${width}`;
 
     const response = await $fetch<MovieGet>(
       `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US&page=${page}`,

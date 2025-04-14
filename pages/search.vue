@@ -71,7 +71,7 @@ const debouncedSearch = useDebounceFn(async () => {
 
 watch(searchQuery, debouncedSearch);
 
-const imageWidth = ref(92);
+const imageWidth = ref(154);
 
 function getCardWidth() {
   const vw = window.innerWidth;
@@ -93,7 +93,7 @@ async function getMovieBySearch() {
     isLoading.value = true;
     const encodedTerm = encodeURIComponent(searchQuery.value);
     let data = await $fetch<Movie[]>(
-      `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}`
+      `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}&width=${imageWidth.value}`
     );
 
     const movieIds = new Set(searchMovie.value.map((m) => m.id));

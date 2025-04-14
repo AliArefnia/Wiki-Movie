@@ -40,7 +40,7 @@ function getImageWidth() {
 
 async function fetchSimilarMovies(movieId: number, width: number) {
   let data = await $fetch<Movie[]>(
-    `/api/MovieSimilarById?movieId=${movieId}&width=${width}`
+    `/api/MovieSimilarById?movieId=${movieId}&width=${imageWidth.value}`
   );
 
   const clearedMovie = data.map((movie) => ({
@@ -56,7 +56,6 @@ async function fetchSimilarMovies(movieId: number, width: number) {
 
 onMounted(async () => {
   try {
-    console.log(imageWidth.value);
     await fetchSimilarMovies(props.movieId, imageWidth.value);
   } catch (error) {
     console.error("Failed to fetch Similar movies:", error);

@@ -20,7 +20,10 @@
       </NuxtLink>
 
       <ClientOnly>
-        <div v-if="isUserLoggedIn" @click="isUserCardOpen = !isUserCardOpen">
+        <div
+          v-if="isUserLoggedIn"
+          @click.stop="isUserCardOpen = !isUserCardOpen"
+        >
           <div
             class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md hover:cursor-pointer"
           >
@@ -71,7 +74,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useUserData } from "~/store/user";
 import { CircleUserRound } from "lucide-vue-next";
 import { useRouter } from "vue-router";
@@ -86,6 +89,23 @@ function logOut() {
   userData.logOut();
   router.push("/");
 }
+
+const dropdown = ref<HTMLElement | null>(null);
+
+function handleClickOutside(event: MouseEvent) {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+    isUserCardOpen.value = false;
+    console.log("done");
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <style scoped>

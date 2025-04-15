@@ -25,20 +25,33 @@
         ><Heart
       /></BaseButton>
     </NuxtLink>
-    <NuxtLink to="/user">
-      <BaseButton
-        variant="footer"
-        @click="footerTabSelected('user')"
-        :active="activeFooterTab === 'user'"
-        ><User
-      /></BaseButton>
-    </NuxtLink>
+    <ClientOnly>
+      <NuxtLink v-if="userData.isLoggedIn" to="/user">
+        <BaseButton
+          variant="footer"
+          @click="footerTabSelected('user')"
+          :active="activeFooterTab === 'user'"
+          ><User
+        /></BaseButton>
+      </NuxtLink>
+      <NuxtLink v-else to="/login">
+        <BaseButton
+          variant="footer"
+          @click="footerTabSelected('user')"
+          :active="activeFooterTab === 'user'"
+          ><User
+        /></BaseButton>
+      </NuxtLink>
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
 import { LayoutGrid, Search, Heart, User } from "lucide-vue-next";
 import { useRoute } from "vue-router";
+import { useUserData } from "~/store/user";
+
+const userData = useUserData();
 
 const route = useRoute();
 

@@ -10,7 +10,7 @@
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-10">
       <!-- Movie Header -->
       <div
-        class="flex flex-col md:flex-row items-center md:items-start space-x-6"
+        class="flex flex-col md:flex-row items-center md:items-start md:space-x-6"
       >
         <!-- Movie Poster -->
         <img

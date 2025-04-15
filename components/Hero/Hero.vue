@@ -2,6 +2,8 @@
   <div
     @mouseenter="stopAutoScroll"
     @mouseleave="startAutoScroll"
+    @touchstart="stopAutoScroll"
+    @touchend="startAutoScroll"
     class="relative px-0 md:px-8"
   >
     <!-- Left Btn -->

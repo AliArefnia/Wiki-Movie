@@ -22,13 +22,19 @@
         <!-- Movie Details -->
         <div class="flex-1 space-y-5 mt-6 text-center md:text-left">
           <!-- Title & Tagline -->
-          <div>
+          <div class="md:relative">
             <h1 class="text-4xl leading-tight font-display">
               {{ movieDetail.title }}
             </h1>
             <p v-if="movieDetail.tagline" class="text-lg text-gray-300 italic">
               "{{ movieDetail.tagline }}"
             </p>
+
+            <BaseHeartButton
+              class="md:absolute md:right-0 md:top-5"
+              :isInWishList="isInWishList"
+              @toggleMovieWishList="toggleMovieWishList()"
+            ></BaseHeartButton>
           </div>
 
           <!-- Genre Badges -->
@@ -42,8 +48,7 @@
             </span>
           </div>
 
-          <div>
-            <!-- <button
+          <!-- <button
               :disabled="loading"
               @click="toggleMovie(movie)"
               class="text-white p-2 rounded-full"
@@ -53,12 +58,6 @@
                 class="text-red-500"
               />
             </button> -->
-
-            <BaseHeartButton
-              :isInWishList="isInWishList"
-              @toggleMovieWishList="toggleMovieWishList()"
-            ></BaseHeartButton>
-          </div>
 
           <!-- Overview -->
           <div class="bg-surface-card/50 p-4 rounded-lg shadow-md">

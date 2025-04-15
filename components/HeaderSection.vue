@@ -22,17 +22,20 @@
       <ClientOnly>
         <div v-if="isUserLoggedIn" @click="isUserCardOpen = !isUserCardOpen">
           <div
-            class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md"
+            class="w-10 h-10 rounded-full bg-surface-hover text-white flex items-center justify-center text-sm font-semibold overflow-hidden shadow-md hover:cursor-pointer"
           >
-            <img src="" alt="User Avatar" class="w-full h-full object-cover" />
+            <!-- <img src="" alt="User Avatar" class="w-full h-full object-cover" /> -->
+            <CircleUserRound :size="24" />
           </div>
           <transition name="fade">
             <div
               v-if="isUserCardOpen"
               ref="dropdown"
-              class="absolute right-0 mt-2 w-56 bg-surface-card text-white shadow-lg rounded-lg overflow-hidden"
+              class="absolute right-0 mt-4 w-56 bg-surface-hover text-white shadow-lg rounded-lg overflow-hidden"
             >
-              <div class="p-4 flex items-center gap-3 border-b border-gray-700">
+              <div
+                class="p-4 flex items-center gap-3 border-b border-surface-card"
+              >
                 <div>
                   <p class="font-semibold">userName</p>
                   <p class="text-sm text-gray-400">
@@ -43,26 +46,26 @@
               <div class="p-2">
                 <NuxtLink
                   to="/user"
-                  class="block px-4 py-2 hover:bg-surface-hover rounded"
+                  class="block px-4 py-2 hover:bg-surface-card rounded"
                 >
                   User
                 </NuxtLink>
                 <NuxtLink
                   to="/wishList"
-                  class="block px-4 py-2 hover:bg-surface-hover rounded"
+                  class="block px-4 py-2 hover:bg-surface-card rounded"
                 >
                   Wish List
                 </NuxtLink>
-                <BaseButton variant="danger" @click="logOut"
+                <BaseButton class="mt-2" variant="danger" @click="logOut"
                   >Log Out</BaseButton
                 >
               </div>
             </div>
           </transition>
         </div>
-        <NuxtLink v-else to="/login"
-          ><BaseButton variant="primary">Log In</BaseButton></NuxtLink
-        >
+        <NuxtLink v-else to="/login">
+          <CircleUserRound :size="24" />
+        </NuxtLink>
       </ClientOnly>
     </div>
   </header>
@@ -70,7 +73,10 @@
 
 <script setup>
 import { useUserData } from "~/store/user";
+import { CircleUserRound } from "lucide-vue-next";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userData = useUserData();
 const isUserLoggedIn = computed(() => userData.isLoggedIn);
 const isUserCardOpen = ref(false);

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center px-4 py-2">
+  <div class="flex justify-between items-center px-4 py-2 mt-4">
     <p class="text-white">Trailers</p>
   </div>
   <div class="flex overflow-auto">

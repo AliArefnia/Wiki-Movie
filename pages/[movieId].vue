@@ -100,7 +100,7 @@
       </div>
 
       <div>
-        <h3 class="font-display mx-4 text-2xl">Official Trailer</h3>
+        <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
         <BaseTrailerCard
           v-if="officialTrailerKey"
           class="shrink-0 mx-2"

@@ -1,7 +1,9 @@
 <template>
   <div class="flex justify-center min-h-[500px]">
     <div class="flex items-center justify-center bg-surface-dark text-white">
-      <div class="w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg">
+      <div
+        class="flex flex-col w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg"
+      >
         <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <form @submit.prevent="signUp" class="space-y-4">
           <input
@@ -18,6 +20,17 @@
             required
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <input
+            v-model="repeatPassword"
+            type="password"
+            placeholder="Repeat Password"
+            required
+            class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <transition name="fade" mode="out-in">
+            <p v-if="error" class="mb-4 text-red-400">{{ error }}!</p>
+          </transition>
 
           <button
             type="submit"
@@ -26,8 +39,14 @@
             Sign Up
           </button>
         </form>
-        <p v-if="message" class="mt-4 text-green-400">{{ message }}</p>
-        <p v-if="error" class="mt-4 text-red-400">{{ error }}</p>
+        <p class="text-sm text-center text-gray-400 mt-4">
+          already have an account?
+          <NuxtLink to="/login" class="text-blue-400 hover:underline"
+            >Log In</NuxtLink
+          >
+        </p>
+
+        <!-- <p v-if="message" class="mt-4 text-green-400">{{ message }}</p> -->
       </div>
     </div>
   </div>
@@ -47,20 +66,30 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const repeatPassword = ref("");
 const message = ref("");
 const error = ref("");
 
 async function signUp() {
   const supabase: any = useNuxtApp().$supabase;
+
   try {
-    const { data, error } = await supabase.auth.signUp({
+    if (password.value !== repeatPassword.value) {
+      error.value = "Passwords do not match!";
+      return;
+    }
+    if (password.value.length < 6) {
+      error.value = "Password must be at least 6 characters.";
+      return;
+    }
+    const { data, error: signUpError } = await supabase.auth.signUp({
       email: email.value,
       password: password.value,
     });
 
-    if (error) {
-      error.value = error.message;
-      return { error: error.message };
+    if (signUpError) {
+      error.value = signUpError.message;
+      return { error: signUpError.message };
     }
 
     const { error: insertError } = await supabase.from("users").insert([

@@ -18,6 +18,9 @@
             required
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <transition name="fade" mode="out-in">
+            <p v-if="error" class="mb-4 text-red-400">{{ error }}!</p>
+          </transition>
 
           <button
             type="submit"
@@ -27,15 +30,12 @@
           </button>
         </form>
 
-        <p class="text-sm text-center text-gray-400">
+        <p class="text-sm text-center text-gray-400 mt-4">
           Don't have an account?
           <NuxtLink to="/signup" class="text-blue-400 hover:underline"
             >Register</NuxtLink
           >
         </p>
-
-        <p v-if="message" class="mt-4 text-green-400">{{ message }}</p>
-        <p v-if="error" class="mt-4 text-red-400">{{ error }}</p>
       </div>
     </div>
   </div>
@@ -56,20 +56,19 @@ const previousPageLink = computed(() => route.query.from || "/");
 
 const email = ref("");
 const password = ref("");
-const message = ref("");
 const error = ref("");
 
 async function logIn() {
   const supabase: any = useNuxtApp().$supabase;
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
       email: email.value,
       password: password.value,
     });
 
-    if (error) {
-      error.value = error.message;
-      return { error: error.message };
+    if (loginError) {
+      error.value = loginError.message;
+      return { error: loginError.message };
     }
 
     userData.setUserData({

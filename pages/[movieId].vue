@@ -129,29 +129,38 @@
 </template>
 
 <script setup lang="ts">
-import { Heart } from "lucide-vue-next";
-import type { MovieDetail, trailer } from "~/types/types";
 import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
 import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
 import BaseHeartButton from "~/components/base/BaseHeartButton.vue";
+import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
+import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
+import type {
+  MovieDetail,
+  TvDetail,
+  PersonDetail,
+  trailer,
+} from "~/types/types";
 
-const userData = useUserData();
 const route = useRoute();
+const userData = useUserData();
+const mediaType = route.params.mediaType as "movie" | "tv" | "person";
+const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
+
 const isLoadingWishList = ref(false);
 const isInWishList = ref(false);
 const officialTrailerKey = ref();
 const officialTrailerName = ref("");
 const movieTrailerUrl = "https://www.youtube.com/embed/";
 
-const movieDetail = ref<MovieDetail | null>(null);
+// const movieDetail = ref<MovieDetail | null>(null);
 
-async function fetchMovieDetail() {
+async function fetchMediaDetail() {
   try {
-    const data = await $fetch<MovieDetail>(
-      `/api/MovieDetail?movieId=${route.params.movieId}`
+    const data = await $fetch<MovieDetail | TvDetail | PersonDetail>(
+      `/api/MediaDetail?mediaType=${mediaType}&id=${route.params.id}`
     );
-    movieDetail.value = data;
+    mediaDetail.value = data;
   } catch (error) {
     console.error("Failed to fetch movie details:", error);
   } finally {
@@ -160,9 +169,9 @@ async function fetchMovieDetail() {
 
 async function toggleMovieWishList() {
   try {
-    const movieId = Number(route.params?.movieId);
+    const id = Number(route.params.id);
     isLoadingWishList.value = true;
-    await userData.toggleMovieWishList({ movieId });
+    await userData.toggleMovieWishList({ movieId: id });
     isLoadingWishList.value = false;
     isInWishList.value = !isInWishList.value;
   } catch (error) {
@@ -171,20 +180,25 @@ async function toggleMovieWishList() {
 }
 
 onMounted(async () => {
-  await fetchMovieDetail();
-  if (userData.userWishList?.includes(Number(route.params?.movieId))) {
-    isInWishList.value = true;
+  await fetchMediaDetail();
+
+  if (mediaType !== "person") {
+    if (userData.userWishList?.includes(Number(route.params.id))) {
+      isInWishList.value = true;
+    }
+
+    const data = await $fetch<trailer>(
+      `/api/MovieTrailer?movieId=${Number(route.params.id)}`
+    );
+
+    if (!data) {
+      officialTrailerKey.value = null;
+      officialTrailerName.value = "No trailer available";
+    } else {
+      officialTrailerKey.value = data.key;
+      officialTrailerName.value = data.name;
+    }
   }
-  let data = await $fetch<trailer>(
-    `/api/MovieTrailer?movieId=${Number(route.params.movieId)}`
-  );
-  if (!data) {
-    officialTrailerKey.value = null;
-    officialTrailerName.value = "No trailer available";
-    return;
-  }
-  officialTrailerKey.value = data.key;
-  officialTrailerName.value = data.name;
 });
 
 const posterUrl = computed(() =>

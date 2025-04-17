@@ -33,28 +33,40 @@
       Sorry, couldn't find this movie!
     </div>
     <div v-else class="grid grid-cols-3 gap-2 justify-items-center pt-2">
-      <NuxtLink
-        v-for="movie in searchMovie"
-        :key="movie.id"
-        :to="`/${movie.id}?from=search`"
-      >
-        <BaseMovieCardSmall
-          class="shrink-0 mx-2"
-          :movieTitle="movie.title"
-          :rating="movie.vote_average"
-          :releaseDate="movie.release_date"
-          :posterUrl="movie.poster_path"
-        />
-      </NuxtLink>
+      <template v-for="item in searchMovie" :key="item.id">
+        <NuxtLink
+          v-if="item.media_type === 'movie' || item.media_type === 'tv'"
+          :to="`/${item.id}?from=search`"
+        >
+          <BaseMovieCardSmall
+            class="shrink-0 mx-2"
+            :movieTitle="item.media_type === 'movie' ? item.title : item.name"
+            :rating="item.vote_average"
+            :releaseDate="item.release_date"
+            :posterUrl="item.poster_path"
+          />
+        </NuxtLink>
+
+        <NuxtLink
+          v-else-if="item.media_type === 'person'"
+          :to="`/${item.id}?from=search`"
+        >
+          <BasePersonCard
+            :personName="item.name"
+            :role="item.known_for_department || 'Actor'"
+            :profileUrl="item.profile_path"
+          />
+        </NuxtLink>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Movie } from "~/types/types";
+import type { SearchResult } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
 
-const searchMovie = ref<Movie[]>([]);
+const searchMovie = ref<SearchResult[]>([]);
 const page = ref(1);
 const isLoading = ref(false);
 const searchQuery = ref("");
@@ -81,7 +93,7 @@ function getCardWidth() {
 }
 
 async function getHotNewMovies() {
-  let data = await $fetch<Movie[]>(
+  let data = await $fetch<SearchResult[]>(
     `/api/MoviesHotData?width=${imageWidth.value}`
   );
   searchMovie.value.push(...data);
@@ -92,7 +104,7 @@ async function getMovieBySearch() {
   try {
     isLoading.value = true;
     const encodedTerm = encodeURIComponent(searchQuery.value);
-    let data = await $fetch<Movie[]>(
+    let data = await $fetch<SearchResult[]>(
       `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}&width=${imageWidth.value}`
     );
 

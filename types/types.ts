@@ -1,4 +1,13 @@
 export interface Movie {
+export type TvShow = {
+  id: number;
+  media_type: "tv";
+  name: string;
+  vote_average: number;
+  poster_path: string | null;
+  release_date: string;
+  genre_ids: number[];
+};
   id: number;
   title: string;
   genre_ids: number[];
@@ -6,6 +15,21 @@ export interface Movie {
   poster_path: string;
   release_date: string;
 }
+export interface TvDetail {
+  id: number;
+  name: string;
+  genre_ids?: number[];
+  vote_average: number;
+  poster_path: string;
+  backdrop_path: string;
+  first_air_date: string;
+  popularity: number;
+  overview: string;
+  number_of_seasons: number;
+  genres: Genre[];
+  tagline: string;
+}
+
 export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
 }

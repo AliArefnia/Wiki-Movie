@@ -1,4 +1,13 @@
-export interface Movie {
+export type Movie = {
+  id: number;
+  media_type: "movie";
+  title: string;
+  vote_average: number;
+  poster_path: string | null;
+  release_date: string;
+  genre_ids: number[];
+};
+
 export type TvShow = {
   id: number;
   media_type: "tv";
@@ -8,13 +17,37 @@ export type TvShow = {
   release_date: string;
   genre_ids: number[];
 };
+
+export type Person = {
+  id: number;
+  media_type: "person";
+  name: string;
+  profile_path: string | null;
+  known_for: {
+    id: number;
+    title?: string;
+    name?: string;
+    media_type: string;
+    poster_path: string | null;
+  }[];
+  known_for_department: string;
+};
+
+export interface MovieDetail {
   id: number;
   title: string;
   genre_ids: number[];
   vote_average: number;
   poster_path: string;
+  backdrop_path: string;
   release_date: string;
+  popularity: number;
+  runtime: number;
+  overview: string;
+  genres: Genre[];
+  tagline: string;
 }
+
 export interface TvDetail {
   id: number;
   name: string;
@@ -29,6 +62,19 @@ export interface TvDetail {
   genres: Genre[];
   tagline: string;
 }
+
+export interface PersonDetail {
+  id: number;
+  name: string;
+  profile_path: string;
+  biography: string;
+  birthday: string | null;
+  place_of_birth: string | null;
+  popularity: number;
+  known_for_department: string;
+}
+
+export type SearchResult = Movie | TvShow | Person;
 
 export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
@@ -59,21 +105,6 @@ export interface MultipleSearchGet {
 }
 export interface MovieListWithTrailer {
   results: MovieWithTrailer[];
-}
-
-export interface MovieDetail {
-  id: number;
-  title: string;
-  genre_ids: number[];
-  vote_average: number;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  popularity: number;
-  runtime: number;
-  overview: string;
-  genres: Genre[];
-  tagline: string;
 }
 
 export interface userData {
@@ -113,18 +144,9 @@ export interface CrewMember {
   profile_path: string | null;
 }
 
-export interface Person {
-  id: number;
-  name: string;
-  profile_path: string | null;
-  known_for: Movie[];
-  media_type: "person";
-}
-
 export interface MultiSearchResult {
   id: number;
   media_type: "movie" | "tv" | "person";
-
   title?: string;
   name?: string;
   vote_average?: number;

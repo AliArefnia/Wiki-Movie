@@ -180,6 +180,47 @@ const movieTrailerUrl = "https://www.youtube.com/embed/";
 
 // const movieDetail = ref<MovieDetail | null>(null);
 
+const movieDetail = computed(() =>
+  mediaType.value === "movie" ? (mediaDetail.value as MovieDetail) : null
+);
+
+const tvDetail = computed(() =>
+  mediaType.value === "tv" ? (mediaDetail.value as TvDetail) : null
+);
+
+const personDetail = computed(() =>
+  mediaType.value === "person" ? (mediaDetail.value as PersonDetail) : null
+);
+
+const displayTitle = computed(() => {
+  return (
+    (mediaDetail.value as MovieDetail)?.title ||
+    (mediaDetail.value as TvDetail)?.name ||
+    (mediaDetail.value as PersonDetail)?.name ||
+    "Unknown Title"
+  );
+});
+
+const displayOverview = computed(() => {
+  return mediaType.value === "person"
+    ? (mediaDetail.value as PersonDetail)?.biography
+    : (mediaDetail.value as MovieDetail | TvDetail)?.overview;
+});
+const displayVoteAverage = computed(() => {
+  return mediaType.value !== "person"
+    ? (mediaDetail.value as MovieDetail | TvDetail)?.vote_average
+    : null;
+});
+const mediaGenres = computed(() => {
+  return mediaType.value !== "person"
+    ? (mediaDetail.value as MovieDetail | TvDetail)?.genres
+    : null;
+});
+
+const displayTagline = computed(() => {
+  return (mediaDetail.value as MovieDetail | TvDetail)?.tagline;
+});
+
 async function fetchMediaDetail() {
   try {
     const id = route.params.movieId;
@@ -228,17 +269,34 @@ onMounted(async () => {
   }
 });
 
-const posterUrl = computed(() =>
-  movieDetail.value?.poster_path
-    ? `https://image.tmdb.org/t/p/w500${movieDetail.value.poster_path}`
-    : "/placeholder.jpg"
-);
+const posterUrl = computed(() => {
+  if (!mediaDetail.value) return "/placeholder.jpg";
 
-const backdropUrl = computed(() =>
-  movieDetail.value?.backdrop_path
-    ? `https://image.tmdb.org/t/p/w1280${movieDetail.value.backdrop_path}`
-    : "/placeholder.jpg"
-);
+  if ("poster_path" in mediaDetail.value) {
+    return mediaDetail.value.poster_path
+      ? `https://image.tmdb.org/t/p/w500${mediaDetail.value.poster_path}`
+      : "/placeholder.jpg";
+  }
+
+  if ("profile_path" in mediaDetail.value) {
+    return mediaDetail.value.profile_path
+      ? `https://image.tmdb.org/t/p/w500${mediaDetail.value.profile_path}`
+      : "/placeholder.jpg";
+  }
+
+  return "/placeholder.jpg";
+});
+
+const backdropUrl = computed(() => {
+  if (
+    mediaDetail.value &&
+    "backdrop_path" in mediaDetail.value &&
+    mediaDetail.value.backdrop_path
+  ) {
+    return `https://image.tmdb.org/t/p/w1280${mediaDetail.value.backdrop_path}`;
+  }
+  return "/placeholder.jpg";
+});
 
 definePageMeta({
   layout: "genre-pages",

@@ -76,6 +76,14 @@ export interface PersonDetail {
 
 export type SearchResult = Movie | TvShow | Person;
 
+export type MediaType = "movie" | "tv" | "person";
+
+type ExtendedMovie = MovieDetail & { media_type: "movie" };
+type ExtendedTv = TvDetail & { media_type: "tv" };
+type ExtendedPerson = PersonDetail & { media_type: "person" };
+
+export type MediaDetailUnion = ExtendedMovie | ExtendedTv | ExtendedPerson;
+
 export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
 }

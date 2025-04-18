@@ -182,10 +182,12 @@ const movieTrailerUrl = "https://www.youtube.com/embed/";
 
 async function fetchMediaDetail() {
   try {
-    const data = await $fetch<MovieDetail | TvDetail | PersonDetail>(
-      `/api/MediaDetail?mediaType=${mediaType}&id=${route.params.id}`
-    );
-    mediaDetail.value = data;
+    const id = route.params.movieId;
+    console.log(id);
+    const rawData = await $fetch<MediaDetailUnion>(`/api/MediaDetail?id=${id}`);
+    console.log(rawData);
+    mediaType.value = rawData.media_type;
+    mediaDetail.value = parseMediaDetail(rawData);
   } catch (error) {
     console.error("Failed to fetch movie details:", error);
   } finally {

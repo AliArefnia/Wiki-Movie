@@ -1,5 +1,5 @@
 <template>
-  <div v-if="movieDetail" class="relative min-h-screen text-white">
+  <div v-if="mediaDetail" class="relative min-h-screen text-white">
     <!-- Backdrop Image -->
     <div
       class="absolute inset-0 bg-cover bg-center opacity-30"
@@ -15,7 +15,7 @@
         <!-- Movie Poster -->
         <img
           :src="posterUrl"
-          :alt="movieDetail.title"
+          :alt="displayTitle"
           class="w-72 rounded-lg shadow-lg"
         />
 
@@ -24,13 +24,14 @@
           <!-- Title & Tagline -->
           <div class="md:relative">
             <h1 class="text-4xl leading-tight font-display">
-              {{ movieDetail.title }}
+              {{ displayTitle }}
             </h1>
-            <p v-if="movieDetail.tagline" class="text-lg text-gray-300 italic">
-              "{{ movieDetail.tagline }}"
+            <p v-if="displayTagline" class="text-lg text-gray-300 italic">
+              "{{ displayTagline }}"
             </p>
 
             <BaseHeartButton
+              v-if="mediaType !== 'person'"
               class="md:absolute md:right-0 md:top-5"
               :isInWishList="isInWishList"
               @toggleMovieWishList="toggleMovieWishList()"
@@ -38,9 +39,9 @@
           </div>
 
           <!-- Genre Badges -->
-          <div class="flex flex-wrap gap-2 w-fit">
+          <div v-if="mediaGenres" class="flex flex-wrap gap-2 w-fit">
             <span
-              v-for="genre in movieDetail.genres"
+              v-for="genre in mediaGenres"
               :key="genre.id"
               class="bg-primary text-sm px-3 py-1 rounded-full font-medium"
             >
@@ -48,22 +49,13 @@
             </span>
           </div>
 
-          <!-- <button
-              :disabled="loading"
-              @click="toggleMovie(movie)"
-              class="text-white p-2 rounded-full"
-            >
-              <Icon
-                :name="isInWishList(movie) ? 'heart-filled' : 'heart-outline'"
-                class="text-red-500"
-              />
-            </button> -->
-
           <!-- Overview -->
           <div class="bg-surface-card/50 p-4 rounded-lg shadow-md">
-            <h2 class="text-xl font-light mb-2 text-primary">Overview</h2>
+            <h2 class="text-xl font-light mb-2 text-primary">
+              {{ mediaType === "person" ? "Biography" : "Overview" }}
+            </h2>
             <p class="text-gray-200 leading-relaxed font-display">
-              {{ movieDetail.overview }}
+              {{ displayOverview }}
             </p>
           </div>
 
@@ -71,35 +63,64 @@
           <div
             class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-surface-dark/50 p-4 rounded-lg shadow-md"
           >
-            <div>
-              <p class="text-gray-400 text-sm">Release Date</p>
-              <p class="font-light font-display">
-                {{ movieDetail.release_date }}
-              </p>
-            </div>
-            <div>
-              <p class="text-gray-400 text-sm">Runtime</p>
-              <p class="font-light font-display">
-                {{ movieDetail.runtime }} min
-              </p>
-            </div>
-            <div>
-              <p class="text-gray-400 text-sm">Popularity</p>
-              <p class="font-light font-display">
-                {{ movieDetail.popularity }}
-              </p>
-            </div>
-            <div>
-              <p class="text-gray-400 text-sm">Rating</p>
-              <p class="font-light font-display">
-                {{ movieDetail.vote_average }}/10 ⭐
-              </p>
-            </div>
+            <!-- Movie or TV -->
+            <template v-if="mediaType !== 'person'">
+              <div>
+                <p class="text-gray-400 text-sm">
+                  {{
+                    mediaType === "movie" ? "Release Date" : "First Air Date"
+                  }}
+                </p>
+                <p class="font-light font-display">
+                  {{ movieDetail?.release_date || tvDetail?.first_air_date }}
+                </p>
+              </div>
+              <div v-if="mediaType === 'movie'">
+                <p class="text-gray-400 text-sm">Runtime</p>
+                <p class="font-light font-display">
+                  {{ movieDetail?.runtime }} min
+                </p>
+              </div>
+              <div v-if="mediaType === 'tv'">
+                <p class="text-gray-400 text-sm">Seasons</p>
+                <p class="font-light font-display">
+                  {{ tvDetail?.number_of_seasons }}
+                </p>
+              </div>
+              <div>
+                <p class="text-gray-400 text-sm">Rating</p>
+                <p class="font-light font-display">
+                  {{ displayVoteAverage }}/10 ⭐
+                </p>
+              </div>
+            </template>
+            <!-- Person Info -->
+            <template v-else>
+              <div>
+                <p class="text-gray-400 text-sm">Known For</p>
+                <p class="font-light font-display">
+                  {{ personDetail?.known_for_department }}
+                </p>
+              </div>
+              <div>
+                <p class="text-gray-400 text-sm">Birthday</p>
+                <p class="font-light font-display">
+                  {{ personDetail?.birthday || "N/A" }}
+                </p>
+              </div>
+              <div>
+                <p class="text-gray-400 text-sm">Place of Birth</p>
+                <p class="font-light font-display">
+                  {{ personDetail?.place_of_birth || "N/A" }}
+                </p>
+              </div>
+            </template>
           </div>
         </div>
       </div>
 
-      <div>
+      <!-- Trailer -->
+      <div v-if="mediaType === 'movie' || mediaType === 'tv'">
         <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
         <BaseTrailerCard
           v-if="officialTrailerKey"
@@ -113,10 +134,13 @@
           {{ officialTrailerName }}
         </p>
       </div>
+
       <BaseSimilarMoviesSection
+        v-if="mediaType === 'movie'"
         :movieId="Number(route.params.movieId)"
       ></BaseSimilarMoviesSection>
       <BaseCastCrewSection
+        v-if="mediaType === 'movie'"
         :movieId="Number(route.params.movieId)"
       ></BaseCastCrewSection>
     </div>
@@ -124,7 +148,7 @@
     <!-- Loading State -->
   </div>
   <div v-else class="flex items-center justify-center min-h-screen text-white">
-    <p>Loading movie details...</p>
+    <p>Loading media details...</p>
   </div>
 </template>
 
@@ -140,6 +164,7 @@ import type {
   TvDetail,
   PersonDetail,
   trailer,
+  MediaDetailUnion,
 } from "~/types/types";
 
 const route = useRoute();

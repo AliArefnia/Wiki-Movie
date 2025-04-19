@@ -9,119 +9,14 @@
     <!-- Content Container -->
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-10">
       <!-- Movie Header -->
-      <div
-        class="flex flex-col md:flex-row items-center md:items-start md:space-x-6"
-      >
-        <!-- Movie Poster -->
-        <img
-          :src="posterUrl"
-          :alt="displayTitle"
-          class="w-72 rounded-lg shadow-lg"
-        />
 
-        <!-- Movie Details -->
-        <div class="flex-1 space-y-5 mt-6 text-center md:text-left">
-          <!-- Title & Tagline -->
-          <div class="md:relative">
-            <h1 class="text-4xl leading-tight font-display">
-              {{ displayTitle }}
-            </h1>
-            <p v-if="displayTagline" class="text-lg text-gray-300 italic">
-              "{{ displayTagline }}"
-            </p>
-
-            <BaseHeartButton
-              v-if="mediaType !== 'person'"
-              class="md:absolute md:right-0 md:top-5"
-              :isInWishList="isInWishList"
-              @toggleMovieWishList="toggleMovieWishList()"
-            ></BaseHeartButton>
-          </div>
-
-          <!-- Genre Badges -->
-          <div v-if="mediaGenres" class="flex flex-wrap gap-2 w-fit">
-            <span
-              v-for="genre in mediaGenres"
-              :key="genre.id"
-              class="bg-primary text-sm px-3 py-1 rounded-full font-medium"
-            >
-              {{ genre.name }}
-            </span>
-          </div>
-
-          <!-- Overview -->
-          <div class="bg-surface-card/50 p-4 rounded-lg shadow-md">
-            <h2 class="text-xl font-light mb-2 text-primary">
-              {{ mediaType === "person" ? "Biography" : "Overview" }}
-            </h2>
-            <p class="text-gray-200 leading-relaxed font-display">
-              {{ displayOverview }}
-            </p>
-          </div>
-
-          <!-- Movie Info -->
-          <div
-            class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-surface-dark/50 p-4 rounded-lg shadow-md"
-          >
-            <!-- Movie or TV -->
-            <template v-if="mediaType !== 'person'">
-              <div>
-                <p class="text-gray-400 text-sm">
-                  {{
-                    mediaType === "movie" ? "Release Date" : "First Air Date"
-                  }}
-                </p>
-                <p class="font-light font-display">
-                  {{ movieDetail?.release_date || tvDetail?.first_air_date }}
-                </p>
-              </div>
-              <div v-if="mediaType === 'movie'">
-                <p class="text-gray-400 text-sm">Runtime</p>
-                <p class="font-light font-display">
-                  {{ movieDetail?.runtime }} min
-                </p>
-              </div>
-              <div v-if="mediaType === 'tv'">
-                <p class="text-gray-400 text-sm">Seasons</p>
-                <p class="font-light font-display">
-                  {{ tvDetail?.number_of_seasons }}
-                </p>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm">Rating</p>
-                <p class="font-light font-display">
-                  {{ displayVoteAverage }}/10 ⭐
-                </p>
-              </div>
-            </template>
-            <!-- Person Info -->
-            <template v-else>
-              <div>
-                <p class="text-gray-400 text-sm">Known For</p>
-                <p class="font-light font-display">
-                  {{ personDetail?.known_for_department }}
-                </p>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm">Birthday</p>
-                <p class="font-light font-display">
-                  {{ personDetail?.birthday || "N/A" }}
-                </p>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm">Place of Birth</p>
-                <p class="font-light font-display">
-                  {{ personDetail?.place_of_birth || "N/A" }}
-                </p>
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
-
+      <BaseMediaDetail
+        :media-detail="mediaDetail"
+        :media-type="mediaType"
+        :id="mediaDetail.id"
+      ></BaseMediaDetail>
       <!-- Trailer -->
       <div v-if="mediaType === 'movie' || mediaType === 'tv'">
-        <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
         <BaseTrailerCard
           v-if="officialTrailerKey"
           class="shrink-0 mx-2"
@@ -153,12 +48,12 @@
 </template>
 
 <script setup lang="ts">
-import { useUserData } from "~/store/user";
 import { useRoute } from "vue-router";
 import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
-import BaseHeartButton from "~/components/base/BaseHeartButton.vue";
+
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
+import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
 import type {
   MovieDetail,
   TvDetail,
@@ -168,65 +63,72 @@ import type {
 } from "~/types/types";
 
 const route = useRoute();
-const userData = useUserData();
-const mediaType = route.params.mediaType as "movie" | "tv" | "person";
+const mediaType = ref<"movie" | "tv" | "person" | null>(null);
 const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
 
-const isLoadingWishList = ref(false);
-const isInWishList = ref(false);
 const officialTrailerKey = ref();
 const officialTrailerName = ref("");
 const movieTrailerUrl = "https://www.youtube.com/embed/";
 
-// const movieDetail = ref<MovieDetail | null>(null);
+function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
+  const mediaType = data.media_type;
+  if (mediaType === "movie") {
+    const movie: MovieDetail = {
+      id: data.id,
+      title: data.title,
+      genre_ids: data.genre_ids || [],
+      vote_average: data.vote_average,
+      poster_path: data.poster_path,
+      backdrop_path: data.backdrop_path,
+      release_date: data.release_date,
+      popularity: data.popularity,
+      runtime: data.runtime,
+      overview: data.overview,
+      genres: data.genres || [],
+      tagline: data.tagline,
+    };
+    return movie;
+  }
 
-const movieDetail = computed(() =>
-  mediaType.value === "movie" ? (mediaDetail.value as MovieDetail) : null
-);
+  if (mediaType === "tv") {
+    const tv: TvDetail = {
+      id: data.id,
+      name: data.name,
+      genre_ids: data.genre_ids || [],
+      vote_average: data.vote_average,
+      poster_path: data.poster_path,
+      backdrop_path: data.backdrop_path,
+      first_air_date: data.first_air_date,
+      popularity: data.popularity,
+      overview: data.overview,
+      number_of_seasons: data.number_of_seasons,
+      genres: data.genres || [],
+      tagline: data.tagline,
+    };
+    return tv;
+  }
 
-const tvDetail = computed(() =>
-  mediaType.value === "tv" ? (mediaDetail.value as TvDetail) : null
-);
-
-const personDetail = computed(() =>
-  mediaType.value === "person" ? (mediaDetail.value as PersonDetail) : null
-);
-
-const displayTitle = computed(() => {
-  return (
-    (mediaDetail.value as MovieDetail)?.title ||
-    (mediaDetail.value as TvDetail)?.name ||
-    (mediaDetail.value as PersonDetail)?.name ||
-    "Unknown Title"
-  );
-});
-
-const displayOverview = computed(() => {
-  return mediaType.value === "person"
-    ? (mediaDetail.value as PersonDetail)?.biography
-    : (mediaDetail.value as MovieDetail | TvDetail)?.overview;
-});
-const displayVoteAverage = computed(() => {
-  return mediaType.value !== "person"
-    ? (mediaDetail.value as MovieDetail | TvDetail)?.vote_average
-    : null;
-});
-const mediaGenres = computed(() => {
-  return mediaType.value !== "person"
-    ? (mediaDetail.value as MovieDetail | TvDetail)?.genres
-    : null;
-});
-
-const displayTagline = computed(() => {
-  return (mediaDetail.value as MovieDetail | TvDetail)?.tagline;
-});
+  const person: PersonDetail = {
+    id: data.id,
+    name: data.name,
+    profile_path: data.profile_path,
+    biography: data.biography,
+    birthday: data.birthday,
+    place_of_birth: data.place_of_birth,
+    popularity: data.popularity,
+    known_for_department: data.known_for_department,
+  };
+  return person;
+}
 
 async function fetchMediaDetail() {
   try {
     const id = route.params.movieId;
-    console.log(id);
-    const rawData = await $fetch<MediaDetailUnion>(`/api/MediaDetail?id=${id}`);
-    console.log(rawData);
+    mediaType.value = route.query.mediaType as "movie" | "tv" | "person" | null;
+
+    const rawData = await $fetch<MediaDetailUnion>(
+      `/api/MediaDetail?id=${id}&media_type=${mediaType.value}`
+    );
     mediaType.value = rawData.media_type;
     mediaDetail.value = parseMediaDetail(rawData);
   } catch (error) {
@@ -235,26 +137,14 @@ async function fetchMediaDetail() {
   }
 }
 
-async function toggleMovieWishList() {
-  try {
-    const id = Number(route.params.id);
-    isLoadingWishList.value = true;
-    await userData.toggleMovieWishList({ movieId: id });
-    isLoadingWishList.value = false;
-    isInWishList.value = !isInWishList.value;
-  } catch (error) {
-    console.error("Failed to toggle movie wish list:", error);
-  }
-}
-
 onMounted(async () => {
+  if (!route.query.mediaType || !route.params.movieId) {
+    console.error("Missing media type or ID");
+    return;
+  }
   await fetchMediaDetail();
 
-  if (mediaType !== "person") {
-    if (userData.userWishList?.includes(Number(route.params.id))) {
-      isInWishList.value = true;
-    }
-
+  if (mediaType.value !== "person") {
     const data = await $fetch<trailer>(
       `/api/MovieTrailer?movieId=${Number(route.params.id)}`
     );
@@ -267,24 +157,6 @@ onMounted(async () => {
       officialTrailerName.value = data.name;
     }
   }
-});
-
-const posterUrl = computed(() => {
-  if (!mediaDetail.value) return "/placeholder.jpg";
-
-  if ("poster_path" in mediaDetail.value) {
-    return mediaDetail.value.poster_path
-      ? `https://image.tmdb.org/t/p/w500${mediaDetail.value.poster_path}`
-      : "/placeholder.jpg";
-  }
-
-  if ("profile_path" in mediaDetail.value) {
-    return mediaDetail.value.profile_path
-      ? `https://image.tmdb.org/t/p/w500${mediaDetail.value.profile_path}`
-      : "/placeholder.jpg";
-  }
-
-  return "/placeholder.jpg";
 });
 
 const backdropUrl = computed(() => {

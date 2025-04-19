@@ -20,6 +20,12 @@
           "{{ displayTagline }}"
         </p>
 
+        <BaseHeartButton
+          v-if="mediaType !== 'person'"
+          class="md:absolute md:right-0 md:top-5"
+          :isInWishList="isInWishList"
+          @toggleMovieWishList="toggleMovieWishList()"
+        ></BaseHeartButton>
       </div>
 
       <!-- Genre Badges -->
@@ -103,6 +109,8 @@
 </template>
 <script setup lang="ts">
 import type { Genre, MovieDetail, TvDetail, PersonDetail } from "~/types/types";
+import { useUserData } from "~/store/user";
+import BaseHeartButton from "./BaseHeartButton.vue";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;
@@ -110,6 +118,9 @@ const props = defineProps<{
   id: number;
 }>();
 
+const userData = useUserData();
+const isLoadingWishList = ref(false);
+const isInWishList = ref(false);
 
 const movieDetail = computed(() =>
   props.mediaType === "movie" ? (props.mediaDetail as MovieDetail) : null
@@ -169,5 +180,23 @@ const posterUrl = computed(() => {
   return "/placeholder.jpg";
 });
 
+async function toggleMovieWishList() {
+  try {
+    const id = Number(props.id);
+    isLoadingWishList.value = true;
+    await userData.toggleMovieWishList({ movieId: id });
+    isLoadingWishList.value = false;
+    isInWishList.value = !isInWishList.value;
+  } catch (error) {
+    console.error("Failed to toggle movie wish list:", error);
+  }
+}
+
+onMounted(() => {
+  if (props.mediaType !== "person") {
+    if (userData.userWishList?.includes(Number(props.id))) {
+      isInWishList.value = true;
+    }
+  }
 });
 </script>

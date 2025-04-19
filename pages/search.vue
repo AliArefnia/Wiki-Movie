@@ -36,7 +36,7 @@
       <template v-for="item in searchMovie" :key="item.id">
         <NuxtLink
           v-if="item.media_type === 'movie' || item.media_type === 'tv'"
-          :to="`/${item.id}?from=search`"
+          :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
         >
           <BaseMovieCardSmall
             class="shrink-0 mx-2"
@@ -49,7 +49,7 @@
 
         <NuxtLink
           v-else-if="item.media_type === 'person'"
-          :to="`/${item.id}?from=search`"
+          :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
         >
           <BasePersonCard
             :personName="item.name"

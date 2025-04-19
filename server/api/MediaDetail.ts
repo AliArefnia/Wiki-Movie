@@ -2,11 +2,12 @@ import type { MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import type { H3Event } from "h3";
 
 export default defineEventHandler(async (event: H3Event) => {
-  const { id } = getQuery(event);
+  const { id, media_type } = getQuery(event);
+
   const config = useRuntimeConfig();
 
-  if (!id) {
-    return { error: "Missing ID" };
+  if (!id || !media_type) {
+    return { error: "Missing ID or media type" };
   }
 
   const headers = {
@@ -14,32 +15,16 @@ export default defineEventHandler(async (event: H3Event) => {
     Authorization: `Bearer ${config.public.TMDB_API_KEY}`,
   };
 
-  const mediaTypes: {
-    type: "movie" | "tv" | "person";
-    url: string;
-  }[] = [
-    {
-      type: "movie",
-      url: `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-    },
-    {
-      type: "tv",
-      url: `https://api.themoviedb.org/3/tv/${id}?language=en-US`,
-    },
-    {
-      type: "person",
-      url: `https://api.themoviedb.org/3/person/${id}?language=en-US`,
-    },
-  ];
+  const url = `https://api.themoviedb.org/3/${media_type}/${id}?language=en-US`;
 
-  for (const { type, url } of mediaTypes) {
-    try {
-      const res = await $fetch<MovieDetail | TvDetail | PersonDetail>(url, {
-        headers,
-      });
+  try {
+    const res = await $fetch<MovieDetail | TvDetail | PersonDetail>(url, {
+      headers,
+    });
 
-      if (res && res.id) {
-        if (type === "movie") {
+    if (res && res.id) {
+      switch (media_type) {
+        case "movie":
           const movie = res as MovieDetail;
           return {
             ...movie,
@@ -48,9 +33,8 @@ export default defineEventHandler(async (event: H3Event) => {
             popularity: Number(movie.popularity?.toFixed(2) || 0),
             release_date: movie.release_date?.slice(0, 4) || "N/A",
           };
-        }
 
-        if (type === "tv") {
+        case "tv":
           const tv = res as TvDetail;
           return {
             ...tv,
@@ -59,20 +43,18 @@ export default defineEventHandler(async (event: H3Event) => {
             popularity: Number(tv.popularity?.toFixed(2) || 0),
             release_date: tv.first_air_date?.slice(0, 4) || "N/A",
           };
-        }
 
-        if (type === "person") {
+        case "person":
           const person = res as PersonDetail;
           return {
             ...person,
             media_type: "person",
           };
-        }
       }
-    } catch {
-      // keep looping to next type
     }
+  } catch (e) {
+    return { error: `Failed to fetch ${media_type} with ID ${id}` };
   }
 
-  return { error: `No media detail found for ID: ${id}` };
+  return { error: `No detail found for ${media_type} with ID: ${id}` };
 });

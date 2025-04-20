@@ -51,7 +51,7 @@ export interface MovieDetail {
 export interface TvDetail {
   id: number;
   name: string;
-  genre_ids?: number[];
+  genre_ids: number[];
   vote_average: number;
   poster_path: string;
   backdrop_path: string;
@@ -84,13 +84,11 @@ type ExtendedPerson = PersonDetail & { media_type: "person" };
 
 export type MediaDetailUnion = ExtendedMovie | ExtendedTv | ExtendedPerson;
 
+export type HotMedia = Movie | TvShow;
 export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
 }
 
-export interface TrendingMoviesResponse {
-  results: Movie[];
-}
 
 export interface MoviesByGenre {
   results: Movie[];
@@ -152,15 +150,3 @@ export interface CrewMember {
   profile_path: string | null;
 }
 
-export interface MultiSearchResult {
-  id: number;
-  media_type: "movie" | "tv" | "person";
-  title?: string;
-  name?: string;
-  vote_average?: number;
-  poster_path?: string;
-  profile_path?: string;
-  release_date?: string;
-  genre_ids?: number[];
-  known_for?: Movie[];
-}

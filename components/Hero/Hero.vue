@@ -11,7 +11,7 @@
       @click="scrollLeft"
       class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
     >
-      <CircleChevronLeft :size="48" />
+      <CircleChevronLeft :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
 
     <!-- Right Btn  -->
@@ -19,7 +19,7 @@
       @click="scrollRight"
       class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
     >
-      <CircleChevronRight :size="48" />
+      <CircleChevronRight :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
 
     <!-- Carousel -->
@@ -51,8 +51,9 @@ import { CircleChevronLeft, CircleChevronRight } from "lucide-vue-next";
 
 const HotMedia = ref<HotMedia[]>([]);
 const carousel = ref<HTMLElement | null>(null);
-const scrollAmount = 300;
-const scrollInterval = 3000; // Auto-scroll every 3 seconds
+const SCROLL_AMOUNT = 300;
+const SCROLL_INTERVAL = 3000;
+const CAROUSEL_BUTTON_WIDTH = 48;
 let autoScrollTimer: NodeJS.Timeout;
 
 const imageWidth = ref(0);
@@ -65,7 +66,7 @@ function getCardWidth() {
 
 const scrollLeft = () => {
   if (carousel.value) {
-    carousel.value.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    carousel.value.scrollBy({ left: -SCROLL_AMOUNT, behavior: "smooth" });
   }
 };
 
@@ -74,14 +75,14 @@ const scrollRight = () => {
   if (isAtEnd.value) {
     carousel.value.scrollTo({ left: 0, behavior: "smooth" });
   } else {
-    carousel.value.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    carousel.value.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
   }
 };
 
 const startAutoScroll = () => {
   autoScrollTimer = setInterval(() => {
     scrollRight();
-  }, scrollInterval);
+  }, SCROLL_INTERVAL);
 };
 
 const stopAutoScroll = () => {

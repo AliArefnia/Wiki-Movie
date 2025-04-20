@@ -10,7 +10,7 @@
         <span class="mr-2 font-special text-sm">more</span>
         <span
           ><ArrowRight
-            class="w-5 mr-2 group-hover:mr-0 group-hover:ml-2 transition-all"
+            class="w-5 mr-2 -mt-0.5 group-hover:mr-0 group-hover:ml-2 transition-all"
         /></span>
       </div>
     </NuxtLink>
@@ -28,7 +28,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseMovieCardSmall from "@/components/base/BaseMovieCardSmall.vue";
+import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import { useFormatNumber } from "~/composables/useFormatRatingNumber";
 import type { Movie } from "@/types/types";
 import { ArrowRight } from "lucide-vue-next";

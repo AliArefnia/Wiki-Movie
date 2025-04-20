@@ -4,11 +4,10 @@
     class="relative rounded-t-2xl overflow-hidden font-sans h-fit hover:scale-110 transition-transform"
     :style="{ width: imageWidth + 'px' }"
   >
-    <!-- :class="`w-[100px]`" -->
     <div>
       <NuxtImg
         class="w-full h-auto object-cover"
-        :src="posterUrl"
+        :src="posterUrl ? posterUrl : '/images/movie-placeholder.jpg'"
         :alt="movieTitle"
       />
     </div>
@@ -34,7 +33,7 @@ const props = defineProps<{
   movieTitle: string;
   releaseDate: string;
   rating: number;
-  posterUrl: string;
+  posterUrl: string | null;
 }>();
 
 const imageWidth = ref(getCardWidth());

@@ -3,7 +3,6 @@
     class="relative rounded-2xl overflow-hidden font-sans transition-transform"
     :style="{ width: imageWidth + 'px' }"
   >
-    <!-- :class="`w-[${imageWidth}] , hover:scale-${hoverScale}`" -->
     <div class="absolute left-4 top-4">...</div>
     <NuxtImg
       :src="posterUrl"

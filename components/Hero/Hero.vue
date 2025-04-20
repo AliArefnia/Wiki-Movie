@@ -29,15 +29,15 @@
       @scroll="updateScrollState"
     >
       <NuxtLink
-        v-for="movie in HotMovies"
-        :key="movie.id"
-        :to="`/${movie.id}`"
+        v-for="media in HotMedia"
+        :key="media.id"
+        :to="`/${media.id}?mediaType=${media.media_type}`"
         class="shrink-0 mx-2"
       >
         <BaseHeroCard
-          :movieTitle="movie.title"
-          :rating="movie.vote_average"
-          :posterUrl="movie.poster_path"
+          :movieTitle="getTitle(media)"
+          :rating="media.vote_average"
+          :posterUrl="media.poster_path || '/images/placeholder.png'"
         />
       </NuxtLink>
     </div>
@@ -45,10 +45,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Movie } from "@/types/types";
+import BaseHeroCard from "./BaseHeroCard.vue";
+import type { HotMedia } from "@/types/types";
 import { CircleChevronLeft, CircleChevronRight } from "lucide-vue-next";
 
-const HotMovies = ref<Movie[]>([]);
+const HotMedia = ref<HotMedia[]>([]);
 const carousel = ref<HTMLElement | null>(null);
 const scrollAmount = 300;
 const scrollInterval = 3000; // Auto-scroll every 3 seconds
@@ -96,6 +97,9 @@ const updateScrollState = () => {
     carousel.value.scrollWidth - 10;
 };
 
+const getTitle = (item: HotMedia) =>
+  item.media_type === "movie" ? item.title : item.name;
+
 onMounted(async () => {
   imageWidth.value = getCardWidth();
   startAutoScroll();
@@ -104,17 +108,17 @@ onMounted(async () => {
   }
 
   try {
-    if (sessionStorage.getItem("hotMovies")) {
-      HotMovies.value = JSON.parse(sessionStorage.getItem("hotMovies")!);
+    if (sessionStorage.getItem("HotMedia")) {
+      HotMedia.value = JSON.parse(sessionStorage.getItem("HotMedia")!);
       return;
     }
 
-    const data = await $fetch<Movie[]>(
-      `/api/MoviesHotData?width=${imageWidth.value}`
+    const data = await $fetch<HotMedia[]>(
+      `/api/HotMediaData?type=all&width=${imageWidth.value}`
     );
 
-    HotMovies.value = data;
-    sessionStorage.setItem("hotMovies", JSON.stringify(data));
+    HotMedia.value = data;
+    sessionStorage.setItem("HotMedia", JSON.stringify(data));
   } catch (error: unknown) {
     console.error("Error fetching data:", error);
   }

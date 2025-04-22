@@ -14,16 +14,18 @@
     <div v-if="error" class="text-gray-400 text-center font-display mt-6">
       {{ error }}
     </div>
-    <div v-if="!isUserLoggedIn" class="flex justify-center">
-      <button
-        @click="
-          () => router.push(`/login?from=${router.currentRoute.value.path}`)
-        "
-        class="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
-      >
-        Log In
-      </button>
-    </div>
+    <ClientOnly>
+      <div v-if="!isUserLoggedIn" class="flex justify-center">
+        <button
+          @click="
+            () => router.push(`/login?from=${router.currentRoute.value.path}`)
+          "
+          class="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+        >
+          Log In
+        </button>
+      </div>
+    </ClientOnly>
     <div v-if="isLoading" class="text-gray-400 text-center font-display mt-6">
       Loading...
     </div>
@@ -50,6 +52,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  ssr: false,
+});
 // import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
 import type { Movie } from "~/types/types";
 import { useUserData } from "~/store/user";
@@ -70,7 +75,6 @@ async function getWishListMovies(movieId: Number) {
     wishListMovies.value?.push(data);
   } catch (err) {
     error.value = "Couldn't fetch wish list movies";
-    console.log("error fetching searched movie");
   } finally {
     isInitialLoadDone.value = true;
   }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
     <p
       class="bg-black/50 text-white px-2 mx-4 py-1 rounded text-xs inline-block"
     >

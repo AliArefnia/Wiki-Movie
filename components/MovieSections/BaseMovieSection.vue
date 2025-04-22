@@ -16,61 +16,59 @@
     </NuxtLink>
   </div>
   <div class="flex overflow-auto py-4">
-    <NuxtLink v-for="movie in genreMovie" :key="movie.id" :to="`/${movie.id}`">
+    <NuxtLink v-for="media in genreMedia" :key="media.id" :to="`/${media.id}`">
       <BaseMovieCardSmall
         class="shrink-0 mx-2"
-        :movieTitle="movie.title"
-        :rating="movie.vote_average"
-        :releaseDate="movie.release_date"
-        :posterUrl="movie.poster_path"
+        :movieTitle="getTitle(media)"
+        :rating="media.vote_average"
+        :releaseDate="getReleaseDate(media)"
+        :posterUrl="media.poster_path"
       />
     </NuxtLink>
   </div>
 </template>
 <script setup lang="ts">
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
-import { useFormatNumber } from "~/composables/useFormatRatingNumber";
-import type { Movie } from "@/types/types";
+
+import type { MediaItem } from "@/types/types";
 import { ArrowRight } from "lucide-vue-next";
 
-const { formatNumber } = useFormatNumber();
-const genreMovie = ref<Movie[]>([]);
+const genreMedia = ref<MediaItem[]>([]);
 const props = defineProps<{
   genreId: number;
   genreName: String;
+  mediaType: "movie" | "tv" | "all";
 }>();
 
-async function fetchMoviesByGenre(genreId: number) {
-  if (sessionStorage.getItem(`Genre-${props.genreName}-movies`)) {
-    genreMovie.value = JSON.parse(
-      sessionStorage.getItem(`Genre-${props.genreName}-movies`)!
+async function fetchMediaByGenre(genreId: number, mediaType: string) {
+  const sessionGenreMediaKey = `Genre-${props.genreName}-${mediaType}`;
+  if (sessionStorage.getItem(sessionGenreMediaKey)) {
+    genreMedia.value = JSON.parse(
+      sessionStorage.getItem(sessionGenreMediaKey)!
     );
     return;
   }
 
-  let data = await $fetch<Movie[]>(
-    `/api/MoviesByGenre?genreId=${genreId}&page=1`
+  let data = await $fetch<MediaItem[]>(
+    `/api/MediaByGenre?genreId=${genreId}&mediaType=${
+      props.mediaType || "all"
+    }&page=1`
   );
 
-  const clearedMovie = data.map((movie) => ({
-    id: movie.id,
-    title: movie.title,
-    genre_ids: movie.genre_ids,
-    vote_average: formatNumber(movie.vote_average),
-    poster_path: movie.poster_path,
-    release_date: movie.release_date.split("-")[0],
-  }));
-  genreMovie.value = clearedMovie;
+  genreMedia.value = data;
 
-  sessionStorage.setItem(
-    `Genre-${props.genreName}-movies`,
-    JSON.stringify(clearedMovie)
-  );
+  sessionStorage.setItem(sessionGenreMediaKey, JSON.stringify(data));
 }
+
+const getTitle = (item: MediaItem) =>
+  item.media_type === "movie" ? item.title : item.name;
+
+const getReleaseDate = (item: MediaItem) =>
+  item.media_type === "movie" ? item.release_date : item.first_air_date;
 
 onMounted(async () => {
   try {
-    await fetchMoviesByGenre(props.genreId);
+    await fetchMediaByGenre(props.genreId, props.mediaType);
   } catch (error) {
     console.error("Failed to fetch movies:", error);
   }

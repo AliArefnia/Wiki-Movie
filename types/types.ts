@@ -85,6 +85,7 @@ type ExtendedPerson = PersonDetail & { media_type: "person" };
 export type MediaDetailUnion = ExtendedMovie | ExtendedTv | ExtendedPerson;
 
 export type HotMedia = Movie | TvShow;
+export type MediaItem = Movie | TvShow;
 export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
 }

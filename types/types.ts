@@ -14,8 +14,8 @@ export type TvShow = {
   name: string;
   vote_average: number;
   poster_path: string | null;
-  release_date: string;
   genre_ids: number[];
+  first_air_date: string;
 };
 
 export type Person = {

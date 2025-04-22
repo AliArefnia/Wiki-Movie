@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
         name: tv.name ?? "Untitled",
         vote_average: Number(tv.vote_average.toFixed(1) || 0),
         poster_path: `${IMAGE_URL}${tv.poster_path}`,
-        release_date: tv.release_date?.slice(0, 4) ?? "N/A",
+        first_air_date: tv.first_air_date?.slice(0, 4) ?? "N/A",
         genre_ids: tv.genre_ids ?? [],
       }));
     };

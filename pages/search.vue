@@ -42,7 +42,7 @@
             class="shrink-0 mx-2"
             :movieTitle="item.media_type === 'movie' ? item.title : item.name"
             :rating="item.vote_average"
-            :releaseDate="item.release_date"
+            :releaseDate="getReleaseDate(item)"
             :posterUrl="item.poster_path"
           />
         </NuxtLink>
@@ -63,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import type { SearchResult } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
 
@@ -118,6 +119,12 @@ async function getMovieBySearch() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function getReleaseDate(item: SearchResult) {
+  if (item.media_type === "movie") return item.release_date;
+  if (item.media_type === "tv") return item.first_air_date;
+  else return undefined;
 }
 
 useInfiniteScroll(

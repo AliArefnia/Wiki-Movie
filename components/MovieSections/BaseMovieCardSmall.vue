@@ -21,7 +21,7 @@
       </div>
 
       <div class="text-[10px] font-mono w-fit">
-        <span></span> <span>{{ releaseDate }}</span
+        <span v-if="releaseDate">{{ releaseDate }}</span
         >-<span>{{ rating }}/10 </span><span class="text-yellow-500">★</span>
       </div>
     </div>
@@ -31,7 +31,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   movieTitle: string;
-  releaseDate: string;
+  releaseDate?: string;
   rating: number;
   posterUrl: string | null;
 }>();

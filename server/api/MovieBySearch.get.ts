@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
             poster_path: item.poster_path
               ? `${IMAGE_URL}${item.poster_path}`
               : null,
-            release_date: (item.first_air_date || "N/A").slice(0, 4),
+            first_air_date: (item.first_air_date || "N/A").slice(0, 4),
             genre_ids: item.genre_ids || [],
           };
         } else if (item.media_type === "person") {

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { Heart } from "lucide-vue-next";
-import BaseAlertModule from "./BaseAlertModule.vue";
+
 const props = defineProps<{
   isInWishList: boolean;
 }>();

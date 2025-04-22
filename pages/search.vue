@@ -139,6 +139,6 @@ useInfiniteScroll(
 
 onMounted(async () => {
   imageWidth.value = getCardWidth();
-  await getHotNewMovies();
+  // await getHotNewMovies();
 });
 </script>

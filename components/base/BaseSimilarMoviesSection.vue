@@ -19,7 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
+import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import { useFormatNumber } from "~/composables/useFormatRatingNumber";
 import type { Movie } from "@/types/types";
 

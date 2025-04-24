@@ -3,16 +3,16 @@
     <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
     <div class="flex overflow-auto py-4">
       <NuxtLink
-        v-for="movie in similarMovies"
-        :key="movie.id"
-        :to="`/${movie.id}`"
+        v-for="media in similarMedia"
+        :key="media.id"
+        :to="`/${media.id}`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"
-          :movieTitle="movie.title"
-          :rating="movie.vote_average"
-          :releaseDate="movie.release_date"
-          :posterUrl="movie.poster_path"
+          :movieTitle="getTitle(media)"
+          :rating="media.vote_average"
+          :releaseDate="getReleaseDate(media)"
+          :posterUrl="media.poster_path"
         />
       </NuxtLink>
     </div>
@@ -20,13 +20,12 @@
 </template>
 <script setup lang="ts">
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
-import { useFormatNumber } from "~/composables/useFormatRatingNumber";
-import type { Movie } from "@/types/types";
+import type { MediaItem } from "@/types/types";
 
-const { formatNumber } = useFormatNumber();
-const similarMovies = ref<Movie[]>([]);
+const similarMedia = ref<MediaItem[]>([]);
 const props = defineProps<{
   movieId: number;
+  mediaType: "tv" | "movie";
 }>();
 const imageWidth = ref(getImageWidth());
 
@@ -38,25 +37,26 @@ function getImageWidth() {
   return 154;
 }
 
-async function fetchSimilarMovies(movieId: number, width: number) {
-  let data = await $fetch<Movie[]>(
-    `/api/MovieSimilarById?movieId=${movieId}&width=${imageWidth.value}`
+async function fetchSimilarMedia(
+  movieId: number,
+  width: number,
+  mediaType: "tv" | "movie"
+) {
+  let data = await $fetch<MediaItem[]>(
+    `/api/MediaSimilarById?movieId=${movieId}&mediaType=${mediaType}&width=${width}`
   );
-
-  const clearedMovie = data.map((movie) => ({
-    id: movie.id,
-    title: movie.title,
-    genre_ids: movie.genre_ids,
-    vote_average: formatNumber(movie.vote_average),
-    poster_path: movie.poster_path,
-    release_date: movie.release_date.split("-")[0],
-  }));
-  similarMovies.value = clearedMovie;
+  similarMedia.value = data;
 }
+
+const getTitle = (item: MediaItem) =>
+  item.media_type === "movie" ? item.title : item.name;
+
+const getReleaseDate = (item: MediaItem) =>
+  item.media_type === "movie" ? item.release_date : item.first_air_date;
 
 onMounted(async () => {
   try {
-    await fetchSimilarMovies(props.movieId, imageWidth.value);
+    await fetchSimilarMedia(props.movieId, imageWidth.value, props.mediaType);
   } catch (error) {
     console.error("Failed to fetch Similar movies:", error);
   }

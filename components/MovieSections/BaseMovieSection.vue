@@ -16,7 +16,11 @@
     </NuxtLink>
   </div>
   <div class="flex overflow-auto py-4">
-    <NuxtLink v-for="media in genreMedia" :key="media.id" :to="`/${media.id}`">
+    <NuxtLink
+      v-for="media in genreMedia"
+      :key="media.id"
+      :to="`/${media.id}?mediaType=${media.media_type}`"
+    >
       <BaseMovieCardSmall
         class="shrink-0 mx-2"
         :movieTitle="getTitle(media)"

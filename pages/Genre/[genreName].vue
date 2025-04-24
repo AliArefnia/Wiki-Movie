@@ -8,7 +8,7 @@
       <NuxtLink
         v-for="movie in genreMovie"
         :key="movie.id"
-        :to="`/${movie.id}?from=/genre/${route.params.genreName}`"
+        :to="`/${movie.id}?from=/genre/${route.params.genreName}&mediaType=${movie.media_type}`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"
@@ -32,6 +32,7 @@ import { useMovieStore } from "~/store/store";
 
 import type { Movie } from "@/types/types";
 
+import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 const movieStore = useMovieStore();
 const route = useRoute();
 
@@ -41,7 +42,7 @@ const genreMovie = ref<Movie[]>([]);
 const page = ref(1);
 const isLoading = ref(false);
 
-async function fetchMoviesByGenre() {
+async function fetchMediaByGenre() {
   if (isLoading.value || page.value > 500) return;
 
   isLoading.value = true;
@@ -56,7 +57,7 @@ async function fetchMoviesByGenre() {
   }
 
   let data = await $fetch<Movie[]>(
-    `/api/MoviesByGenre?genreId=${genre.id}&page=${page.value}`
+    `/api/MediaByGenre?genreId=${genre.id}&page=${page.value}`
   );
   genreMovie.value.push(...data);
   page.value++;
@@ -67,13 +68,13 @@ useInfiniteScroll(
   document,
   () => {
     if (!isLoading.value) {
-      fetchMoviesByGenre();
+      fetchMediaByGenre();
     }
   },
   { distance: 100 }
 );
 
 onMounted(async () => {
-  await fetchMoviesByGenre();
+  await fetchMediaByGenre();
 });
 </script>

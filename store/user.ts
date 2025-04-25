@@ -27,16 +27,27 @@ export const useUserData = defineStore("userData", {
       this.user = userData;
     },
 
-    async toggleMovieWishList({ movieId }: { movieId: number }) {
+    async toggleMovieWishList({
+      movieId,
+      mediaType,
+    }: {
+      movieId: number;
+      mediaType: "tv" | "movie";
+    }) {
       if (!this.user) return;
-      let alreadyIsInList;
+      let wishedMedia = { id: movieId, mediaType: mediaType };
       const originalList = [...this.user.wishList];
 
-      if (this.user?.wishList.includes(movieId)) {
-        this.user.wishList = this.user.wishList.filter((id) => id !== movieId);
-        alreadyIsInList = true;
+      const alreadyIsInList = this.user?.wishList.some(
+        (media) => media.id === movieId
+      );
+
+      if (alreadyIsInList) {
+        this.user.wishList = this.user.wishList.filter(
+          (media) => media.id !== movieId
+        );
       } else {
-        this.user?.wishList.push(movieId);
+        this.user?.wishList.push(wishedMedia);
       }
 
       try {
@@ -47,7 +58,7 @@ export const useUserData = defineStore("userData", {
           },
           body: JSON.stringify({
             userId: this.user.id,
-            movieId,
+            wishedMedia,
             action: alreadyIsInList ? "remove" : "add",
           }),
         });
@@ -94,7 +105,7 @@ export const useUserData = defineStore("userData", {
         if (error) {
           throw error;
         }
-        this.user?.wishList.push(...data.wish_list);
+        this.user?.wishList.push(...(data.wish_list ?? []));
       } catch (error: any) {
         console.error("Error fetching user wishList:", error.message);
         return null;

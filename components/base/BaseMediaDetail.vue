@@ -184,7 +184,10 @@ async function toggleMovieWishList() {
   try {
     const id = Number(props.id);
     isLoadingWishList.value = true;
-    await userData.toggleMovieWishList({ movieId: id });
+    await userData.toggleMovieWishList({
+      movieId: id,
+      mediaType: props.mediaType as "tv" | "movie",
+    });
     isLoadingWishList.value = false;
     isInWishList.value = !isInWishList.value;
   } catch (error) {
@@ -194,9 +197,8 @@ async function toggleMovieWishList() {
 
 onMounted(() => {
   if (props.mediaType !== "person") {
-    if (userData.userWishList?.includes(Number(props.id))) {
-      isInWishList.value = true;
-    }
+    isInWishList.value =
+      userData.userWishList?.some((media) => media.id === props.id) ?? false;
   }
 });
 </script>

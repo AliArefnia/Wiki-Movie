@@ -95,7 +95,7 @@ function getCardWidth() {
 
 async function getHotNewMovies() {
   let data = await $fetch<SearchResult[]>(
-    `/api/MoviesHotData?width=${imageWidth.value}`
+    `/api/HotMediaData?width=${imageWidth.value}`
   );
   searchMovie.value.push(...data);
 }
@@ -106,7 +106,7 @@ async function getMovieBySearch() {
     isLoading.value = true;
     const encodedTerm = encodeURIComponent(searchQuery.value);
     let data = await $fetch<SearchResult[]>(
-      `/api/MovieBySearch?searchTerm=${encodedTerm}&page=${page.value}&width=${imageWidth.value}`
+      `/api/MediaBySearch?searchTerm=${encodedTerm}&page=${page.value}&width=${imageWidth.value}`
     );
 
     const movieIds = new Set(searchMovie.value.map((m) => m.id));
@@ -139,6 +139,6 @@ useInfiniteScroll(
 
 onMounted(async () => {
   imageWidth.value = getCardWidth();
-  // await getHotNewMovies();
+  await getHotNewMovies();
 });
 </script>

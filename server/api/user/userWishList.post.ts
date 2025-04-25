@@ -9,8 +9,7 @@ const supabase = createClient(
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { userId, movieId, action } = body;
-
+  const { userId, wishedMedia, action } = body;
   const { data: user, error: getError } = await supabase
     .from("users")
     .select("wish_list")
@@ -22,8 +21,11 @@ export default defineEventHandler(async (event) => {
 
   const updatedList =
     action === "add"
-      ? [...user.wish_list, movieId]
-      : user.wish_list.filter((movId: number) => movId !== movieId);
+      ? [...user.wish_list, wishedMedia]
+      : user.wish_list.filter(
+          (media: { id: number; mediaType: "tv" | "movie" }) =>
+            media.id !== wishedMedia.id
+        );
 
   const { error } = await supabase
     .from("users")

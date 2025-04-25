@@ -5,7 +5,7 @@ Welcome to my project! This repository is public for **portfolio purposes only**
 
 ## 📜 License
 
-**Copyright (c) 2025 [Your Name]. All Rights Reserved.**
+**Copyright (c) 2025 Ali Arefnia. All Rights Reserved.**
 
 - This project is for **showcasing my work only**.
 - Unauthorized use of this code is strictly **prohibited**.

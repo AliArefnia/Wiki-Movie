@@ -90,7 +90,10 @@ export interface MovieWithTrailer extends Movie {
   officialTrailerKey: string | null;
 }
 
-
+export type WishListItem = {
+  id: number;
+  mediaType: "movie" | "tv";
+};
 export interface MoviesByGenre {
   results: Movie[];
 }
@@ -117,7 +120,7 @@ export interface MovieListWithTrailer {
 export interface userData {
   id: string;
   email: string;
-  wishList: number[];
+  wishList: WishListItem[];
 }
 
 export interface trailer {
@@ -150,4 +153,3 @@ export interface CrewMember {
   job: string;
   profile_path: string | null;
 }
-

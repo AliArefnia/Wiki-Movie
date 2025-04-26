@@ -31,7 +31,7 @@
       </div>
 
       <BaseSimilarMoviesSection
-        v-if="mediaType === 'movie'"
+        v-if="mediaType === 'movie' || mediaType === 'tv'"
         :movieId="Number(route.params.movieId)"
         :mediaType="mediaType"
       ></BaseSimilarMoviesSection>

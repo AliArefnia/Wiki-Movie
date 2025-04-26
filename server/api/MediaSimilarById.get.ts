@@ -3,16 +3,16 @@ import type { Movie, TvShow } from "~/types/types";
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig();
-    const { movieId, width, mediaType } = getQuery(event);
+    const { mediaId, width, mediaType } = getQuery(event);
 
-    if (!movieId || !mediaType) {
-      return { error: "Missing movieId or mediaType in query" };
+    if (!mediaId || !mediaType) {
+      return { error: "Missing mediaId or mediaType in query" };
     }
 
     const IMAGE_URL = `https://image.tmdb.org/t/p/w${width}`;
 
     const response = await $fetch<{ results: any[] }>(
-      `https://api.themoviedb.org/3/${mediaType}/${movieId}/similar?language=en-US&page=1`,
+      `https://api.themoviedb.org/3/${mediaType}/${mediaId}/similar?language=en-US&page=1`,
       {
         method: "GET",
         headers: {

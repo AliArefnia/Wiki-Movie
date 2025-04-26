@@ -43,7 +43,7 @@ async function fetchSimilarMedia(
   mediaType: "tv" | "movie"
 ) {
   let data = await $fetch<MediaItem[]>(
-    `/api/MediaSimilarById?movieId=${movieId}&mediaType=${mediaType}&width=${width}`
+    `/api/MediaSimilarById?mediaId=${movieId}&mediaType=${mediaType}&width=${width}`
   );
   similarMedia.value = data;
 }

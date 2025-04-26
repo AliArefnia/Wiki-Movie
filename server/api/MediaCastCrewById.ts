@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
   if (!mediaId || !mediaType) {
     return { error: "mediaId and mediaType are required" };
   }
-
   const response = await $fetch<MovieCastCrew>(
     `https://api.themoviedb.org/3/${mediaType}/${mediaId}/credits?language=en-US`,
     {

@@ -36,8 +36,9 @@
         :mediaType="mediaType"
       ></BaseSimilarMoviesSection>
       <BaseCastCrewSection
-        v-if="mediaType === 'movie'"
-        :movieId="Number(route.params.movieId)"
+        v-if="mediaType === 'movie' || mediaType === 'tv'"
+        :mediaId="Number(route.params.movieId)"
+        :mediaType="mediaType"
       ></BaseCastCrewSection>
     </div>
 

@@ -3,10 +3,14 @@ import type { trailerOfMovie } from "@/types/types";
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig();
-    const { movieId } = getQuery(event);
+    const { mediaId, mediaType } = getQuery(event);
+
+    if (!mediaId || !mediaType) {
+      throw new Error("Missing mediaId or mediaType");
+    }
 
     const moviesResponse = await $fetch<trailerOfMovie>(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+      `https://api.themoviedb.org/3/${mediaType}/${mediaId}/videos`,
       {
         method: "GET",
         headers: {

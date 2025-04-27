@@ -1,12 +1,20 @@
 <template>
   <div>
-    <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
     <p
       class="bg-black/50 text-white px-2 mx-4 py-1 rounded text-xs inline-block"
     >
       {{ props.trailerName }}
     </p>
-
+    <div class="flex justify-center my-2">
+      <a
+        :href="`https://www.youtube.com/watch?v=${officialTrailerKey}`"
+        class="w-fit bg-surface-hover p-3 rounded-2xl ring-1 hover:bg-gray-800 transition-all"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Watch Trailer in youtube
+      </a>
+    </div>
     <div
       class="relative rounded-2xl overflow-hidden font-sans cursor-pointer flex justify-center"
       :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
@@ -38,11 +46,14 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  trailerUrl: string;
+  officialTrailerKey: string;
   soloMovie?: boolean;
   fallBackThumbnail?: string;
   trailerName?: string;
 }>();
+
+const movieTrailerUrl =
+  "https://www.youtube.com/embed/" + `${props.officialTrailerKey}`;
 
 const showIframe = ref(false);
 const trailerWidth = ref(200);
@@ -56,7 +67,7 @@ onMounted(() => {
 });
 
 const videoId = computed(() => {
-  const match = props.trailerUrl.match(
+  const match = movieTrailerUrl.match(
     /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
   );
   return match ? match[1] : "";

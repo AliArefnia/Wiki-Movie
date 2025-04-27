@@ -17,11 +17,12 @@
       ></BaseMediaDetail>
       <!-- Trailer -->
       <div v-if="mediaType === 'movie' || mediaType === 'tv'">
+        <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
         <BaseTrailerCard
           v-if="officialTrailerKey"
           class="shrink-0 mx-2"
           :soloMovie="true"
-          :trailerUrl="`${movieTrailerUrl}${officialTrailerKey.value}/videos`"
+          :officialTrailerKey="officialTrailerKey"
           :fallBackThumbnail="backdropUrl"
           :trailerName="officialTrailerName"
         />
@@ -70,7 +71,6 @@ const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
 
 const officialTrailerKey = ref();
 const officialTrailerName = ref("");
-const movieTrailerUrl = "https://www.youtube.com/embed/";
 
 function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
   const mediaType = data.media_type;
@@ -148,8 +148,9 @@ onMounted(async () => {
 
   if (mediaType.value !== "person") {
     const data = await $fetch<trailer>(
-      `/api/MovieTrailer?movieId=${Number(route.params.id)}`
+      `/api/MediaTrailer?mediaId=${mediaDetail.value?.id}&mediaType=${mediaType.value} `
     );
+    console.log(data);
 
     if (!data) {
       officialTrailerKey.value = null;

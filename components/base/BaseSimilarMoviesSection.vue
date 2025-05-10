@@ -5,7 +5,7 @@
       <NuxtLink
         v-for="media in similarMedia"
         :key="media.id"
-        :to="`/${media.id}`"
+        :to="`/${media.id}?mediaType=${media.media_type}`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"

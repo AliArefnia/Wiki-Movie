@@ -7,7 +7,7 @@
         <BasePersonCard
           :personName="person.name"
           :role="person.character"
-          :profileUrl="`https://image.tmdb.org/t/p/w185${person.profile_path}`"
+          :profileUrl="person.profile_path"
         />
       </div>
     </div>
@@ -18,7 +18,7 @@
         <BasePersonCard
           :personName="person.name"
           :role="person.job"
-          :profileUrl="`https://image.tmdb.org/t/p/w185${person.profile_path}`"
+          :profileUrl="person.profile_path"
         />
       </div>
     </div>
@@ -42,7 +42,6 @@ onMounted(async () => {
     const data = await $fetch<MovieCastCrew>(
       `/api/MediaCastCrewById?mediaId=${props.mediaId}&mediaType=${props.mediaType}`
     );
-    console.log(props.mediaId, props.mediaType);
     cast.value = data.cast;
     crew.value = data.crew;
   } catch (error) {

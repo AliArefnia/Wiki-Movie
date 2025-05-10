@@ -24,12 +24,15 @@ const props = defineProps<{
   profileUrl: string | null;
 }>();
 
+console.log(props.profileUrl);
 const imageWidth = ref(getCardWidth());
 
 const computedProfileUrl = computed(() => {
-  return props.profileUrl && props.profileUrl !== "null"
-    ? props.profileUrl
-    : "/images/person-placeholder.jpg";
+  return props.profileUrl &&
+    props.profileUrl !== "null" &&
+    !!props.profileUrl !== false
+    ? `https://image.tmdb.org/t/p/w185${props.profileUrl}`
+    : "images/personPlaceholder.png";
 });
 
 function getCardWidth() {

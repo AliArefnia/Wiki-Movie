@@ -18,13 +18,28 @@ export default defineEventHandler(async (event) => {
     }
   );
 
-  const topCast =
-    response.cast.slice(0, 5).map((actor: any) => ({
-      id: actor.id,
-      name: actor.name,
-      character: actor.character,
-      profile_path: actor.profile_path,
-    })) ?? [];
+  const castObj: {
+    [key: number]: {
+      id: number;
+      name: string;
+      character: string;
+      profile_path: string;
+    };
+  } = {};
+
+  for (const actor of response.cast.slice(0, 10)) {
+    if (castObj[actor.id]) {
+      castObj[actor.id].character += `, ${actor.character}`;
+    } else {
+      castObj[actor.id] = {
+        id: actor.id,
+        name: actor.name,
+        character: actor.character,
+        profile_path: actor.profile_path || "",
+      };
+    }
+  }
+  const topCast = Object.values(castObj);
 
   const importantJobs = [
     "Director",
@@ -33,14 +48,31 @@ export default defineEventHandler(async (event) => {
     "Executive Producer",
     "Producer",
   ];
-  const filteredCrew =
-    response.crew.filter((crew: any) => importantJobs.includes(crew.job)) ?? [];
-  const topCrew = filteredCrew.map((crew: any) => ({
-    id: crew.id,
-    name: crew.name,
-    job: crew.job,
-    profile_path: crew.profile_path,
-  }));
+  const crewObj: {
+    [key: number]: {
+      id: number;
+      name: string;
+      job: string;
+      profile_path: string;
+    };
+  } = {};
+
+  for (const crewMember of response.crew.slice(0, 10)) {
+    if (importantJobs.includes(crewMember.job)) {
+      if (crewObj[crewMember.id]) {
+        crewObj[crewMember.id].job += `, ${crewMember.job}`;
+      } else {
+        crewObj[crewMember.id] = {
+          id: crewMember.id,
+          name: crewMember.name,
+          job: crewMember.job,
+          profile_path: crewMember.profile_path || "",
+        };
+      }
+    }
+  }
+
+  const topCrew = Object.values(crewObj);
 
   return { cast: topCast, crew: topCrew };
 });

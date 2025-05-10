@@ -11,6 +11,10 @@ export default defineNuxtConfig({
   },
   plugins: ["~/plugins/supabase.ts"], // Register the plugin
   modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
+  image: {
+    provider: "ipx",
+    dir: "assets",
+  },
   css: ["@/assets/css/tailwind.css"],
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },

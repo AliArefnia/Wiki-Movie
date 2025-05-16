@@ -150,7 +150,6 @@ onMounted(async () => {
     const data = await $fetch<trailer>(
       `/api/MediaTrailer?mediaId=${mediaDetail.value?.id}&mediaType=${mediaType.value} `
     );
-    console.log(data);
 
     if (!data) {
       officialTrailerKey.value = null;

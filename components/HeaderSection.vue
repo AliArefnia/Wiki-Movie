@@ -95,7 +95,6 @@ const dropdown = ref<HTMLElement | null>(null);
 function handleClickOutside(event: MouseEvent) {
   if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
     isUserCardOpen.value = false;
-    console.log("done");
   }
 }
 

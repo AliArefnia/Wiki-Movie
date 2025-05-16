@@ -24,7 +24,6 @@ const props = defineProps<{
   profileUrl: string | null;
 }>();
 
-console.log(props.profileUrl);
 const imageWidth = ref(getCardWidth());
 
 const computedProfileUrl = computed(() => {

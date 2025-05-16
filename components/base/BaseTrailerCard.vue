@@ -72,12 +72,14 @@ const videoId = computed(() => {
   );
   return match ? match[1] : "";
 });
+
 const thumbnailUrl = computed(() =>
   videoId.value
     ? `https://img.youtube.com/vi/${videoId.value}/maxresdefault.jpg`
     : props.fallBackThumbnail
 );
 </script>
+
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {

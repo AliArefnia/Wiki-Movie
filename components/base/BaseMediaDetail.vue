@@ -21,7 +21,7 @@
         </p>
 
         <BaseHeartButton
-          v-if="mediaType !== 'person'"
+          v-if="mediaType !== 'person' && userData.user"
           class="md:absolute md:right-0 md:top-5"
           :isInWishList="isInWishList"
           @toggleMovieWishList="toggleMovieWishList()"

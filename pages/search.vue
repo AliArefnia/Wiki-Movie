@@ -1,6 +1,6 @@
 <template>
   <div class="bg-surface-dark pt-2 min-h-screen">
-    <div class="relative w-full max-w-md mx-auto px-4">
+    <div class="sticky top-17 w-full max-w-md mx-auto px-4 z-20">
       <input
         type="text"
         v-model="searchQuery"

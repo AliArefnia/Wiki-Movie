@@ -163,21 +163,21 @@ const displayTagline = computed(() => {
 });
 
 const posterUrl = computed(() => {
-  if (!props.mediaDetail) return "/placeholder.jpg";
+  if (!props.mediaDetail) return "images/moviePlaceholder.png";
 
   if ("poster_path" in props.mediaDetail) {
     return props.mediaDetail.poster_path
       ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.poster_path}`
-      : "/placeholder.jpg";
+      : "images/moviePlaceholder.png";
   }
 
   if ("profile_path" in props.mediaDetail) {
     return props.mediaDetail.profile_path
       ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.profile_path}`
-      : "/placeholder.jpg";
+      : "images/moviePlaceholder.png";
   }
 
-  return "/placeholder.jpg";
+  return "images/moviePlaceholder.png";
 });
 
 async function toggleMovieWishList() {

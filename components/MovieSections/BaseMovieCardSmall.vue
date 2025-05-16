@@ -7,7 +7,7 @@
     <div>
       <NuxtImg
         class="w-full h-auto object-cover"
-        :src="posterUrl ? posterUrl : '/images/movie-placeholder.jpg'"
+        :src="posterUrl ? posterUrl : '/images/moviePlaceholder.png'"
         :alt="movieTitle"
       />
     </div>

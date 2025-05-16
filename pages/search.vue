@@ -27,7 +27,7 @@
     </div>
 
     <div
-      v-if="searchMovie.length === 0 && !isLoading"
+      v-if="searchMovie.length === 0 && !isLoading && searchQuery.length !== 0"
       class="text-gray-400 text-center font-display mt-6"
     >
       Sorry, couldn't find this movie!

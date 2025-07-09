@@ -3,7 +3,7 @@
     class="flex flex-col md:flex-row items-center md:items-start md:space-x-6"
   >
     <!-- Movie Poster -->
-    <img
+    <NuxtImg
       :src="posterUrl"
       :alt="displayTitle"
       class="w-72 rounded-lg shadow-lg"
@@ -163,21 +163,21 @@ const displayTagline = computed(() => {
 });
 
 const posterUrl = computed(() => {
-  if (!props.mediaDetail) return "images/moviePlaceholder.png";
-
   if ("poster_path" in props.mediaDetail) {
     return props.mediaDetail.poster_path
       ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.poster_path}`
+      : props.mediaDetail.backdrop_path
+      ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.backdrop_path}`
       : "images/moviePlaceholder.png";
   }
 
   if ("profile_path" in props.mediaDetail) {
     return props.mediaDetail.profile_path
       ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.profile_path}`
-      : "images/moviePlaceholder.png";
+      : "images/personPlaceholder.png";
   }
 
-  return "images/moviePlaceholder.png";
+  // return "/images/moviePlaceholder.png";
 });
 
 async function toggleMovieWishList() {

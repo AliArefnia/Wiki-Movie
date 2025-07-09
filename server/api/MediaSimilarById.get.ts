@@ -28,7 +28,9 @@ export default defineEventHandler(async (event) => {
           media_type: "movie",
           title: item.title ?? "Untitled",
           vote_average: Number(item.vote_average?.toFixed(1) || 0),
-          poster_path: `${IMAGE_URL}${item.poster_path}` || null,
+          poster_path: item.poster_path
+            ? `${IMAGE_URL}${item.poster_path}`
+            : null,
           release_date: item.release_date?.slice(0, 4) ?? "N/A",
           genre_ids: item.genre_ids ?? [],
         };
@@ -39,7 +41,9 @@ export default defineEventHandler(async (event) => {
           media_type: "tv",
           name: item.name ?? "Untitled",
           vote_average: Number(item.vote_average?.toFixed(1) || 0),
-          poster_path: `${IMAGE_URL}${item.poster_path}` || null,
+          poster_path: item.poster_path
+            ? `${IMAGE_URL}${item.poster_path}`
+            : null,
           first_air_date: item.first_air_date?.slice(0, 4) ?? "N/A",
           genre_ids: item.genre_ids ?? [],
         };

@@ -1,13 +1,20 @@
 <template>
   <div v-if="mediaDetail" class="relative min-h-screen text-white">
     <!-- Backdrop Image -->
-    <div
+    <!-- <div
       class="absolute inset-0 bg-cover bg-center opacity-30"
       :style="{ backgroundImage: `url(${backdropUrl})` }"
-    ></div>
+    ></div> -->
+
+    <div
+      class="relative h-[500px] w-full bg-cover bg-center"
+      :style="{ backgroundImage: `url(${backdropUrl})` }"
+    >
+      <div class="absolute inset-0 bg-black opacity-60"></div>
+    </div>
 
     <!-- Content Container -->
-    <div class="relative z-10 max-w-6xl mx-auto px-6 py-10">
+    <div class="relative z-10 -mt-56 max-w-6xl mx-auto px-6 pb-10">
       <!-- Movie Header -->
 
       <BaseMediaDetail

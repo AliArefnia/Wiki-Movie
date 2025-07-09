@@ -19,6 +19,8 @@ export const useUserData = defineStore("userData", {
     isLoggedIn: (state) => !!state.user?.id,
     getIsUserLoaded: (state) => !!state.isUserLoaded,
     userEmail: (state) => state.user?.email,
+    userJoinDate: (state) => state.user?.created_at,
+    userName: (state) => state.user?.name,
     userWishList: (state) => state.user?.wishList,
   },
 
@@ -85,7 +87,9 @@ export const useUserData = defineStore("userData", {
         this.user = {
           id: data.user.id,
           email: data.user.email as string,
+          name: data.user.name,
           wishList: [],
+          created_at: data.user.created_at,
         };
       }
       await this.getUserWishList(data.user.id);

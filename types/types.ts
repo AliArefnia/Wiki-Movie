@@ -120,7 +120,9 @@ export interface MovieListWithTrailer {
 export interface userData {
   id: string;
   email: string;
+  name: string;
   wishList: WishListItem[];
+  created_at: string | null;
 }
 
 export interface trailer {

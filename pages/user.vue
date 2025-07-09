@@ -10,7 +10,7 @@
           close;
           logOut(true);
         "
-        class="border-2 w-[5rem]"
+        class="!bg-btn-accent w-[5rem] ml-2 text-white"
         >Yes</BaseButton
       >
       <BaseButton
@@ -18,43 +18,55 @@
           close;
           logOut(false);
         "
-        class="!bg-btn-accent w-[5rem] ml-2 text-white"
+        class="border-2 w-[5rem]"
         >No</BaseButton
       >
     </template>
   </BaseAlertModule>
   <div>
     <div
-      class="max-w-4xl w-10/12 mt-8 mx-auto p-6 bg-surface-card text-white shadow-md rounded-lg"
+      class="max-w-3xl w-10/12 mt-8 mx-auto p-6 bg-surface-card text-white shadow-md rounded-lg text-center md:text-left"
     >
       <h1 class="text-2xl font-bold mb-4">User Profile</h1>
-      <div class="space-y-4">
+      <div class="space-y-4 mb-6">
         <div>
           <label class="block text-sm font-medium text-white">Name</label>
-          <p class="text-lg text-gray-500">John Doe</p>
+          <p class="text-lg text-gray-500">Set Name</p>
         </div>
         <div>
           <label class="block text-sm font-medium text-white">Email</label>
           <p v-if="email" class="text-lg text-gray-500">{{ email }}</p>
-          <p v-else class="text-lg text-gray-500">johndoe@example.com</p>
+          <p v-else class="text-lg text-gray-500">Set Email</p>
         </div>
         <div>
           <label class="block text-sm font-medium text-white"
-            >Favorite Movie</label
+            >Favorite Movies</label
           >
-          <p class="text-lg text-gray-500">Favorite Movie</p>
+          <p
+            class="text-lg inline text-gray-500 hover:cursor-pointer hover:text-white hover: hover:animate-none animate-pulse"
+            @click="router.push('/wishList')"
+          >
+            See Favorite Movies
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-white"
             >Joined Date</label
           >
-          <p class="text-lg text-gray-500">Joined Date</p>
+          <p class="text-lg text-gray-500">{{ JoinDate }}</p>
         </div>
       </div>
-      <BaseButton varient="primary"> Edit Profile </BaseButton>
-      <BaseButton variant="danger" full-width @click="logOutAlert"
-        >Log Out</BaseButton
-      >
+      <div class="flex justify-around">
+        <BaseButton varient="primary" class="flex-1 mx-3">
+          Edit Profile
+        </BaseButton>
+        <BaseButton
+          variant="danger"
+          class="flex-1 mx-3 hover:bg-white hover:text-btn-accent"
+          @click="logOutAlert"
+          >Log Out</BaseButton
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -65,6 +77,11 @@ import { useRouter } from "vue-router";
 import BaseAlertModule from "~/components/base/BaseAlertModule.vue";
 const userData = useUserData();
 const email = computed(() => userData.userEmail);
+const JoinDate = computed(() => {
+  const date = userData.userJoinDate;
+  return date ? new Date(date).toLocaleDateString() : "Unknown";
+});
+console.log(JoinDate);
 const loggingOut = ref(false);
 
 const router = useRouter();

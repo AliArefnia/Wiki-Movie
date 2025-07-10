@@ -35,7 +35,8 @@ const props = defineProps({
 });
 
 const variantMap: Record<string, string> = {
-  primary: "bg-btn-primary text-white hover:bg-btn-primary-hover",
+  primary:
+    "bg-btn-primary text-white hover:bg-btn-primary-hover hover:shadow-lg hover:-translate-y-[1px] transition-all duration-200 ease-in-out",
   secondary: "bg-button-primary text-white hover:bg-gray-700",
   footer: "text-primary bg-transparent",
   danger: "bg-red-600 text-white hover:bg-red-700",

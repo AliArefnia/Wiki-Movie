@@ -1,17 +1,16 @@
 <template>
   <div v-if="mediaDetail" class="relative min-h-screen text-white">
-    <!-- Backdrop Image -->
-    <!-- <div
-      class="absolute inset-0 bg-cover bg-center opacity-30"
-      :style="{ backgroundImage: `url(${backdropUrl})` }"
-    ></div> -->
-
     <div
+      v-if="mediaType === 'movie' || mediaType === 'tv'"
       class="relative h-[500px] w-full bg-cover bg-center"
       :style="{ backgroundImage: `url(${backdropUrl})` }"
     >
       <div class="absolute inset-0 bg-black opacity-60"></div>
     </div>
+    <div
+      v-else
+      class="relative h-[300px] w-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center"
+    ></div>
 
     <!-- Content Container -->
     <div class="relative z-10 -mt-56 max-w-6xl mx-auto px-6 pb-10">

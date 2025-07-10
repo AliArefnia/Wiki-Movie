@@ -8,7 +8,7 @@
         isInWishList ? 'scale-110 brightness-125' : 'scale-100 brightness-100',
         isInWishList ? 'animate-pulse' : '',
       ]"
-      class=""
+      class="hover:cursor-pointer hover:scale-105 hover:stroke-red-500"
       color="red"
     />
   </button>

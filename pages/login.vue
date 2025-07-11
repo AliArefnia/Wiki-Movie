@@ -76,7 +76,9 @@ async function logIn() {
     userData.setUserData({
       id: data.user.id,
       email: data.user.email,
+      name: data.user.name,
       wishList: [],
+      created_at: data.user.created_at,
     });
 
     await userData.getUserWishList(data.user.id);

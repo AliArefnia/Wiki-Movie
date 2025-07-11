@@ -15,15 +15,24 @@
       {{ error }}
     </div>
     <ClientOnly>
-      <div v-if="!isUserLoggedIn" class="flex justify-center">
-        <button
+      <div
+        v-if="!isUserLoggedIn"
+        class="flex flex-col items-center justify-center gap-4 mt-10 text-center text-gray-300"
+      >
+        <NuxtImg
+          src="/images/loginIllustration.svg"
+          alt="Please log in"
+          class="w-40 h-40 opacity-80"
+        />
+        <p class="text-lg font-semibold">Log in to view your wishlist</p>
+        <BaseButton
           @click="
             () => router.push(`/login?from=${router.currentRoute.value.path}`)
           "
-          class="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+          class="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
         >
           Log In
-        </button>
+        </BaseButton>
       </div>
     </ClientOnly>
     <div v-if="isLoading" class="text-gray-400 text-center font-display mt-6">
@@ -55,15 +64,18 @@
 definePageMeta({
   ssr: false,
 });
-// import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
+
 import type { MediaItem, WishListItem } from "~/types/types";
+
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
+
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
+import BaseButton from "~/components/base/BaseButton.vue";
+
 const router = useRouter();
 const userData = useUserData();
-// const page = ref(1);
 const isLoading = ref(false);
 const wishListMedia = ref<MediaItem[] | null>([]);
 const error = ref<string | null>("");
@@ -84,59 +96,6 @@ async function getWishListMedia(mediaId: Number, mediaType: "tv" | "movie") {
   }
 }
 
-// const debouncedSearch = useDebounceFn(async () => {
-//   if (searchQuery.value.length > 2) {
-//     page.value = 1;
-//     searchMovie.value = [];
-//     await getMovieBySearch();
-//   } else {
-//     return;
-//   }
-// }, 400);
-
-// watch(searchQuery, debouncedSearch);
-
-// async function getMovieBySearch() {
-//   if (page.value > 10 || searchQuery.value === "") return;
-//   try {
-//     isLoading.value = true;
-//     let data = await $fetch<Movie[]>(
-//       `/api/MovieBySearch?searchTerm=${searchQuery.value}&page=${page.value}`
-//     );
-//     console.log(data);
-//     searchMovie.value.push(...data);
-
-//     page.value++;
-//   } catch (error) {
-//     console.log("error fetching searched movie");
-//   } finally {
-//     isLoading.value = false;
-//   }
-// }
-
-// async function getWishListMedia() {
-//   let data = await $fetch("/api/user/getUserWishList");
-// }
-
-// useInfiniteScroll(
-//   document,
-//   () => {
-//     if (!isLoading.value) {
-//       getWishListMedia();
-//     }
-//   },
-//   { distance: 100 }
-// );
-
-// watch(
-//   () => userData.isUserLoaded,
-//   (loaded) => {
-//     if (loaded) {
-//       console.log(userData.userWishList);
-//     }
-//   }
-// );
-
 const getTitle = (item: MediaItem) =>
   item.media_type === "movie" ? item.title : item.name;
 
@@ -147,11 +106,13 @@ onMounted(async () => {
   isLoading.value = true;
   try {
     if (!isUserLoggedIn.value)
-      throw new Error("Please log in to view your wish list.");
+      throw new Error("You need to be signed in to see your saved movies.");
     wishList.value = userData.userWishList;
-    wishList.value?.map((media: WishListItem) => {
-      getWishListMedia(media.id, media.mediaType);
-    });
+    await Promise.all(
+      wishList.value?.map((media: WishListItem) =>
+        getWishListMedia(media.id, media.mediaType)
+      )
+    );
   } catch (err) {
     error.value = (err as Error).message || "Unknown error occurred";
   } finally {

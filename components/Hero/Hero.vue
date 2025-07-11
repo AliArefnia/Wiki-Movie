@@ -64,6 +64,18 @@ function getCardWidth() {
   return 342;
 }
 
+function updateWidth() {
+  imageWidth.value = getCardWidth();
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+
 const scrollLeft = () => {
   if (carousel.value) {
     carousel.value.scrollBy({ left: -SCROLL_AMOUNT, behavior: "smooth" });

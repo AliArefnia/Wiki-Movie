@@ -65,6 +65,18 @@ function getCardWidth() {
   if (vw >= 768) return 125;
   return 100;
 }
+
+function updateWidth() {
+  imageWidth.value = getCardWidth();
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWidth);
+});
 </script>
 
 <style scoped></style>

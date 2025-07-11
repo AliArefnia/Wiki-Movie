@@ -93,6 +93,18 @@ function getCardWidth() {
   return 154;
 }
 
+function updateWidth() {
+  imageWidth.value = getCardWidth();
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+
 async function getHotNewMovies() {
   let data = await $fetch<SearchResult[]>(
     `/api/HotMediaData?width=${imageWidth.value}`

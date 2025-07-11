@@ -44,6 +44,20 @@ function getCardHeight() {
   //  2:3
   return Math.round(getCardWidth() * 1.5);
 }
+
+function updateDimensions() {
+  const width = getCardWidth();
+  imageWidth.value = width;
+  imageHeight.value = Math.round(width * 1.5);
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateDimensions);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateDimensions);
+});
 </script>
 
 <style scoped></style>

@@ -3,11 +3,32 @@
     class="flex flex-col md:flex-row items-center md:items-start md:space-x-6"
   >
     <!-- Movie Poster -->
-    <NuxtImg
-      :src="posterUrl"
-      :alt="displayTitle"
-      class="w-72 rounded-lg shadow-lg"
-    />
+
+    <div class="relative aspect-[2/3] rounded-lg bg-gray-800">
+      <!-- Actual Image -->
+      <NuxtImg
+        v-if="posterUrl"
+        class="w-72 rounded-lg shadow-lg transition-opacity duration-300"
+        :src="posterUrl"
+        :alt="displayTitle"
+        @load="loaded = true"
+        :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
+      />
+
+      <!-- Placeholder Image (fallback) -->
+      <NuxtImg
+        v-else
+        src="/images/moviePlaceholder.png"
+        alt="No Poster"
+        class="w-full h-full object-cover"
+      />
+
+      <!-- Skeleton while loading -->
+      <div
+        v-if="!loaded"
+        class="absolute inset-0 animate-pulse bg-gray-700"
+      ></div>
+    </div>
 
     <!-- Movie Details -->
     <div class="flex-1 space-y-5 mt-6 text-center md:text-left">
@@ -121,6 +142,7 @@ const props = defineProps<{
 const userData = useUserData();
 const isLoadingWishList = ref(false);
 const isInWishList = ref(false);
+const loaded = ref(false);
 
 const movieDetail = computed(() =>
   props.mediaType === "movie" ? (props.mediaDetail as MovieDetail) : null

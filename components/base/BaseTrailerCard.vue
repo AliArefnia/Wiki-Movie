@@ -5,16 +5,7 @@
     >
       {{ props.trailerName }}
     </p>
-    <div class="flex justify-center my-2">
-      <a
-        :href="`https://www.youtube.com/watch?v=${officialTrailerKey}`"
-        class="w-fit bg-surface-hover p-3 rounded-2xl ring-1 hover:bg-gray-800 transition-all"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Watch Trailer in youtube
-      </a>
-    </div>
+
     <div
       class="relative rounded-2xl overflow-hidden font-sans cursor-pointer flex justify-center"
       :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
@@ -40,6 +31,16 @@
           class="transition-opacity duration-500 rounded-2xl"
         ></iframe>
       </transition>
+    </div>
+    <div class="flex justify-center my-4">
+      <a
+        :href="`https://www.youtube.com/watch?v=${officialTrailerKey}`"
+        class="w-fit bg-surface-hover p-3 rounded-2xl ring-1 hover:bg-gray-800 transition-all"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Watch Trailer in Youtube
+      </a>
     </div>
   </div>
 </template>

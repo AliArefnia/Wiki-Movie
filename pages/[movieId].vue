@@ -51,8 +51,12 @@
 
     <!-- Loading State -->
   </div>
-  <div v-else class="flex items-center justify-center min-h-screen text-white">
-    <p>Loading media details...</p>
+  <div
+    v-else
+    class="absolute inset-0 flex items-center justify-center text-white"
+  >
+    <!-- loader -->
+    <BaseLoader message="Loading Media Details!"></BaseLoader>
   </div>
 </template>
 
@@ -63,6 +67,7 @@ import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
 import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
+import BaseLoader from "~/components/base/BaseLoader.vue";
 import type {
   MovieDetail,
   TvDetail,

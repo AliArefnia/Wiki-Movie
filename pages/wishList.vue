@@ -27,7 +27,7 @@
       </div>
     </ClientOnly>
     <div v-if="isLoading" class="text-gray-400 text-center font-display mt-6">
-      Loading...
+      <BaseLoader></BaseLoader>
     </div>
     <div
       v-else
@@ -60,6 +60,7 @@ import type { MediaItem, WishListItem } from "~/types/types";
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
+import BaseLoader from "~/components/base/BaseLoader.vue";
 const router = useRouter();
 const userData = useUserData();
 // const page = ref(1);

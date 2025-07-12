@@ -65,6 +65,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "default",
+  title: "Sign Up",
 });
 
 import { ref } from "vue";

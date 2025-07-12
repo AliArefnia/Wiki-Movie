@@ -72,6 +72,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "default",
+  title: "User",
+});
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
 import BaseAlertModule from "~/components/base/BaseAlertModule.vue";

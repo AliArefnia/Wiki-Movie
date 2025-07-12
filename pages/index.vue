@@ -27,6 +27,8 @@ import BaseMovieSection from "~/components/MovieSections/BaseMovieSection.vue";
 import { useMovieStore } from "~/store/store";
 definePageMeta({
   layout: "default",
+useHead({
+  title: "Home",
 });
 
 const movieStore = useMovieStore();

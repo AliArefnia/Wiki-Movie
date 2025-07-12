@@ -185,6 +185,14 @@ const backdropUrl = computed(() => {
 
 definePageMeta({
   layout: "movie-page",
+watch(mediaDetail, (val) => {
+  if (!val) return;
+
+  const titleChunk = "title" in val ? val.title : val.name;
+
+  useHead({
+    title: titleChunk,
+  });
 });
 </script>
 

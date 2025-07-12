@@ -53,6 +53,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "default",
+  title: "Login",
 });
 
 import { ref } from "vue";

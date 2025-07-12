@@ -63,6 +63,7 @@
 <script setup lang="ts">
 definePageMeta({
   ssr: false,
+  title: "Wish List",
 });
 
 import type { MediaItem, WishListItem } from "~/types/types";

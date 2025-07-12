@@ -4,56 +4,44 @@
       <div
         class="container px-8 sm:mx-auto flex justify-between items-center py-4 relative"
       >
-        <NuxtLink
-          :to="previousPageLink"
-          class="flex items-center space-x-2 text-xl font-bold"
-        >
-          <BaseButton class="bg-surface-dark">
-            <svg
-              class="w-6 h-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </BaseButton>
-        </NuxtLink>
+        <BaseButton class="bg-surface-dark" @click="goBack">
+          <svg
+            class="w-6 h-6 text-primary"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </BaseButton>
+
         <NuxtImg
           src="/images/Logo.png"
           alt="Wiki Movie Logo"
-          class="w-15 m-0 absolute right-8"
+          class="w-15 m-0 absolute right-8 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
+          @click="navigateTo('/')"
         />
       </div>
     </div>
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
 const route = useRoute();
-const previousPageLink = computed(() => route.query.from || "/");
 
-let openNavigation = ref(false);
-
-const toggleNav = () => {
-  openNavigation.value = !openNavigation.value;
-  console.log(openNavigation.value);
-  if (openNavigation.value) {
-    document.body.style.overflow = "hidden";
+const goBack = () => {
+  if (route.query.from) {
+    router.push(route.query.from as string);
   } else {
-    document.body.style.overflow = "auto";
+    router.back();
   }
-};
-
-const closeNav = () => {
-  openNavigation.value = false;
-  document.body.style.overflow = "auto";
 };
 </script>
 

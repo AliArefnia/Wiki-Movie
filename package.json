@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "wiki-movie",
   "private": true,
   "type": "module",
   "scripts": {

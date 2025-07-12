@@ -3,8 +3,6 @@
     class="relative rounded-2xl overflow-hidden font-sans transition-transform"
     :style="{ width: imageWidth + 'px' }"
   >
-    <div class="absolute left-4 top-4">...</div>
-    <!-- Skeleton loader -->
     <div
       v-if="!isImageLoaded"
       class="absolute inset-0 bg-gray-700 animate-pulse"

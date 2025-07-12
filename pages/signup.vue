@@ -11,10 +11,12 @@
         <form @submit.prevent="signUp" class="space-y-4">
           <input
             v-model="email"
+            ref="emailInput"
             type="email"
             placeholder="Email"
             autocomplete="username"
             required
+            @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -23,6 +25,7 @@
             placeholder="Password"
             autocomplete="new-password"
             required
+            @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -30,6 +33,7 @@
             type="password"
             placeholder="Repeat Password"
             required
+            @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -76,6 +80,7 @@ const repeatPassword = ref("");
 const message = ref("");
 const error = ref("");
 const isSigninUp = ref(false);
+const emailInput = ref<HTMLInputElement | null>(null);
 
 async function signUp() {
   const supabase: any = useNuxtApp().$supabase;
@@ -114,7 +119,9 @@ async function signUp() {
     userData.setUserData({
       id: data.user.id,
       email: data.user.email,
+      name: data.user.name,
       wishList: [],
+      created_at: data.user.created_at,
     });
 
     router.push("/");
@@ -124,4 +131,7 @@ async function signUp() {
     isSigninUp.value = false;
   }
 }
+onMounted(() => {
+  emailInput.value?.focus();
+});
 </script>

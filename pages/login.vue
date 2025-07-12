@@ -9,10 +9,12 @@
         <form @submit.prevent="logIn" class="space-y-4">
           <input
             v-model="email"
+            ref="emailInput"
             type="email"
             placeholder="Email"
             autocomplete="username"
             required
+            @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -21,6 +23,7 @@
             placeholder="Password"
             autocomplete="current-password"
             required
+            @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <transition name="fade" mode="out-in">
@@ -32,7 +35,6 @@
             class="flex justify-center items-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:cursor-pointer"
             :disabled="isLoggingIn"
           >
-            Log In
             <p v-if="!isLoggingIn">Log In</p>
             <BaseSmallSpinner v-if="isLoggingIn"></BaseSmallSpinner>
           </button>
@@ -68,6 +70,7 @@ const email = ref("");
 const password = ref("");
 const error = ref("");
 const isLoggingIn = ref(false);
+const emailInput = ref<HTMLInputElement | null>(null);
 
 async function logIn() {
   const supabase: any = useNuxtApp().$supabase;
@@ -100,4 +103,8 @@ async function logIn() {
     isLoggingIn.value = false;
   }
 }
+
+onMounted(() => {
+  emailInput.value?.focus();
+});
 </script>

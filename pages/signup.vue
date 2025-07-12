@@ -39,9 +39,10 @@
 
           <button
             type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+            class="flex justify-center items-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:cursor-pointer"
           >
-            Sign Up
+            <p v-if="!isSigninUp">Sign Up</p>
+            <BaseSmallSpinner v-if="isSigninUp"></BaseSmallSpinner>
           </button>
         </form>
         <p class="text-sm text-center text-gray-400 mt-4">
@@ -74,6 +75,7 @@ const password = ref("");
 const repeatPassword = ref("");
 const message = ref("");
 const error = ref("");
+const isSigninUp = ref(false);
 
 async function signUp() {
   const supabase: any = useNuxtApp().$supabase;
@@ -87,6 +89,7 @@ async function signUp() {
       error.value = "Password must be at least 6 characters.";
       return;
     }
+    isSigninUp.value = true;
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: email.value,
       password: password.value,
@@ -117,6 +120,8 @@ async function signUp() {
     router.push("/");
   } catch (err) {
     error.value = "Something went wrong!";
+  } finally {
+    isSigninUp.value = false;
   }
 }
 </script>

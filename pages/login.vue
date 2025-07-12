@@ -29,9 +29,12 @@
 
           <button
             type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+            class="flex justify-center items-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:cursor-pointer"
+            :disabled="isLoggingIn"
           >
             Log In
+            <p v-if="!isLoggingIn">Log In</p>
+            <BaseSmallSpinner v-if="isLoggingIn"></BaseSmallSpinner>
           </button>
         </form>
 
@@ -54,6 +57,8 @@ import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useUserData } from "~/store/user";
 
+import BaseSmallSpinner from "~/components/base/BaseSmallSpinner.vue";
+
 const userData = useUserData();
 const router = useRouter();
 const route = useRoute();
@@ -62,10 +67,12 @@ const previousPageLink = computed(() => route.query.from || "/");
 const email = ref("");
 const password = ref("");
 const error = ref("");
+const isLoggingIn = ref(false);
 
 async function logIn() {
   const supabase: any = useNuxtApp().$supabase;
   try {
+    isLoggingIn.value = true;
     const { data, error: loginError } = await supabase.auth.signInWithPassword({
       email: email.value,
       password: password.value,
@@ -89,6 +96,8 @@ async function logIn() {
     router.push(`${previousPageLink.value}`);
   } catch (err) {
     error.value = "Something went wrong!";
+  } finally {
+    isLoggingIn.value = false;
   }
 }
 </script>

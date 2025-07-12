@@ -1,6 +1,9 @@
 <template>
   <div class="flex justify-center min-h-[500px]">
-    <div class="flex items-center justify-center bg-surface-dark text-white">
+    <div
+      class="flex flex-col items-center justify-center bg-surface-dark text-white"
+    >
+      <NuxtImg src="/images/Logo.png" alt="Wiki Movie Logo" class="w-30 mb-4" />
       <div
         class="flex flex-col w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg"
       >

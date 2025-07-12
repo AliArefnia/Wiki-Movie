@@ -1,7 +1,9 @@
 <template>
   <header class="bg-surface-card text-white shadow-lg sticky top-0 z-20">
     <div>
-      <div class="container mx-auto flex justify-between items-center p-4">
+      <div
+        class="container px-8 sm:mx-auto flex justify-between items-center py-4 relative"
+      >
         <NuxtLink
           :to="previousPageLink"
           class="flex items-center space-x-2 text-xl font-bold"
@@ -22,6 +24,11 @@
             </svg>
           </BaseButton>
         </NuxtLink>
+        <NuxtImg
+          src="/images/Logo.png"
+          alt="Wiki Movie Logo"
+          class="w-15 m-0 absolute right-8"
+        />
       </div>
     </div>
   </header>

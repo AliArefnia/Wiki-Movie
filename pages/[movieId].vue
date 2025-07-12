@@ -185,6 +185,13 @@ const backdropUrl = computed(() => {
 
 definePageMeta({
   layout: "movie-page",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
+});
+
+// Update page title
 watch(mediaDetail, (val) => {
   if (!val) return;
 

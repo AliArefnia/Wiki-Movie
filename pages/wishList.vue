@@ -64,6 +64,10 @@
 definePageMeta({
   ssr: false,
   title: "Wish List",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
 });
 
 import type { MediaItem, WishListItem } from "~/types/types";

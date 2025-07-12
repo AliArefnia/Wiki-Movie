@@ -75,7 +75,12 @@
 definePageMeta({
   layout: "default",
   title: "User",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
 });
+
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
 import BaseAlertModule from "~/components/base/BaseAlertModule.vue";

@@ -27,6 +27,11 @@ import BaseMovieSection from "~/components/MovieSections/BaseMovieSection.vue";
 import { useMovieStore } from "~/store/store";
 definePageMeta({
   layout: "default",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
+});
 useHead({
   title: "Home",
 });

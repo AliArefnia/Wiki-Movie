@@ -54,6 +54,10 @@
 definePageMeta({
   layout: "default",
   title: "Login",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
 });
 
 import { ref } from "vue";

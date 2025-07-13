@@ -9,10 +9,10 @@ const supabase = createClient(
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { userId, wishedMedia, action } = body;
+  const { userId, watchedMedia, action } = body;
   const { data: user, error: getError } = await supabase
     .from("users")
-    .select("wish_list")
+    .select("watch_list")
     .eq("id", userId)
     .single();
 
@@ -21,17 +21,17 @@ export default defineEventHandler(async (event) => {
 
   const updatedList =
     action === "add"
-      ? [...user.wish_list, wishedMedia]
-      : user.wish_list.filter(
+      ? [...user.watch_list, watchedMedia]
+      : user.watch_list.filter(
           (media: { id: number; mediaType: "tv" | "movie" }) =>
-            media.id !== wishedMedia.id
+            media.id !== watchedMedia.id
         );
 
   const { error } = await supabase
     .from("users")
-    .update({ wish_list: updatedList })
+    .update({ watch_list: updatedList })
     .eq("id", userId);
 
   if (error) return { error: error.message };
-  return { message: "Wish list updated" };
+  return { message: "Watch list updated" };
 });

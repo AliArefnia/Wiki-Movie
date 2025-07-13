@@ -32,21 +32,33 @@
 
     <!-- Movie Details -->
     <div class="flex-1 space-y-5 mt-6 text-center md:text-left">
-      <!-- Title & Tagline -->
-      <div class="md:relative">
-        <h1 class="text-4xl leading-tight font-display">
-          {{ displayTitle }}
-        </h1>
-        <p v-if="displayTagline" class="text-lg text-gray-300 italic">
-          "{{ displayTagline }}"
-        </p>
-
-        <BaseHeartButton
-          v-if="mediaType !== 'person' && userData.user"
-          class="md:absolute md:right-0 md:top-5"
-          :isInWishList="isInWishList"
-          @toggleMovieWishList="toggleMovieWishList()"
-        ></BaseHeartButton>
+      <!-- Title & Tagline & controls -->
+      <div class="md:relative flex justify-between">
+        <div>
+          <h1 class="text-4xl leading-tight font-display">
+            {{ displayTitle }}
+          </h1>
+          <p v-if="displayTagline" class="text-lg text-gray-300 italic">
+            "{{ displayTagline }}"
+          </p>
+        </div>
+        <section
+          id="watchControls"
+          class="flex flex-col justify-center items-center"
+        >
+          <BaseHeartButton
+            v-if="mediaType !== 'person' && userData.user"
+            class=""
+            :isInWishList="isInWishList"
+            @toggleMovieWishList="toggleMovieWishList()"
+          ></BaseHeartButton>
+          <BaseEyeButton
+            v-if="mediaType !== 'person' && userData.user"
+            :isWatched="isInWatchList"
+            @toggleMovieWatched="toggleMovieWatched()"
+          >
+          </BaseEyeButton>
+        </section>
       </div>
 
       <!-- Genre Badges -->
@@ -132,6 +144,7 @@
 import type { Genre, MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import { useUserData } from "~/store/user";
 import BaseHeartButton from "./BaseHeartButton.vue";
+import BaseEyeButton from "./BaseEyeButton.vue";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;
@@ -141,8 +154,10 @@ const props = defineProps<{
 
 const userData = useUserData();
 const isLoadingWishList = ref(false);
+const isLoadingWatchList = ref(false);
 const isInWishList = ref(false);
 const loaded = ref(false);
+const isInWatchList = ref(false);
 
 const movieDetail = computed(() =>
   props.mediaType === "movie" ? (props.mediaDetail as MovieDetail) : null
@@ -216,11 +231,27 @@ async function toggleMovieWishList() {
     console.error("Failed to toggle movie wish list:", error);
   }
 }
+async function toggleMovieWatched() {
+  try {
+    const id = Number(props.id);
+    isLoadingWatchList.value = true;
+    await userData.toggleMovieWatchList({
+      movieId: id,
+      mediaType: props.mediaType as "tv" | "movie",
+    });
+    isLoadingWatchList.value = false;
+    isInWatchList.value = !isInWatchList.value;
+  } catch (error) {
+    console.error("Failed to toggle movie Watch list:", error);
+  }
+}
 
 onMounted(() => {
   if (props.mediaType !== "person") {
     isInWishList.value =
       userData.userWishList?.some((media) => media.id === props.id) ?? false;
+    isInWatchList.value =
+      userData.userWatchList?.some((media) => media.id === props.id) ?? false;
   }
 });
 </script>

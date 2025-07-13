@@ -32,13 +32,21 @@
         v-for="media in HotMedia"
         :key="media.id"
         :to="`/${media.id}?mediaType=${media.media_type}`"
-        class="shrink-0 mx-2"
+        class="shrink-0 mx-2 group relative overflow-hidden rounded-xl"
       >
         <BaseHeroCard
           :movieTitle="getTitle(media)"
           :rating="media.vote_average"
           :posterUrl="media.poster_path || '/images/placeholder.png'"
+          class="transform transition-transform duration-300 group-hover:scale-105"
         />
+
+        <!-- Rating badge on hover -->
+        <div
+          class="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur"
+        >
+          ⭐ {{ media.vote_average.toFixed(1) }}
+        </div>
       </NuxtLink>
     </div>
   </div>

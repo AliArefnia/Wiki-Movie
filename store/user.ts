@@ -22,6 +22,7 @@ export const useUserData = defineStore("userData", {
     userJoinDate: (state) => state.user?.created_at,
     userName: (state) => state.user?.name,
     userWishList: (state) => state.user?.wishList,
+    userWatchList: (state) => state.user?.watchList,
   },
 
   actions: {
@@ -70,6 +71,47 @@ export const useUserData = defineStore("userData", {
       }
     },
 
+    async toggleMovieWatchList({
+      movieId,
+      mediaType,
+    }: {
+      movieId: number;
+      mediaType: "tv" | "movie";
+    }) {
+      if (!this.user) return;
+      let watchedMedia = { id: movieId, mediaType: mediaType };
+      const originalList = [...this.user.watchList];
+
+      const alreadyIsInList = this.user?.watchList.some(
+        (media) => media.id === movieId
+      );
+
+      if (alreadyIsInList) {
+        this.user.watchList = this.user.watchList.filter(
+          (media) => media.id !== movieId
+        );
+      } else {
+        this.user?.watchList.push(watchedMedia);
+      }
+
+      try {
+        await fetch("/api/user/userWatchList", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.user.id,
+            watchedMedia,
+            action: alreadyIsInList ? "remove" : "add",
+          }),
+        });
+      } catch (error) {
+        console.error(error);
+        this.user.watchList = originalList;
+      }
+    },
+
     async fetchUser() {
       if (this.isUserLoaded) return;
       this.isUserLoaded = false;
@@ -90,9 +132,11 @@ export const useUserData = defineStore("userData", {
           name: data.user.name,
           wishList: [],
           created_at: data.user.created_at,
+          watchList: [],
         };
       }
       await this.getUserWishList(data.user.id);
+      await this.getUserWatchList(data.user.id);
       this.isUserLoaded = true;
     },
 
@@ -112,6 +156,25 @@ export const useUserData = defineStore("userData", {
         this.user?.wishList.push(...(data.wish_list ?? []));
       } catch (error: any) {
         console.error("Error fetching user wishList:", error.message);
+        return null;
+      }
+    },
+    async getUserWatchList(userId: number) {
+      if (!userId) return null;
+      try {
+        const supabase: any = useNuxtApp().$supabase;
+        const { data, error } = await supabase
+          .from("users")
+          .select("watch_list")
+          .eq("id", userId)
+          .single();
+
+        if (error) {
+          throw error;
+        }
+        this.user?.watchList.push(...(data.watch_list ?? []));
+      } catch (error: any) {
+        console.error("Error fetching user watchList:", error.message);
         return null;
       }
     },

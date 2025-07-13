@@ -94,6 +94,10 @@ export type WishListItem = {
   id: number;
   mediaType: "movie" | "tv";
 };
+export type WatchListItem = {
+  id: number;
+  mediaType: "movie" | "tv";
+};
 export interface MoviesByGenre {
   results: Movie[];
 }
@@ -123,6 +127,7 @@ export interface userData {
   name: string;
   wishList: WishListItem[];
   created_at: string | null;
+  watchList: WatchListItem[];
 }
 
 export interface trailer {

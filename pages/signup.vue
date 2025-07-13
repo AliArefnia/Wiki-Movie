@@ -129,6 +129,7 @@ async function signUp() {
       name: data.user.name,
       wishList: [],
       created_at: data.user.created_at,
+      watchList: [],
     });
 
     router.push("/");

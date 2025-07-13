@@ -65,13 +65,14 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "default",
-  title: "Search",
   pageTransition: {
     name: "page",
     mode: "out-in",
   },
 });
-
+useHead({
+  title: "Search",
+});
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import type { SearchResult } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";

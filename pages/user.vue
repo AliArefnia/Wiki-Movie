@@ -74,11 +74,13 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "default",
-  title: "User",
   pageTransition: {
     name: "page",
     mode: "out-in",
   },
+});
+useHead({
+  title: "User",
 });
 
 import { useUserData } from "~/store/user";

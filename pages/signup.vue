@@ -65,11 +65,13 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "default",
-  title: "Sign Up",
   pageTransition: {
     name: "page",
     mode: "out-in",
   },
+});
+useHead({
+  title: "Sign Up",
 });
 
 import { ref } from "vue";

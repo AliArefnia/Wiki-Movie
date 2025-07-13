@@ -63,11 +63,13 @@
 <script setup lang="ts">
 definePageMeta({
   ssr: false,
-  title: "Wish List",
   pageTransition: {
     name: "page",
     mode: "out-in",
   },
+});
+useHead({
+  title: "Wish List",
 });
 
 import type { MediaItem, WishListItem } from "~/types/types";

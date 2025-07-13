@@ -3,11 +3,11 @@
     <div v-if="isInitialLoadDone">
       <div
         v-if="
-          wishListMedia?.length === 0 && !isLoading && !error && isUserLoggedIn
+          watchListMedia?.length === 0 && !isLoading && !error && isUserLoggedIn
         "
         class="text-gray-400 text-center font-display mt-6"
       >
-        You can add movies to your wishlist by clicking the heart icon in the
+        You can add movies to your Watch List by clicking the Eye icon in the
         movie page.
       </div>
     </div>
@@ -24,7 +24,7 @@
           alt="Please log in"
           class="w-40 h-40 opacity-80"
         />
-        <p class="text-lg font-semibold">Log in to view your wishlist</p>
+        <p class="text-lg font-semibold">Log in to view your watchList</p>
         <BaseButton
           @click="
             () => router.push(`/login?from=${router.currentRoute.value.path}`)
@@ -44,9 +44,9 @@
       :class="{ 'fade-in': !isLoading }"
     >
       <NuxtLink
-        v-for="media in wishListMedia"
+        v-for="media in watchListMedia"
         :key="media.id"
-        :to="`/${media.id}?mediaType=${media.media_type}&from=wishList`"
+        :to="`/${media.id}?mediaType=${media.media_type}&from=watchList`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"
@@ -69,10 +69,9 @@ definePageMeta({
   },
 });
 useHead({
-  title: "Wish List",
+  title: "Watch List",
 });
-
-import type { MediaItem, WishListItem } from "~/types/types";
+import type { MediaItem, WatchListItem } from "~/types/types";
 
 import { useUserData } from "~/store/user";
 import { useRouter } from "vue-router";
@@ -84,18 +83,18 @@ import BaseButton from "~/components/base/BaseButton.vue";
 const router = useRouter();
 const userData = useUserData();
 const isLoading = ref(false);
-const wishListMedia = ref<MediaItem[] | null>([]);
+const watchListMedia = ref<MediaItem[] | null>([]);
 const error = ref<string | null>("");
 const isUserLoggedIn = computed(() => userData.isLoggedIn);
 const isInitialLoadDone = ref(false);
-const wishList = ref();
+const watchList = ref();
 
-async function getWishListMedia(mediaId: Number, mediaType: "tv" | "movie") {
+async function getWatchListMedia(mediaId: Number, mediaType: "tv" | "movie") {
   try {
     const data = await $fetch<MediaItem>(
       `/api/MediaById?mediaId=${mediaId}&mediaType=${mediaType}`
     );
-    wishListMedia.value?.push(data);
+    watchListMedia.value?.push(data);
   } catch (err) {
     error.value = "Couldn't fetch wish list movies";
   } finally {
@@ -113,11 +112,11 @@ onMounted(async () => {
   isLoading.value = true;
   try {
     if (!isUserLoggedIn.value)
-      throw new Error("You need to be signed in to see your saved movies.");
-    wishList.value = userData.userWishList;
+      throw new Error("You need to be signed in to see your watched movies.");
+    watchList.value = userData.userWatchList;
     await Promise.all(
-      wishList.value?.map((media: WishListItem) =>
-        getWishListMedia(media.id, media.mediaType)
+      watchList.value?.map((media: WatchListItem) =>
+        getWatchListMedia(media.id, media.mediaType)
       )
     );
   } catch (err) {
@@ -126,6 +125,11 @@ onMounted(async () => {
     isLoading.value = false;
   }
 });
+
+console.log(watchListMedia.value);
+console.log(isLoading.value);
+console.log(error);
+console.log(isUserLoggedIn.value);
 </script>
 
 <style scoped></style>

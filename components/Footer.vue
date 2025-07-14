@@ -17,7 +17,7 @@
         ><Search
       /></BaseButton>
     </NuxtLink>
-    <NuxtLink to="/wishList">
+    <NuxtLink to="/user/lists">
       <BaseButton
         variant="footer"
         @click="footerTabSelected('wishList')"
@@ -26,7 +26,7 @@
       /></BaseButton>
     </NuxtLink>
     <ClientOnly>
-      <NuxtLink v-if="userData.isLoggedIn" to="/user">
+      <NuxtLink v-if="userData.isLoggedIn" to="/user/profile">
         <BaseButton
           variant="footer"
           @click="footerTabSelected('user')"
@@ -66,12 +66,12 @@ watch(
   (newPath) => {
     if (newPath.includes("/search") || route.query.from === "search")
       activeFooterTab.value = "search";
-    else if (newPath.includes("/wishList") || route.query.from === "wishList")
+    else if (newPath.includes("/lists") || route.query.from === "wishList")
       activeFooterTab.value = "wishList";
     else if (newPath.includes("/user") || route.query.from === "user")
       activeFooterTab.value = "user";
     else if (newPath.includes("/login") || newPath.includes("/signup"))
-      activeFooterTab.value = "";
+      activeFooterTab.value = "user";
     else activeFooterTab.value = "home";
   },
   { immediate: true }

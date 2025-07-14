@@ -1,4 +1,4 @@
-import type { userData } from "~/types/types";
+import type { userData, WishListItem, WatchListItem } from "~/types/types";
 import { defineStore } from "pinia";
 
 export const useUserData = defineStore("userData", {
@@ -7,6 +7,8 @@ export const useUserData = defineStore("userData", {
     user: null as userData | null,
     error: "",
     isUserLoaded: false,
+    userWishList: [] as WishListItem[],
+    userWatchList: [] as WatchListItem[],
   }),
 
   getters: {
@@ -21,8 +23,8 @@ export const useUserData = defineStore("userData", {
     userEmail: (state) => state.user?.email,
     userJoinDate: (state) => state.user?.created_at,
     userName: (state) => state.user?.name,
-    userWishList: (state) => state.user?.wishList,
-    userWatchList: (state) => state.user?.watchList,
+    GetUserWishList: (state) => state.user?.wishList,
+    GetUserWatchList: (state) => state.user?.watchList,
   },
 
   actions: {

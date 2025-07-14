@@ -107,6 +107,12 @@ export interface Genre {
   name: string;
 }
 
+export interface CombinedCreditsResponse {
+  id: number;
+  cast: (Movie | TvShow)[];
+  crew: any[];
+}
+
 export interface GenresResponse {
   genres: Genre[];
 }

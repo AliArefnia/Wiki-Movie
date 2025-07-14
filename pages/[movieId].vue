@@ -21,6 +21,13 @@
         :media-type="mediaType"
         :id="mediaDetail.id"
       ></BaseMediaDetail>
+
+      <!-- Person Credits -->
+
+      <div v-if="mediaType === 'person'">
+        <BasePersonCredits :media="personCredits"></BasePersonCredits>
+      </div>
+
       <!-- Trailer -->
       <div v-if="mediaType === 'movie' || mediaType === 'tv'">
         <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
@@ -74,11 +81,14 @@ import type {
   PersonDetail,
   trailer,
   MediaDetailUnion,
+  TvShow,
+  Movie,
 } from "~/types/types";
 
 const route = useRoute();
 const mediaType = ref<"movie" | "tv" | "person" | null>(null);
 const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
+const personCredits = ref<(Movie | TvShow)[]>([]);
 
 const officialTrailerKey = ref();
 const officialTrailerName = ref("");
@@ -150,6 +160,17 @@ async function fetchMediaDetail() {
   }
 }
 
+async function fetchPersonCredits() {
+  if (mediaType.value !== "person" || !mediaDetail.value?.id) return;
+
+  const credits = await $fetch(`/api/PersonCredits?id=${mediaDetail.value.id}`);
+  if (credits.success) {
+    personCredits.value = credits.data;
+  } else {
+    console.error(credits.error);
+  }
+}
+
 onMounted(async () => {
   if (!route.query.mediaType || !route.params.movieId) {
     console.error("Missing media type or ID");
@@ -157,6 +178,9 @@ onMounted(async () => {
   }
   await fetchMediaDetail();
 
+  if (mediaType.value === "person") {
+    await fetchPersonCredits();
+  }
   if (mediaType.value !== "person") {
     const data = await $fetch<trailer>(
       `/api/MediaTrailer?mediaId=${mediaDetail.value?.id}&mediaType=${mediaType.value} `

@@ -82,7 +82,7 @@ definePageMeta({
   },
 });
 useHead({
-  title: "User",
+  title: "User Profile",
 });
 
 import { useUserData } from "~/store/user";

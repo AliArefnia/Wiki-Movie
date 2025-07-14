@@ -3,10 +3,11 @@
   <div class="mt-10 text-white">
     <h3 class="font-display mx-4 text-2xl">Top Cast</h3>
     <div class="flex overflow-auto py-4">
-      <div
+      <NuxtLink
         v-if="cast.length"
         v-for="person in cast"
         :key="person.id"
+        :to="`/${person.id}?mediaType=${'person'}`"
         class="shrink-0 mx-2"
       >
         <BasePersonCard
@@ -14,16 +15,17 @@
           :role="person.character"
           :profileUrl="person.profile_path"
         />
-      </div>
+      </NuxtLink>
       <p v-else class="font-display mx-auto">No Cast Found</p>
     </div>
 
     <h3 class="font-display mx-4 text-2xl mt-6">Crew</h3>
     <div class="flex overflow-auto py-4">
-      <div
+      <NuxtLink
         v-if="crew.length"
         v-for="person in crew"
         :key="person.id"
+        :to="`/${person.id}?mediaType=${'person'}`"
         class="shrink-0 mx-2"
       >
         <BasePersonCard
@@ -31,7 +33,7 @@
           :role="person.job"
           :profileUrl="person.profile_path"
         />
-      </div>
+      </NuxtLink>
       <p v-else class="font-display mx-auto">No Crew Found</p>
     </div>
   </div>

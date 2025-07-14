@@ -51,7 +51,6 @@ export default defineEventHandler(async (event) => {
       }
     });
   } catch (error) {
-    console.log(error);
     console.error("Error fetching similar movies:", error);
     return { error: "Failed to fetch similar movies" };
   }

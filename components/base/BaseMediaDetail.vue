@@ -249,9 +249,10 @@ async function toggleMovieWatched() {
 onMounted(() => {
   if (props.mediaType !== "person") {
     isInWishList.value =
-      userData.userWishList?.some((media) => media.id === props.id) ?? false;
+      userData.GetUserWishList?.some((media) => media.id === props.id) ?? false;
     isInWatchList.value =
-      userData.userWatchList?.some((media) => media.id === props.id) ?? false;
+      userData.GetUserWatchList?.some((media) => media.id === props.id) ??
+      false;
   }
 });
 </script>

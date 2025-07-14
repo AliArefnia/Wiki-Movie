@@ -47,7 +47,6 @@ export default defineEventHandler(async (event) => {
       return tvShow;
     }
   } catch (error) {
-    console.log(error);
     console.error("Error fetching movies by search:", error);
     return { error: "Failed to fetch movies by search" };
   }

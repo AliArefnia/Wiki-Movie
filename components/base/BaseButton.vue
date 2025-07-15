@@ -35,9 +35,10 @@ const props = defineProps({
 });
 
 const variantMap: Record<string, string> = {
-  primary:
-    "bg-btn-primary text-white hover:bg-btn-primary-hover hover:shadow-lg hover:-translate-y-[1px] transition-all duration-200 ease-in-out",
-  secondary: "bg-button-primary text-white hover:bg-gray-700",
+  primary: "bg-btn-primary text-white hover:bg-btn-primary-hover ",
+  secondary: "bg-btn-accent text-white hover:bg-gray-700",
+  accent:
+    "bg-btn-accent text-white hover:bg-primary hover:cursor-pointer hover:text-black  ",
   footer: "text-primary bg-transparent",
   danger: "bg-red-600 text-white hover:bg-red-700",
   diactivae: "bg-transparent text-gray-700 hover:bg-gray-100",
@@ -51,10 +52,10 @@ const sizeMap: Record<string, string> = {
 
 const buttonClasses = computed(() => {
   return [
-    "transition duration-200 font-medium focus:outline-none focus:ring-2",
+    "transition duration-300 font-medium focus:outline-none focus:ring-2 ease-in-out hover:shadow-lg hover:-translate-y-[1px] ",
     variantMap[props.variant] || variantMap.primary,
     sizeMap[props.size] || sizeMap.md,
-    props.rounded ? "rounded-lg" : "rounded-none",
+    props.rounded ? "rounded-full" : "rounded-none",
     props.fullWidth ? "w-full" : "",
     props.active ? "bg-surface-hover text-primary" : "text-white",
     props.disabled

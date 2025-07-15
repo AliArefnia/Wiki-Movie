@@ -2,9 +2,9 @@
   <header class="bg-surface-card text-white shadow-lg sticky top-0 z-20">
     <div>
       <div
-        class="container px-8 sm:mx-auto flex justify-between items-center py-4 relative"
+        class="container px-8 sm:mx-auto flex justify-between items-center py-4 relative xl:px-40"
       >
-        <BaseButton class="bg-surface-dark" @click="goBack">
+        <BaseButton class="bg-surface-dark hover:bg-white" @click="goBack">
           <svg
             class="w-6 h-6 text-primary"
             fill="none"
@@ -23,7 +23,7 @@
         <NuxtImg
           src="/images/Logo.png"
           alt="Wiki Movie Logo"
-          class="w-15 m-0 absolute right-8 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
+          class="w-15 m-0 absolute right-8 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)] xl:right-40"
           @click="navigateTo('/')"
         />
       </div>

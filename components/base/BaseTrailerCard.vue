@@ -11,6 +11,7 @@
       :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
       @click="showIframe = true"
     >
+      <!-- <img :src="fallBackThumbnail" alt="fallback" /> -->
       <transition name="fade" mode="out-in">
         <img
           v-if="!showIframe"
@@ -18,7 +19,7 @@
           :width="trailerWidth"
           :height="trailerHeight"
           class="object-cover transition-opacity duration-500 rounded-2xl"
-          alt="Trailer Thumbnail"
+          :alt="`${trailerName} Trailer Thumbnail`"
         />
         <iframe
           v-else

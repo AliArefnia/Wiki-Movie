@@ -116,6 +116,14 @@ export interface CombinedCreditsResponse {
 export interface GenresResponse {
   genres: Genre[];
 }
+export interface Comments {
+  id: string;
+  comment: string;
+  created_at: string;
+  user?: {
+    name?: string | null;
+  };
+}
 
 export interface MovieGet {
   results: Movie[];

@@ -18,7 +18,9 @@
       />
     </div>
     <div class="text-white text-center p-2">
-      <div class="font-bold text-sm line-clamp-2">{{ personName }}</div>
+      <div class="font-bold text-sm line-clamp-2 lg:text-base">
+        {{ personName }}
+      </div>
       <div class="text-[10px] text-gray-300">{{ role }}</div>
     </div>
   </div>

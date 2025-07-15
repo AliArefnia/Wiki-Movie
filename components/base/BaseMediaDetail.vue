@@ -77,7 +77,7 @@
         <h2 class="text-xl font-light mb-2 text-primary">
           {{ mediaType === "person" ? "Biography" : "Overview" }}
         </h2>
-        <p class="text-gray-200 leading-relaxed font-display">
+        <p class="text-gray-200 leading-relaxed font-display lg:text-lg">
           {{ displayOverview }}
         </p>
       </div>

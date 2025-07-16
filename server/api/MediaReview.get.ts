@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
 
     const { data, error } = await supabase
       .from("reviews")
-      .select("id,comment,created_at,user:user_id(name)")
+      .select("id,comment,created_at,user:user_id(id,name)")
+      .eq("status", "approved")
       .eq("movie_id", mediaId);
 
     return data;

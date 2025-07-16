@@ -120,8 +120,10 @@ export interface Comments {
   id: string;
   comment: string;
   created_at: string;
+  status: "pending" | "approved" | "rejected";
   user?: {
     name?: string | null;
+    id: string;
   };
 }
 

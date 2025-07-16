@@ -47,5 +47,6 @@ export const useMovieStore = defineStore("movieStore", {
 
   getters: {
     getMovieGenres: (state) => state.movieGenres,
+    getTvGenres: (state) => state.tvGenres,
   },
 });

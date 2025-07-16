@@ -1,69 +1,71 @@
 <template>
-  <div v-if="mediaDetail" class="relative min-h-screen text-white">
-    <div
-      v-if="mediaType === 'movie' || mediaType === 'tv'"
-      class="relative h-[500px] w-full bg-cover bg-center"
-      :style="{ backgroundImage: `url(${backdropUrl})` }"
-    >
-      <div class="absolute inset-0 bg-black opacity-60"></div>
+  <div>
+    <div v-if="mediaDetail" class="relative min-h-screen text-white">
+      <div
+        v-if="mediaType === 'movie' || mediaType === 'tv'"
+        class="relative h-[500px] w-full bg-cover bg-center"
+        :style="{ backgroundImage: `url(${backdropUrl})` }"
+      >
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+      </div>
+      <div
+        v-else
+        class="relative h-[300px] w-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center"
+      ></div>
+
+      <!-- Content Container -->
+      <div class="relative z-10 -mt-56 max-w-6xl mx-auto px-6 pb-10">
+        <!-- Movie Header -->
+
+        <BaseMediaDetail
+          :media-detail="mediaDetail"
+          :media-type="mediaType"
+          :id="mediaDetail.id"
+        ></BaseMediaDetail>
+
+        <!-- Person Credits -->
+
+        <div v-if="mediaType === 'person'">
+          <BasePersonCredits :media="personCredits"></BasePersonCredits>
+        </div>
+
+        <!-- Trailer -->
+        <div v-if="mediaType === 'movie' || mediaType === 'tv'">
+          <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
+          <BaseTrailerCard
+            v-if="officialTrailerKey"
+            class="shrink-0 mx-2"
+            :soloMovie="true"
+            :officialTrailerKey="officialTrailerKey"
+            :fallBackThumbnail="backdropUrl"
+            :trailerName="officialTrailerName"
+          />
+          <p v-else class="text-gray-400 text-center font-display mt-6">
+            {{ officialTrailerName }}
+          </p>
+        </div>
+
+        <BaseSimilarMoviesSection
+          v-if="mediaType === 'movie' || mediaType === 'tv'"
+          :movieId="Number(route.params.movieId)"
+          :mediaType="mediaType"
+        ></BaseSimilarMoviesSection>
+        <BaseCastCrewSection
+          v-if="mediaType === 'movie' || mediaType === 'tv'"
+          :mediaId="Number(route.params.movieId)"
+          :mediaType="mediaType"
+        ></BaseCastCrewSection>
+      </div>
+      <CommentSection :media-id="mediaDetail.id"></CommentSection>
     </div>
+    <!-- Loading State -->
     <div
       v-else
-      class="relative h-[300px] w-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center"
-    ></div>
-
-    <!-- Content Container -->
-    <div class="relative z-10 -mt-56 max-w-6xl mx-auto px-6 pb-10">
-      <!-- Movie Header -->
-
-      <BaseMediaDetail
-        :media-detail="mediaDetail"
-        :media-type="mediaType"
-        :id="mediaDetail.id"
-      ></BaseMediaDetail>
-
-      <!-- Person Credits -->
-
-      <div v-if="mediaType === 'person'">
-        <BasePersonCredits :media="personCredits"></BasePersonCredits>
-      </div>
-
-      <!-- Trailer -->
-      <div v-if="mediaType === 'movie' || mediaType === 'tv'">
-        <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
-        <BaseTrailerCard
-          v-if="officialTrailerKey"
-          class="shrink-0 mx-2"
-          :soloMovie="true"
-          :officialTrailerKey="officialTrailerKey"
-          :fallBackThumbnail="backdropUrl"
-          :trailerName="officialTrailerName"
-        />
-        <p v-else class="text-gray-400 text-center font-display mt-6">
-          {{ officialTrailerName }}
-        </p>
-      </div>
-
-      <BaseSimilarMoviesSection
-        v-if="mediaType === 'movie' || mediaType === 'tv'"
-        :movieId="Number(route.params.movieId)"
-        :mediaType="mediaType"
-      ></BaseSimilarMoviesSection>
-      <BaseCastCrewSection
-        v-if="mediaType === 'movie' || mediaType === 'tv'"
-        :mediaId="Number(route.params.movieId)"
-        :mediaType="mediaType"
-      ></BaseCastCrewSection>
+      class="absolute inset-0 flex items-center justify-center text-white"
+    >
+      <!-- loader -->
+      <BaseLoader message="Loading Media Details!"></BaseLoader>
     </div>
-
-    <!-- Loading State -->
-  </div>
-  <div
-    v-else
-    class="absolute inset-0 flex items-center justify-center text-white"
-  >
-    <!-- loader -->
-    <BaseLoader message="Loading Media Details!"></BaseLoader>
   </div>
 </template>
 
@@ -75,6 +77,7 @@ import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
 import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
+import CommentSection from "~/components/MovieSections/CommentSection.vue";
 import type {
   MovieDetail,
   TvDetail,

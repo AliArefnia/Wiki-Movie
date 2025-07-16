@@ -1,65 +1,86 @@
 <template>
   <div class="bg-surface-dark pt-2">
-    <h3 class="text-white text-lg font-bold ml-6 mb-2">
-      {{ route.params.genreName }} Movies
-    </h3>
+    <div class="flex items-center justify-between px-6 mb-4">
+      <h2
+        class="text-white text-xl md:text-2xl font-semibold tracking-wide border-b border-primary pb-2 w-fit"
+      >
+        <span class="text-primary">🎬</span>
+        <span class="ml-2"
+          >{{ route.params.genreName }}
+          {{ mediaType === "tv" ? "Tv shows" : "Movies" }}</span
+        >
+      </h2>
+    </div>
 
-    <div class="grid grid-cols-3 gap-2 justify-items-center pt-2">
+    <div
+      class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-4"
+    >
       <NuxtLink
-        v-for="movie in genreMovie"
-        :key="movie.id"
-        :to="`/${movie.id}?from=/genre/${route.params.genreName}&mediaType=${movie.media_type}`"
+        v-for="media in genreMedia"
+        :key="media.id"
+        :to="`/${media.id}?from=/genre/${route.params.genreName}&mediaType=${media.media_type}`"
       >
         <BaseMovieCardSmall
           class="shrink-0 mx-2"
-          :movieTitle="movie.title"
-          :rating="movie.vote_average"
-          :releaseDate="movie.release_date"
-          :posterUrl="movie.poster_path"
+          :movieTitle="`${
+            media.media_type === 'movie' ? media.title : media.name
+          }`"
+          :rating="media.vote_average"
+          :releaseDate="`${
+            media.media_type === 'movie'
+              ? media.release_date
+              : media.first_air_date
+          }`"
+          :posterUrl="media.poster_path"
         />
       </NuxtLink>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-definePageMeta({
-  layout: "genre-pages",
-});
-
 import { useInfiniteScroll } from "@vueuse/core";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "~/store/store";
 
-import type { Movie } from "@/types/types";
+import type { Genre, MediaItem } from "@/types/types";
 
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 const movieStore = useMovieStore();
 const route = useRoute();
 
-const genres = movieStore.movieGenres;
+const genres = ref<Genre[]>([]);
 
-const genreMovie = ref<Movie[]>([]);
+const genreMedia = ref<MediaItem[]>([]);
 const page = ref(1);
 const isLoading = ref(false);
+const mediaType = route.query.mediaType;
 
 async function fetchMediaByGenre() {
   if (isLoading.value || page.value > 500) return;
 
   isLoading.value = true;
-
-  const genre = genres.find((genre) => {
+  if (mediaType === "tv") {
+    genres.value = movieStore.getTvGenres;
+  } else {
+    genres.value = movieStore.getMovieGenres;
+  }
+  const genre = genres.value.find((genre) => {
     return genre.name === route.params.genreName;
   });
-
+  if (genre) {
+    useHead({
+      title: `${genre.name} ${mediaType === "tv" ? "Tv shows" : "Movies"}`,
+    });
+  }
   if (!genre) {
     console.error("Genre not found!");
     return;
   }
 
-  let data = await $fetch<Movie[]>(
+  let data = await $fetch<MediaItem[]>(
     `/api/MediaByGenre?genreId=${genre.id}&page=${page.value}`
   );
-  genreMovie.value.push(...data);
+  genreMedia.value.push(...data);
   page.value++;
   isLoading.value = false;
 }
@@ -73,6 +94,9 @@ useInfiniteScroll(
   },
   { distance: 100 }
 );
+definePageMeta({
+  layout: "genre-pages",
+});
 
 onMounted(async () => {
   await fetchMediaByGenre();

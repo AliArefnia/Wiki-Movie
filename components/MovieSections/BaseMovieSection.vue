@@ -4,7 +4,7 @@
 
     <NuxtLink
       class="text-primary cursor-pointer group w-fit"
-      :to="`/genre/${genreName}`"
+      :to="`/genre/${genreName}?mediaType=${mediaType}`"
     >
       <div class="flex">
         <span class="mr-2 font-special text-sm">more</span>

@@ -123,7 +123,7 @@ const fetchComments = async () => {
     const data = await $fetch<Comments[]>(
       `/api/MediaReview?mediaId=${props.mediaId}`
     );
-    comments.value = data;
+    comments.value = data || [];
   } catch (error) {
     console.error("Error loading comments", error);
   }

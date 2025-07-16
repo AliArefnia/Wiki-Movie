@@ -3,7 +3,7 @@
     class="bg-surface-card text-white rounded-xl p-4 shadow-md border border-surface-hover transition hover:shadow-lg"
   >
     <p class="text-xs text-gray-400 mb-1">
-      {{ comment.user?.name || "USER" }}
+      {{ comment.user?.name || `User ${comment.user?.id?.slice(0, 15)}` }}
     </p>
     <p class="mb-2 text-sm leading-relaxed text-gray-100">
       {{ comment.comment }}

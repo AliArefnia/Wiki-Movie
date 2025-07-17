@@ -1,4 +1,9 @@
-import type { userData, WishListItem, WatchListItem } from "~/types/types";
+import type {
+  userData,
+  WishListItem,
+  WatchListItem,
+  FavouriePersonteItem,
+} from "~/types/types";
 import { defineStore } from "pinia";
 
 export const useUserData = defineStore("userData", {
@@ -9,6 +14,7 @@ export const useUserData = defineStore("userData", {
     isUserLoaded: false,
     userWishList: [] as WishListItem[],
     userWatchList: [] as WatchListItem[],
+    userFavouritePersonList: [] as FavouriePersonteItem[],
   }),
 
   getters: {
@@ -25,6 +31,7 @@ export const useUserData = defineStore("userData", {
     userName: (state) => state.user?.name,
     GetUserWishList: (state) => state.user?.wishList,
     GetUserWatchList: (state) => state.user?.watchList,
+    GetUserFavouritePersonList: (state) => state.user?.favouritePersonList,
   },
 
   actions: {
@@ -114,6 +121,47 @@ export const useUserData = defineStore("userData", {
       }
     },
 
+    async toggleFavouritePerson({
+      personId,
+      mediaType,
+    }: {
+      personId: number;
+      mediaType: "person";
+    }) {
+      if (!this.user) return;
+      let favouritePerson = { id: personId, mediaType: mediaType };
+      const originalList = [...this.user.favouritePersonList];
+
+      const alreadyIsInList = this.user?.favouritePersonList.some(
+        (person) => person.id === personId
+      );
+
+      if (alreadyIsInList) {
+        this.user.favouritePersonList = this.user.favouritePersonList.filter(
+          (person) => person.id !== personId
+        );
+      } else {
+        this.user?.favouritePersonList.push(favouritePerson);
+      }
+
+      try {
+        await fetch("/api/user/userFavouritePersonList", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.user.id,
+            favouritePerson,
+            action: alreadyIsInList ? "remove" : "add",
+          }),
+        });
+      } catch (error) {
+        console.error(error);
+        this.user.favouritePersonList = originalList;
+      }
+    },
+
     async fetchUser() {
       if (this.isUserLoaded) return;
       this.isUserLoaded = false;
@@ -135,10 +183,12 @@ export const useUserData = defineStore("userData", {
           wishList: [],
           created_at: data.user.created_at,
           watchList: [],
+          favouritePersonList: [],
         };
       }
       await this.getUserWishList(data.user.id);
       await this.getUserWatchList(data.user.id);
+      await this.getUserFavouritePersonList(data.user.id);
       this.isUserLoaded = true;
     },
 
@@ -177,6 +227,32 @@ export const useUserData = defineStore("userData", {
         this.user?.watchList.push(...(data.watch_list ?? []));
       } catch (error: any) {
         console.error("Error fetching user watchList:", error.message);
+        return null;
+      }
+    },
+    async getUserFavouritePersonList(userId: number) {
+      if (!userId) return null;
+      try {
+        const supabase: any = useNuxtApp().$supabase;
+        const { data, error } = await supabase
+          .from("users")
+          .select("favourite_person_list")
+          .eq("id", userId)
+          .single();
+
+        if (error) {
+          throw error;
+        }
+        console.log(data);
+        this.user?.favouritePersonList.push(
+          ...(data.favourite_person_list ?? [])
+        );
+        console.log(this.user?.favouritePersonList);
+      } catch (error: any) {
+        console.error(
+          "Error fetching user Favourite Person List:",
+          error.message
+        );
         return null;
       }
     },

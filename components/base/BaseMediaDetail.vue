@@ -33,8 +33,8 @@
     <!-- Movie Details -->
     <div class="flex-1 space-y-5 mt-6 text-center md:text-left">
       <!-- Title & Tagline & controls -->
-      <div class="md:relative flex justify-between">
-        <div>
+      <div class="md:relative flex flex-col md:flex-row justify-between">
+        <div class="mb-3 md:m-0">
           <h1 class="text-4xl leading-tight font-display">
             {{ displayTitle }}
           </h1>

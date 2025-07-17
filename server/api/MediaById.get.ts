@@ -1,4 +1,4 @@
-import type { MediaItem, Movie, TvShow } from "~/types/types";
+import type { MediaItem, Movie, Person, TvShow } from "~/types/types";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -45,6 +45,15 @@ export default defineEventHandler(async (event) => {
         genre_ids: response.genre_ids ?? [],
       };
       return tvShow;
+    }
+    if (mediaType === "person") {
+      const person: Person = {
+        id: response.id,
+        media_type: "person",
+        name: response.name ?? "Untitled",
+        profile_path: `${IMAGE_URL}${response.profile_path}` || null,
+      };
+      return person;
     }
   } catch (error) {
     console.error("Error fetching movies by search:", error);

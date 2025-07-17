@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
   const updatedList =
     action === "add"
-      ? [...user.wish_list, wishedMedia]
+      ? [...(user.wish_list || []), wishedMedia]
       : user.wish_list.filter(
           (media: { id: number; mediaType: "tv" | "movie" }) =>
             media.id !== wishedMedia.id

@@ -23,14 +23,14 @@ export type Person = {
   media_type: "person";
   name: string;
   profile_path: string | null;
-  known_for: {
+  known_for?: {
     id: number;
     title?: string;
     name?: string;
     media_type: string;
     poster_path: string | null;
   }[];
-  known_for_department: string;
+  known_for_department?: string;
 };
 
 export interface MovieDetail {
@@ -98,6 +98,10 @@ export type WatchListItem = {
   id: number;
   mediaType: "movie" | "tv";
 };
+export type FavouriePersonteItem = {
+  id: number;
+  mediaType: "person";
+};
 export interface MoviesByGenre {
   results: Movie[];
 }
@@ -144,6 +148,7 @@ export interface userData {
   wishList: WishListItem[];
   created_at: string | null;
   watchList: WatchListItem[];
+  favouritePersonList: FavouriePersonteItem[];
 }
 
 export interface trailer {

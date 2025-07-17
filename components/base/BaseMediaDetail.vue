@@ -58,6 +58,12 @@
             @toggleMovieWatched="toggleMovieWatched()"
           >
           </BaseEyeButton>
+          <BasePersonButton
+            v-if="mediaType === 'person' && userData.user"
+            :isFavouritePerson="isInFavouritePersonList"
+            @toggleFavouritePerson="toggleFavouritePerson()"
+          >
+          </BasePersonButton>
         </section>
       </div>
 
@@ -145,6 +151,7 @@ import type { Genre, MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import { useUserData } from "~/store/user";
 import BaseHeartButton from "./BaseHeartButton.vue";
 import BaseEyeButton from "./BaseEyeButton.vue";
+import BasePersonButton from "./BasePersonButton.vue";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;
@@ -155,7 +162,9 @@ const props = defineProps<{
 const userData = useUserData();
 const isLoadingWishList = ref(false);
 const isLoadingWatchList = ref(false);
+const isLoadingFavouritePersonList = ref(false);
 const isInWishList = ref(false);
+const isInFavouritePersonList = ref(false);
 const loaded = ref(false);
 const isInWatchList = ref(false);
 
@@ -245,6 +254,20 @@ async function toggleMovieWatched() {
     console.error("Failed to toggle movie Watch list:", error);
   }
 }
+async function toggleFavouritePerson() {
+  try {
+    const id = Number(props.id);
+    isLoadingFavouritePersonList.value = true;
+    await userData.toggleFavouritePerson({
+      personId: id,
+      mediaType: props.mediaType as "person",
+    });
+    isLoadingFavouritePersonList.value = false;
+    isInFavouritePersonList.value = !isInFavouritePersonList.value;
+  } catch (error) {
+    console.error("Failed to toggle favourite person list:", error);
+  }
+}
 
 onMounted(() => {
   if (props.mediaType !== "person") {
@@ -253,6 +276,12 @@ onMounted(() => {
     isInWatchList.value =
       userData.GetUserWatchList?.some((media) => media.id === props.id) ??
       false;
+  }
+  if (props.mediaType === "person") {
+    isInFavouritePersonList.value =
+      userData.GetUserFavouritePersonList?.some(
+        (person) => person.id === props.id
+      ) ?? false;
   }
 });
 </script>

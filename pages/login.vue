@@ -100,10 +100,12 @@ async function logIn() {
       wishList: [],
       watchList: [],
       created_at: data.user.created_at,
+      favouritePersonList: [],
     });
 
     await userData.getUserWishList(data.user.id);
     await userData.getUserWatchList(data.user.id);
+    await userData.getUserFavouritePersonList(data.user.id);
 
     router.push(`${previousPageLink.value}`);
   } catch (err) {

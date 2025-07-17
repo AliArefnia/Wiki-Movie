@@ -29,7 +29,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   personName: string;
-  role: string;
+  role?: string;
   profileUrl: string | null;
 }>();
 

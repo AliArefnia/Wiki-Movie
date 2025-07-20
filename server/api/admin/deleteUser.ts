@@ -9,7 +9,7 @@ const supabase = createClient(
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { userId } = body;
+  const { id: userId } = body;
 
   if (!userId) {
     throw createError({ statusCode: 400, message: "Missing userId" });

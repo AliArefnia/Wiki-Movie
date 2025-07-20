@@ -34,9 +34,7 @@
     <div
       class="flex flex-col left-4 bottom-4 text-white font-display items-center"
     >
-      <div
-        class="dynamic-font-container font-bold line-clamp-2 text-center text-sm lg:text-base my-1"
-      >
+      <div class="font-bold line-clamp-2 text-center text-sm lg:text-base my-1">
         {{ movieTitle }}
       </div>
 

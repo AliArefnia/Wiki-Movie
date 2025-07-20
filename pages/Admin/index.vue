@@ -1,0 +1,70 @@
+<template>
+  <!-- Page content -->
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">Welcome, Admin!</h1>
+    <p class="mb-6 text-gray-300">
+      Choose a section to begin managing the application.
+    </p>
+
+    <!-- Optional: Overview section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-slate-800 p-4 rounded shadow group">
+        <h2 class="text-lg font-semibold mb-2">👥 Users</h2>
+        <p class="text-sm text-gray-400">
+          Manage registered users, delete accounts, and more.
+        </p>
+        <NuxtLink
+          to="/admin/users"
+          class="inline-block mt-3 text-blue-400 hover:underline"
+        >
+          Go to User Management
+          <span class="group-hover:ml-2 transition-all duration-300">→</span>
+        </NuxtLink>
+      </div>
+      <div class="bg-slate-800 p-4 rounded shadow group">
+        <h2 class="text-lg font-semibold mb-2">📝 Reviews</h2>
+        <p class="text-sm text-gray-400">
+          Moderate user comments and change review statuses.
+        </p>
+        <NuxtLink to="/admin/reviews" class="inline-block mt-3 text-blue-400">
+          Go to Review Moderation
+          <span class="group-hover:ml-2 transition-all duration-300">→</span>
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+definePageMeta({
+  layout: "admin-panel",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
+});
+
+const isSidebarOpen = ref(false);
+const sidebarRef = ref<HTMLElement | null>(null);
+
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+};
+const closeSidebar = () => {
+  isSidebarOpen.value = false;
+};
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (sidebarRef.value && !sidebarRef.value.contains(e.target as Node)) {
+    closeSidebar();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+</script>

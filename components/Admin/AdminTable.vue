@@ -22,98 +22,119 @@
         <option value="all">All</option>
       </select>
     </div>
+    <div class="rounded-2xl shadow-md">
+      <EasyDataTable
+        class="w-full text-sm mx-auto bg-slate-900 text-white border border-slate-700"
+        table-class-name="customize-table"
+        header-text-direction="center"
+        body-text-direction="center"
+        :headers="headers"
+        :items="isFetching || error || items.length === 0 ? [] : items"
+        :rows-per-page="5"
+        :body-cell-class="() => 'whitespace-normal break-words'"
+        :fixed-columns="1"
+        :loading="isFetching"
+        table-class="!bg-slate-900 !text-white"
+        header-class="!bg-slate-800 !text-white"
+        body-row-class="!hover:bg-slate-800 transition duration-200"
+      >
+        <template #loading>
+          <img
+            src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
+            style="width: 100px; height: 80px"
+          />
+        </template>
+        <template #header="header">
+          <div class="my-2">
+            {{ header.text.toUpperCase() }}
+          </div>
+        </template>
 
-    <EasyDataTable
-      class="w-full text-sm mx-auto rounded-xl bg-slate-900 text-white border border-slate-700"
-      table-class-name="customize-table"
-      header-text-direction="center"
-      body-text-direction="center"
-      :headers="headers"
-      :items="isFetching || error || items.length === 0 ? [] : items"
-      :rows-per-page="5"
-      :body-cell-class="() => 'whitespace-normal break-words'"
-      :fixed-columns="1"
-      :loading="isFetching"
-      table-class="!bg-slate-900 !text-white"
-      header-class="!bg-slate-800 !text-white"
-      body-row-class="!hover:bg-slate-800 transition duration-200"
-    >
-      <template #loading>
-        <img
-          src="https://i.pinimg.com/originals/94/fd/2b/94fd2bf50097ade743220761f41693d5.gif"
-          style="width: 100px; height: 80px"
-        />
-      </template>
-
-      <template #expand="item" v-if="expandField">
-        <div class="xs:px-5 sm:px-10">
-          {{ expandLabel }}: {{ item[expandField] }}
-        </div>
-      </template>
-
-      <template #item-created_at="item" v-if="hasDate">
-        <div class="whitespace-normal break-words">
-          {{ formatDate(item.created_at) }}
-        </div>
-      </template>
-
-      <template #item-status="item" v-if="hasStatus">
-        <span
-          class="px-2 py-1 text-xs rounded-full font-medium"
-          :class="{
-            'bg-green-100 text-green-700': item.status === 'approved',
-            'bg-yellow-100 text-yellow-700': item.status === 'pending',
-            'bg-red-100 text-red-700': item.status === 'rejected',
-          }"
-        >
-          {{ item.status }}
-        </span>
-      </template>
-
-      <!-- Custom operation actions -->
-      <template #item-operation="item">
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center gap-2 my-2 mx-auto"
-        >
-          <template v-if="moderationMode">
-            <button
-              v-if="item.status !== 'approved'"
-              @click="updateStatus(item.id, 'approved')"
-              class="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
-              :disabled="loadingIds.has(item.id)"
+        <template #expand="item" v-if="expandField">
+          <div class="xs:px-5 sm:px-10 py-4">
+            <span
+              class="my-2 py-1 px-2 rounded-2xl"
+              :class="{
+                'bg-green-100 text-green-700': item.status === 'approved',
+                'bg-yellow-100 text-yellow-700': item.status === 'pending',
+                'bg-red-100 text-red-700': item.status === 'rejected',
+              }"
             >
-              Approve
-            </button>
-            <button
-              v-if="item.status !== 'rejected'"
-              @click="updateStatus(item.id, 'rejected')"
-              class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600"
-              :disabled="loadingIds.has(item.id)"
+              {{ expandLabel }}:</span
             >
-              Reject
-            </button>
-            <button
-              v-if="item.status === 'approved' || item.status === 'rejected'"
-              @click="updateStatus(item.id, 'pending')"
-              class="px-2 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600"
-              :disabled="loadingIds.has(item.id)"
-            >
-              Pend
-            </button>
-          </template>
+            {{ item[expandField] }}
+          </div>
+        </template>
 
-          <template v-if="userDeleteMode">
-            <button
-              @click="deleteUser(item.id)"
-              class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-              :disabled="loadingIds.has(item.id)"
-            >
-              Delete
-            </button>
-          </template>
-        </div>
-      </template>
-    </EasyDataTable>
+        <template #item-created_at="item" v-if="hasDate">
+          <div class="whitespace-normal break-words">
+            {{ formatDate(item.created_at) }}
+          </div>
+        </template>
+
+        <template #item-status="item" v-if="hasStatus">
+          <span
+            class="px-2 py-1 text-xs rounded-full font-medium"
+            :class="{
+              'bg-green-100 text-green-700': item.status === 'approved',
+              'bg-yellow-100 text-yellow-700': item.status === 'pending',
+              'bg-red-100 text-red-700': item.status === 'rejected',
+            }"
+          >
+            {{ item.status }}
+          </span>
+        </template>
+        <template #item-comment="item" v-if="hasStatus">
+          <span class="px-2 py-1 font-medium line-clamp-3 sm:line-clamp-6">
+            {{ item.comment }}
+          </span>
+        </template>
+
+        <!-- Custom operation actions -->
+        <template #item-operation="item">
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center gap-2 my-2 mx-auto"
+          >
+            <template v-if="moderationMode">
+              <button
+                v-if="item.status !== 'approved'"
+                @click="updateStatus(item.id, 'approved')"
+                class="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 hover:cursor-pointer"
+                :disabled="loadingIds.has(item.id)"
+              >
+                Approve
+              </button>
+              <button
+                v-if="item.status !== 'rejected'"
+                @click="updateStatus(item.id, 'rejected')"
+                class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-800 hover:cursor-pointer"
+                :disabled="loadingIds.has(item.id)"
+              >
+                Reject
+              </button>
+              <button
+                v-if="item.status === 'approved' || item.status === 'rejected'"
+                @click="updateStatus(item.id, 'pending')"
+                class="px-2 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600 hover:cursor-pointer"
+                :disabled="loadingIds.has(item.id)"
+              >
+                Pend
+              </button>
+            </template>
+
+            <template v-if="userDeleteMode">
+              <button
+                @click="deleteUser(item.id)"
+                class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-800 hover:cursor-pointer"
+                :disabled="loadingIds.has(item.id)"
+              >
+                Delete
+              </button>
+            </template>
+          </div>
+        </template>
+      </EasyDataTable>
+    </div>
   </div>
 </template>
 
@@ -187,8 +208,10 @@ async function deleteUser(id: number) {
   if (loadingIds.value.has(id)) return;
   loadingIds.value.add(id);
   try {
-    await $fetch(`${props.deleteEndpoint}/${id}`, {
+    await $fetch(`${props.deleteEndpoint}`, {
       method: "DELETE",
+      body: JSON.stringify({ id }),
+      headers: { "Content-Type": "application/json" },
     });
     await fetchData();
   } catch (err) {
@@ -222,5 +245,17 @@ function formatDate(dateStr: string) {
   --easy-table-rows-per-page-selector-width: 70px;
   --easy-table-rows-per-page-selector-option-padding: 10px;
   --easy-table-rows-per-page-selector-z-index: 1;
+}
+.easy-table-rows-selector {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #f8fafc !important; /* slate-50 */
+  border: 1px solid #334155 !important; /* slate-700 */
+  border-radius: 0.375rem !important; /* rounded-md */
+  padding: 0.25rem 0.5rem !important;
+}
+
+.easy-table-rows-selector option {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
 }
 </style>

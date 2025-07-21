@@ -92,20 +92,7 @@ async function logIn() {
       error.value = loginError.message;
       return { error: loginError.message };
     }
-
-    userData.setUserData({
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.name,
-      wishList: [],
-      watchList: [],
-      created_at: data.user.created_at,
-      favouritePersonList: [],
-    });
-
-    await userData.getUserWishList(data.user.id);
-    await userData.getUserWatchList(data.user.id);
-    await userData.getUserFavouritePersonList(data.user.id);
+    await userData.fetchUser();
 
     router.push(`${previousPageLink.value}`);
   } catch (err) {

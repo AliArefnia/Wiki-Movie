@@ -32,6 +32,7 @@
             v-model="repeatPassword"
             type="password"
             placeholder="Repeat Password"
+            autocomplete="new-password"
             required
             @input="error = ''"
             class="w-full px-4 py-2 bg-surface-hover text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,8 +115,11 @@ async function signUp() {
 
     const { error: insertError } = await supabase.from("users").insert([
       {
+        id: data.user.id,
         email: email.value,
         wish_list: [],
+        watch_list: [],
+        favourite_person_list: [],
       },
     ]);
 
@@ -123,15 +127,7 @@ async function signUp() {
       return { error: insertError.message };
     }
 
-    userData.setUserData({
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.name,
-      wishList: [],
-      created_at: data.user.created_at,
-      watchList: [],
-      favouritePersonList: [],
-    });
+    await userData.fetchUser(data.user);
 
     router.push("/");
   } catch (err) {
@@ -140,6 +136,7 @@ async function signUp() {
     isSigninUp.value = false;
   }
 }
+
 onMounted(() => {
   emailInput.value?.focus();
 });

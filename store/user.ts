@@ -164,21 +164,13 @@ export const useUserData = defineStore("userData", {
       }
     },
 
-    async fetchUser() {
+    async fetchUser(user?: userData) {
       if (this.isUserLoaded) return;
       this.isUserLoaded = false;
 
       const supabase: any = useNuxtApp().$supabase;
-      const { data: authData, error: authError } =
-        await supabase.auth.getUser();
 
-      if (authError) {
-        this.error = authError.message;
-        this.isUserLoaded = true;
-        return;
-      }
-
-      const authUser = authData?.user;
+      const authUser = user ?? (await supabase.auth.getUser()).data?.user;
 
       if (!authUser) {
         console.warn("No user is currently logged in");

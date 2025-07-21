@@ -15,6 +15,7 @@ export const useUserData = defineStore("userData", {
     userWishList: [] as WishListItem[],
     userWatchList: [] as WatchListItem[],
     userFavouritePersonList: [] as FavouriePersonteItem[],
+    user_role: "",
   }),
 
   getters: {
@@ -32,6 +33,7 @@ export const useUserData = defineStore("userData", {
     GetUserWishList: (state) => state.user?.wishList,
     GetUserWatchList: (state) => state.user?.watchList,
     GetUserFavouritePersonList: (state) => state.user?.favouritePersonList,
+    GetUserRole: (state) => state.user?.user_role,
   },
 
   actions: {
@@ -165,30 +167,52 @@ export const useUserData = defineStore("userData", {
     async fetchUser() {
       if (this.isUserLoaded) return;
       this.isUserLoaded = false;
+
       const supabase: any = useNuxtApp().$supabase;
-      const { data, error } = await supabase.auth.getUser();
-      if (!data.user) {
+      const { data: authData, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError) {
+        this.error = authError.message;
+        this.isUserLoaded = true;
+        return;
+      }
+
+      const authUser = authData?.user;
+
+      if (!authUser) {
         console.warn("No user is currently logged in");
         this.user = null;
         this.isUserLoaded = true;
         return;
       }
-      if (error) {
-        this.error = error.message;
-      } else {
-        this.user = {
-          id: data.user.id,
-          email: data.user.email as string,
-          name: data.user.name,
-          wishList: [],
-          created_at: data.user.created_at,
-          watchList: [],
-          favouritePersonList: [],
-        };
+
+      const { data: profileData, error: profileError } = await supabase
+        .from("users")
+        .select("name, user_role")
+        .eq("id", authUser.id)
+        .single();
+
+      if (profileError) {
+        this.error = profileError.message;
+        this.isUserLoaded = true;
+        return;
       }
-      await this.getUserWishList(data.user.id);
-      await this.getUserWatchList(data.user.id);
-      await this.getUserFavouritePersonList(data.user.id);
+
+      this.user = {
+        id: authUser.id,
+        email: authUser.email as string,
+        name: profileData.name || null,
+        created_at: authUser.created_at,
+        wishList: [],
+        watchList: [],
+        favouritePersonList: [],
+        user_role: profileData.user_role,
+      };
+
+      await this.getUserWishList(Number(authUser.id));
+      await this.getUserWatchList(authUser.id);
+      await this.getUserFavouritePersonList(authUser.id);
       this.isUserLoaded = true;
     },
 
@@ -243,11 +267,9 @@ export const useUserData = defineStore("userData", {
         if (error) {
           throw error;
         }
-        console.log(data);
         this.user?.favouritePersonList.push(
           ...(data.favourite_person_list ?? [])
         );
-        console.log(this.user?.favouritePersonList);
       } catch (error: any) {
         console.error(
           "Error fetching user Favourite Person List:",

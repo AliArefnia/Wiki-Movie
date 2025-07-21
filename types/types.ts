@@ -149,7 +149,10 @@ export interface userData {
   created_at: string | null;
   watchList: WatchListItem[];
   favouritePersonList: FavouriePersonteItem[];
+  user_role: user_roles;
 }
+
+type user_roles = "admin" | "user";
 
 export interface trailer {
   name: string;

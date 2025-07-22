@@ -9,6 +9,12 @@ export default defineNuxtConfig({
       SUPABASE_KEY: process.env.NUXT_PUBLIC_SUPABASE_KEY,
     },
   },
+  app: {
+    layoutTransition: {
+      name: "layout",
+      mode: "out-in",
+    },
+  },
   plugins: ["~/plugins/supabase.ts"], // Register the plugin
   modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
   image: {

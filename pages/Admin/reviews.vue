@@ -28,4 +28,14 @@ const headers = [
   { text: "Status", value: "status" },
   { text: "Operations", value: "operation", fixed: true },
 ];
+definePageMeta({
+  layout: "admin-panel",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
+});
+useHead({
+  title: "Review Management",
+});
 </script>

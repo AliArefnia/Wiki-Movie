@@ -22,4 +22,15 @@ const headers = [
   { text: "Created At", value: "created_at" },
   { text: "Operations", value: "operation", fixed: true },
 ];
+
+definePageMeta({
+  layout: "admin-panel",
+  pageTransition: {
+    name: "page",
+    mode: "out-in",
+  },
+});
+useHead({
+  title: "User Management",
+});
 </script>

@@ -22,7 +22,7 @@
         :key="media.id"
         :to="`/${media.id}?mediaType=${media.media_type}`"
       >
-        <BaseTopRatedGenreMovie
+        <BaseMovieCardSmall
           class="shrink-0 mx-2"
           :movieTitle="getTitle(media)"
           :rating="media.vote_average"
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseTopRatedGenreMovie from "~/components/MovieSections/BaseTopRatedGenereMovie.vue";
+import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import TopRatedMovie from "../TopRatedMovie.vue";
 
 import type { MediaItem } from "@/types/types";

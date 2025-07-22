@@ -1,8 +1,8 @@
 <template>
   <div
-    class="bg-surface-hover text-white flex items-center justify-center rounded-sm overflow-hidden w-[110px] h-[50px] hover:scale-110 transition-transform text-center p-1"
+    class="bg-surface-hover text-white flex items-center justify-center rounded-md overflow-hidden min-w-[110px] h-12 hover:scale-105 transition-all duration-200 ease-in-out text-center px-3 whitespace-nowrap"
   >
-    <p class="">{{ genreName }}</p>
+    <p class="text-sm font-medium tracking-wide">{{ genreName }}</p>
   </div>
 </template>
 
@@ -11,5 +11,3 @@ const props = defineProps<{
   genreName: string;
 }>();
 </script>
-
-<style scoped></style>

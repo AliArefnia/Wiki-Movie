@@ -1,9 +1,11 @@
 <template>
-  <HeaderSectionGenrePage />
-  <main class="bg-surface-dark min-h-[100vh]">
-    <slot></slot>
-  </main>
-  <Footer />
+  <div>
+    <HeaderSectionGenrePage />
+    <main class="bg-surface-dark min-h-[100vh]">
+      <slot></slot>
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <script setup>

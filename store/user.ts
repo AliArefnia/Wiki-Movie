@@ -165,7 +165,7 @@ export const useUserData = defineStore("userData", {
     },
 
     async fetchUser(user?: userData) {
-      if (this.isUserLoaded) return;
+      if (this.user) return;
       this.isUserLoaded = false;
 
       const supabase: any = useNuxtApp().$supabase;

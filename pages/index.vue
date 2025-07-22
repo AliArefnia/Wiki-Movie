@@ -39,6 +39,7 @@ useHead({
 });
 
 const movieStore = useMovieStore();
-const movieGenres = movieStore.movieGenres;
-const tvGenres = movieStore.tvGenres;
+
+const movieGenres = computed(() => movieStore.movieGenres);
+const tvGenres = computed(() => movieStore.tvGenres);
 </script>

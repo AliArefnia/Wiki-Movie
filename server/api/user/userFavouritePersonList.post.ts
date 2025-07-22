@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
   if (getError || !user)
     return { error: getError?.message || "User not found" };
 
-  console.log(user.favourite_person_list);
   const updatedList =
     action === "add"
       ? [...(user.favourite_person_list || []), favouritePerson]

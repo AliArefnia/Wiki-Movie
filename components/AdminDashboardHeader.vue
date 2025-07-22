@@ -17,22 +17,26 @@
             <h2 class="text-lg font-bold">Admin Panel</h2>
             <button
               @click="closeSidebar"
-              class="text-gray-400 hover:text-white hover:cursor-pointer"
+              class="text-gray-400 hover:text-white hover:cursor-pointer hover:scale-105 transition-all"
             >
               ✕
             </button>
           </div>
-          <nav class="flex flex-col space-y-2">
-            <NuxtLink
-              to="/admin/users"
-              class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
-              >👥 User Management</NuxtLink
-            >
-            <NuxtLink
-              to="/admin/reviews"
-              class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
-              >📝 Review Moderation</NuxtLink
-            >
+          <nav class="flex flex-col space-y-4 mt-4">
+            <div @click="isSidebarOpen = false">
+              <NuxtLink
+                to="/admin/users"
+                class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
+                >👥 User Management</NuxtLink
+              >
+            </div>
+            <div @click="isSidebarOpen = false">
+              <NuxtLink
+                to="/admin/reviews"
+                class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
+                >📝 Review Moderation</NuxtLink
+              >
+            </div>
           </nav>
         </aside>
 
@@ -73,12 +77,42 @@
         />
       </div>
     </header>
+    <div class="bg-transparent px-6 pt-3 mb-2">
+      <BaseButton class="bg-surface-card hover:bg-white" @click="goBack">
+        <svg
+          class="w-6 h-6 text-primary"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </BaseButton>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRoute, useRouter } from "vue-router";
+
 const isSidebarOpen = ref(false);
 const sidebarRef = ref<HTMLElement | null>(null);
+
+const router = useRouter();
+const route = useRoute();
+
+const goBack = () => {
+  if (route.query.from) {
+    router.push(route.query.from as string);
+  } else {
+    router.back();
+  }
+};
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;

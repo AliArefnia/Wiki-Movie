@@ -26,7 +26,7 @@
       /></BaseButton>
     </NuxtLink>
     <ClientOnly>
-      <NuxtLink v-if="userData.isLoggedIn" to="/user/profile">
+      <NuxtLink v-if="isLoggedIn" to="/user/profile">
         <BaseButton
           variant="footer"
           @click="footerTabSelected('user')"
@@ -42,20 +42,28 @@
           ><User
         /></BaseButton>
       </NuxtLink>
+      <NuxtLink v-if="userRole === 'admin'" to="/admin">
+        <BaseButton
+          variant="footer"
+          @click="footerTabSelected('admin')"
+          :active="activeFooterTab === 'admin'"
+          ><ShieldUser
+        /></BaseButton>
+      </NuxtLink>
     </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
-import { LayoutGrid, Search, Heart, User } from "lucide-vue-next";
+import { LayoutGrid, Search, Heart, User, ShieldUser } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 import { useUserData } from "~/store/user";
 
 const userData = useUserData();
-
 const route = useRoute();
-
 const activeFooterTab = ref("");
+const isLoggedIn = computed(() => userData.isLoggedIn);
+const userRole = computed(() => userData.GetUserRole);
 
 function footerTabSelected(tab: string) {
   activeFooterTab.value = tab;
@@ -72,6 +80,7 @@ watch(
       activeFooterTab.value = "user";
     else if (newPath.includes("/login") || newPath.includes("/signup"))
       activeFooterTab.value = "user";
+    else if (newPath.includes("/admin")) activeFooterTab.value = "admin";
     else activeFooterTab.value = "home";
   },
   { immediate: true }

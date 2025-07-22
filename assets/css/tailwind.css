@@ -126,3 +126,17 @@ body {
   opacity: 0;
   transform: translateY(-10px);
 }
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.layout-enter-from {
+  transform: scale(0.99);
+  opacity: 0.8;
+}
+.layout-leave-to {
+  transform: scale(1);
+  opacity: 0.8;
+}

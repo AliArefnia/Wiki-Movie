@@ -1,53 +1,56 @@
 <template>
   <div class="flex flex-col">
-    <header class="bg-surface-card text-white shadow-lg sticky top-0 z-20">
-      <div
-        class="container mx-4 sm:mx-auto lg:mx-20 flex justify-between items-center relative"
+    <header
+      class="bg-surface-card text-white shadow-lg sticky top-0 z-20 h-[60px]"
+    >
+      <aside
+        ref="sidebarRef"
+        class="h-screen -z-50"
+        :class="[
+          'fixed inset-y-0 left-0 w-64 bg-surface-dark z-50 shadow-lg p-4 transition-transform duration-300 ease-in-out',
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
+        ]"
       >
-        <aside
-          ref="sidebarRef"
-          :class="[
-            'fixed inset-y-0 left-0 w-64 bg-gray-800 z-50 shadow-lg p-4 transition-transform duration-300 ease-in-out',
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          ]"
-        >
-          <div
-            class="flex items-center justify-between p-4 border-b border-gray-700"
-          >
-            <h2 class="text-lg font-bold">Admin Panel</h2>
-            <button
-              @click="closeSidebar"
-              class="text-gray-400 hover:text-white hover:cursor-pointer hover:scale-105 transition-all"
-            >
-              ✕
-            </button>
-          </div>
-          <nav class="flex flex-col space-y-4 mt-4">
-            <div @click="isSidebarOpen = false">
-              <NuxtLink
-                to="/admin/users"
-                class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
-                >👥 User Management</NuxtLink
-              >
-            </div>
-            <div @click="isSidebarOpen = false">
-              <NuxtLink
-                to="/admin/reviews"
-                class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
-                >📝 Review Moderation</NuxtLink
-              >
-            </div>
-          </nav>
-        </aside>
-
-        <!-- Overlay -->
         <div
-          v-if="isSidebarOpen"
-          class="fixed inset-0 z-40 bg-black/50"
-          @click="closeSidebar"
-        />
+          class="flex items-center justify-between p-4 border-b border-gray-700"
+        >
+          <h2 class="text-lg font-bold">Admin Panel</h2>
+          <button
+            @click="closeSidebar"
+            class="text-gray-400 hover:text-white hover:cursor-pointer hover:scale-105 transition-all"
+          >
+            ✕
+          </button>
+        </div>
+        <nav class="flex flex-col space-y-4 mt-4">
+          <div @click="isSidebarOpen = false">
+            <NuxtLink
+              to="/admin/users"
+              class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
+              >👥 User Management</NuxtLink
+            >
+          </div>
+          <div @click="isSidebarOpen = false">
+            <NuxtLink
+              to="/admin/reviews"
+              class="text-white py-2 px-3 rounded hover:bg-slate-700 transition"
+              >📝 Review Moderation</NuxtLink
+            >
+          </div>
+        </nav>
+      </aside>
 
-        <div class="bg-slate-800 p-4 flex items-center justify-between">
+      <!-- Overlay -->
+      <div
+        v-if="isSidebarOpen"
+        class="fixed inset-0 z-40 bg-black/50"
+        @click="closeSidebar"
+      />
+
+      <div
+        class="container flex justify-between items-center px-4 relative h-full max-w-full"
+      >
+        <div class="p-4 flex items-center justify-between">
           <button
             class="text-white hover:cursor-pointer hover:text-primary transition-colors duration-300"
             @click.stop="toggleSidebar"
@@ -69,10 +72,10 @@
           </button>
         </div>
 
-        <NuxtImg
-          src="/images/Logo.png"
+        <img
+          :src="logo"
           alt="Wiki Movie Logo"
-          class="w-14 m-0 absolute right-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
+          class="w-14 m-0 absolute right-4 sm:right-8 md:right-12 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
           @click="navigateTo('/')"
         />
       </div>
@@ -99,6 +102,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
+import logo from "@/assets/images/Logo.png";
 
 const isSidebarOpen = ref(false);
 const sidebarRef = ref<HTMLElement | null>(null);

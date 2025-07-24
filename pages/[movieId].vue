@@ -220,6 +220,29 @@ watch(mediaDetail, (val) => {
   if (!val) return;
 
   const titleChunk = "title" in val ? val.title : val.name;
+  let description;
+  if ("overview" in val) {
+    description =
+      val.overview?.slice(0, 150) || "Watch trailers, cast, and more.";
+  } else {
+    description = val.name + "Watch trailers, cast, and more.";
+  }
+
+  const imagePath = computed(() => {
+    if ("poster_path" in val) {
+      return val.poster_path
+        ? `https://image.tmdb.org/t/p/w500${val.poster_path}`
+        : val.backdrop_path
+        ? `https://image.tmdb.org/t/p/w500${val.backdrop_path}`
+        : "images/moviePlaceholder.png";
+    }
+
+    if ("profile_path" in val) {
+      return val.profile_path
+        ? `https://image.tmdb.org/t/p/w500${val.profile_path}`
+        : "images/personPlaceholder.png";
+    }
+  });
 
   useHead({
     title: titleChunk,

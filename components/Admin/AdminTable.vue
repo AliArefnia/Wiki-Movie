@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-6 bg-surface-card rounded-2xl shadow-md max-w-6xl mb-30 mx-auto"
+    class="p-6 bg-surface-card rounded-2xl shadow-md max-w-6xl mx-auto mb-20"
   >
     <div
       v-if="title || statusFilter"
@@ -13,7 +13,7 @@
         v-if="statusFilter"
         v-model="selectedStatus"
         @change="fetchData"
-        class="bg-white border px-3 py-2 rounded-md text-sm"
+        class="bg-surface-card border px-3 py-2 rounded-md text-sm hover:cursor-pointer"
         :disabled="isFetching"
       >
         <option value="pending">Pending</option>
@@ -24,6 +24,8 @@
     </div>
     <div class="rounded-2xl shadow-md">
       <EasyDataTable
+        theme-color="#374151"
+        buttons-pagination
         class="w-full text-sm mx-auto bg-slate-900 text-white border border-slate-700"
         table-class-name="customize-table"
         header-text-direction="center"
@@ -244,6 +246,9 @@ function formatDate(dateStr: string) {
 .customize-table {
   --easy-table-rows-per-page-selector-width: 70px;
   --easy-table-rows-per-page-selector-option-padding: 10px;
+  --easy-table-rows-per-page-selector-z-index: 1;
+  --easy-table-rows-per-page-selector-width: 70px;
+  --easy-table-rows-per-page-selector-option-padding: 5px;
   --easy-table-rows-per-page-selector-z-index: 1;
 }
 .easy-table-rows-selector {

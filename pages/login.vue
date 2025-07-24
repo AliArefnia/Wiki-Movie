@@ -96,7 +96,7 @@ async function logIn() {
     }
     await userData.fetchUser();
 
-    router.push(`${previousPageLink.value}`);
+    router.replace(`${previousPageLink.value}`);
   } catch (err) {
     error.value = "Something went wrong!";
   } finally {

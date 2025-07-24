@@ -130,7 +130,7 @@ async function signUp() {
 
     await userData.fetchUser(data.user);
 
-    router.push("/");
+    router.replace("/");
   } catch (err) {
     error.value = "Something went wrong!";
   } finally {

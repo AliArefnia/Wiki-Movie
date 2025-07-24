@@ -223,6 +223,13 @@ watch(mediaDetail, (val) => {
 
   useHead({
     title: titleChunk,
+    meta: [
+      { name: "description", content: description },
+      { property: "og:type", content: "video.movie" },
+      { property: "og:title", content: titleChunk },
+      { property: "og:description", content: description },
+      { property: "og:image", content: imagePath },
+    ],
   });
 });
 </script>

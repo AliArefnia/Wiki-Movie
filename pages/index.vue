@@ -36,6 +36,17 @@ definePageMeta({
 });
 useHead({
   title: "Home",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Watch details, trailers, and cast for Movie Title on Wiki Movie.",
+    },
+    {
+      name: "keywords",
+      content: "movies, trailers, actors, Movies",
+    },
+  ],
 });
 
 const movieStore = useMovieStore();

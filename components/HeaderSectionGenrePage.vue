@@ -20,10 +20,10 @@
           </svg>
         </BaseButton>
 
-        <NuxtImg
-          src="/images/Logo.png"
+        <img
+          :src="logo"
           alt="Wiki Movie Logo"
-          class="w-15 m-0 absolute right-8 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)] xl:right-40"
+          class="w-14 m-0 absolute right-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
           @click="navigateTo('/')"
         />
       </div>
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
+import logo from "@/assets/images/Logo.png";
 const router = useRouter();
 const route = useRoute();
 

@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
   image: {
     provider: "ipx",
-    dir: "assets",
+    dir: "public",
   },
   css: ["@/assets/css/tailwind.css"],
   compatibilityDate: "2024-11-01",

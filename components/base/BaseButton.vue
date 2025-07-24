@@ -38,7 +38,7 @@ const variantMap: Record<string, string> = {
   primary: "bg-btn-primary text-white hover:bg-btn-primary-hover ",
   secondary: "bg-btn-accent text-white hover:bg-gray-700",
   accent:
-    "bg-btn-accent text-white hover:bg-primary hover:cursor-pointer hover:text-black  ",
+    "bg-btn-accent text-white hover:bg-btn-accent-hover hover:cursor-pointer hover:text-black  ",
   footer: "text-primary bg-transparent",
   danger: "bg-red-600 text-white hover:bg-red-700",
   diactivae: "bg-transparent text-gray-700 hover:bg-gray-100",

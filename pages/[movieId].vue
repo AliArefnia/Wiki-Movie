@@ -175,10 +175,6 @@ async function fetchPersonCredits() {
 }
 
 onMounted(async () => {
-  if (!route.query.mediaType || !route.params.movieId) {
-    console.error("Missing media type or ID");
-    return;
-  }
   await fetchMediaDetail();
 
   if (mediaType.value === "person") {
@@ -212,6 +208,7 @@ const backdropUrl = computed(() => {
 
 definePageMeta({
   layout: "movie-page",
+  middleware: ["validate-media"],
   pageTransition: {
     name: "page",
     mode: "out-in",

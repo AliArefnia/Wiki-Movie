@@ -16,10 +16,13 @@
           </p>
           <NuxtLink
             to="/admin/users"
-            class="inline-block mt-3 text-blue-400 hover:scale-105 transition-transform"
+            class="inline-block mt-3 text-primary hover:scale-105 transition-transform"
           >
             Go to User Management
-            <span class="group-hover:ml-2 transition-all duration-300">→</span>
+            <span
+              class="group-hover:ml-2 transition-all duration-300 animate-pulse"
+              >→</span
+            >
           </NuxtLink>
         </div>
         <div class="bg-surface-card p-4 rounded shadow group">
@@ -29,10 +32,13 @@
           </p>
           <NuxtLink
             to="/admin/reviews"
-            class="inline-block mt-3 text-blue-400 hover:scale-105 transition-transform"
+            class="inline-block mt-3 text-primary hover:scale-105 transition-transform"
           >
             Go to Review Moderation
-            <span class="group-hover:ml-2 transition-all duration-300">→</span>
+            <span
+              class="group-hover:ml-2 transition-all duration-300 animate-pulse"
+              >→</span
+            >
           </NuxtLink>
         </div>
       </div>

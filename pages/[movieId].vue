@@ -3,7 +3,7 @@
     <div v-if="mediaDetail" class="relative min-h-screen text-white">
       <div
         v-if="mediaType === 'movie' || mediaType === 'tv'"
-        class="relative h-[500px] w-full bg-cover bg-center"
+        class="relative h-[700px] w-full bg-cover bg-center"
         :style="{ backgroundImage: `url(${backdropUrl})` }"
       >
         <div class="absolute inset-0 bg-black opacity-60"></div>
@@ -14,7 +14,7 @@
       ></div>
 
       <!-- Content Container -->
-      <div class="relative z-10 -mt-56 max-w-6xl mx-auto px-6 pb-10">
+      <div class="relative z-10 -mt-90 max-w-6xl mx-auto px-6 pb-10">
         <!-- Movie Header -->
 
         <BaseMediaDetail

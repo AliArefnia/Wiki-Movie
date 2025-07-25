@@ -2,12 +2,13 @@
   <div class="bg-surface-dark pt-2">
     <div class="tabs flex justify-center gap-4 mb-4 text-white">
       <button
+        v-if="isUserLoggedIn"
         v-for="tab in tabs"
         :key="tab.key"
         @click="selectTab(tab.key as 'wishlist' | 'watchlist')"
         :class="[
-          'px-4 py-2 rounded-full hover:cursor-pointer transition-all duration-300',
-          activeTab === tab.key ? 'bg-blue-600' : 'bg-gray-700',
+          'px-4 py-2 rounded-full hover:cursor-pointer transition-all duration-300 hover:scale-105',
+          activeTab === tab.key ? 'bg-primary' : 'bg-gray-700',
         ]"
       >
         {{ tab.label }}
@@ -97,7 +98,8 @@ function selectTab(tabKey: "wishlist" | "watchlist" | "favouritePerson") {
 onMounted(async () => {
   isLoading.value = true;
   try {
-    if (!isUserLoggedIn.value) throw new Error("Please sign in first.");
+    if (!isUserLoggedIn.value)
+      throw new Error("Please Log In/Sign up first to View Your Lists.");
 
     const [wish, watch, faVourite] = await Promise.all([
       Promise.all(

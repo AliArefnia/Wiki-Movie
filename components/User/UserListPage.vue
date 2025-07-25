@@ -27,66 +27,79 @@
           alt="Please log in"
           class="w-40 h-40 opacity-80"
         />
-        <p class="text-lg font-semibold">Log in to view your list</p>
-        <BaseButton
-          @click="
-            () => router.push(`/login?from=${router.currentRoute.value.path}`)
-          "
-          class="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-        >
-          Log In
-        </BaseButton>
+        <div>
+          <BaseButton
+            variant="accent"
+            @click="
+              () => router.push(`/login?from=${router.currentRoute.value.path}`)
+            "
+            class="mx-2"
+          >
+            Log In
+          </BaseButton>
+          <BaseButton
+            variant="accent"
+            @click="
+              () =>
+                router.push(`/signup?from=${router.currentRoute.value.path}`)
+            "
+          >
+            Sign up
+          </BaseButton>
+        </div>
       </div>
     </ClientOnly>
 
     <div v-if="loading" class="text-gray-400 text-center font-display mt-6">
       <BaseLoader />
     </div>
-    <template v-if="mediaItems.length">
-      <div
-        class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
-        :class="{ 'fade-in': !loading }"
-      >
-        <NuxtLink
-          v-for="media in mediaItems"
-          :key="media.id"
-          :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
+    <Transition name="fade-slide" mode="out-in">
+      <template v-if="mediaItems.length">
+        <div
+          class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
+          :class="{ 'fade-in': !loading }"
         >
-          <BaseMovieCardSmall
-            class="shrink-0 mx-2"
-            :movieTitle="
-              media.media_type === 'movie' ? media.title : media.name
-            "
-            :rating="media.vote_average"
-            :releaseDate="
-              media.media_type === 'movie'
-                ? media.release_date
-                : media.first_air_date
-            "
-            :posterUrl="media.poster_path"
-          />
-        </NuxtLink>
-      </div>
-    </template>
+          <NuxtLink
+            v-for="media in mediaItems"
+            :key="media.id"
+            :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
+          >
+            <BaseMovieCardSmall
+              class="shrink-0 mx-2"
+              :movieTitle="
+                media.media_type === 'movie' ? media.title : media.name
+              "
+              :rating="media.vote_average"
+              :releaseDate="
+                media.media_type === 'movie'
+                  ? media.release_date
+                  : media.first_air_date
+              "
+              :posterUrl="media.poster_path"
+            />
+          </NuxtLink>
+        </div>
+      </template>
 
-    <template v-else-if="personItems.length">
-      <div
-        class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
-        :class="{ 'fade-in': !loading }"
-      >
-        <NuxtLink
-          v-for="media in personItems"
-          :key="media.id"
-          :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
+      <template v-else-if="personItems.length">
+        <div
+          class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
+          :class="{ 'fade-in': !loading }"
         >
-          <BasePersonCard
-            class="shrink-0 mx-2"
-            :personName="media.name"
-            :profileUrl="media.profile_path"
-          />
-        </NuxtLink>
-      </div>
-    </template>
+          <NuxtLink
+            v-for="media in personItems"
+            :key="media.id"
+            :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
+          >
+            <BasePersonCard
+              class="shrink-0 mx-2"
+              :personName="media.name"
+              :profileUrl="media.profile_path"
+            />
+          </NuxtLink>
+        </div>
+      </template>
+    </Transition>
   </div>
 </template>
 

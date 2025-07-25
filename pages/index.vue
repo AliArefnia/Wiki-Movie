@@ -27,6 +27,16 @@
 import BaseMovieSection from "~/components/MovieSections/BaseMovieSection.vue";
 
 import { useMovieStore } from "~/store/store";
+
+const movieStore = useMovieStore();
+
+const [movieGenres, tvGenres] = await Promise.all([
+  $fetch<Genre[]>("/api/GetGenres?type=movie"),
+  $fetch<Genre[]>("/api/GetGenres?type=tv"),
+]);
+movieStore.setMovieGenres(movieGenres);
+movieStore.setTvGenres(tvGenres);
+
 definePageMeta({
   layout: "default",
   pageTransition: {
@@ -48,9 +58,4 @@ useHead({
     },
   ],
 });
-
-const movieStore = useMovieStore();
-
-const movieGenres = computed(() => movieStore.movieGenres);
-const tvGenres = computed(() => movieStore.tvGenres);
 </script>

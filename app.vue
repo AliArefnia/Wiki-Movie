@@ -5,22 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { useMovieStore } from "~/store/store";
-import type { Genre } from "~/types/types";
-const movieStore = useMovieStore();
-
-onBeforeMount(async () => {
-  const movieGenres = await $fetch<Genre[]>("/api/GetGenres?type=movie");
-  movieStore.setMovieGenres(movieGenres);
-  const tvGenres = await $fetch<Genre[]>("/api/GetGenres?type=tv");
-  movieStore.setTvGenres(tvGenres);
-});
-
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `Wiki Movie | ${titleChunk} ` : "Wiki Movie";
   },
-  link: [{ rel: "icon", type: "image/png", href: "/Logo.png" }],
+  link: [
+    { rel: "icon", type: "image/png", href: "/Logo.png" },
+    { rel: "apple-touch-icon", href: "/icons/web-app-manifest-192x192.png" },
+    { rel: "manifest", href: "/manifest.webmanifest" },
+  ],
   meta: [
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -28,6 +21,9 @@ useHead({
       name: "description",
       content: "Discover and explore movies, TV shows, and actors.",
     },
+    { name: "theme-color", content: "#111827" },
+    { name: "mobile-web-app-capable", content: "yes" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "black" },
   ],
 });
 </script>

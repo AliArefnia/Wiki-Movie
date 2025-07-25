@@ -2,8 +2,6 @@
   <div
     @mouseenter="stopAutoScroll"
     @mouseleave="startAutoScroll"
-    @touchstart="stopAutoScroll"
-    @touchend="startAutoScroll"
     class="relative px-0 md:px-8"
   >
     <!-- Left Btn -->
@@ -38,7 +36,7 @@
           :movieTitle="getTitle(media)"
           :rating="media.vote_average"
           :posterUrl="media.poster_path || '/images/placeholder.png'"
-          class="transform transition-transform duration-300 group-hover:scale-105"
+          class="transform transition-transform duration-300 group-hover:scale-105 will-change-transform"
         />
 
         <!-- Rating badge on hover -->
@@ -139,9 +137,25 @@ onMounted(async () => {
 
     HotMedia.value = data;
     sessionStorage.setItem("HotMedia", JSON.stringify(data));
+
+    // add touchEnd and start
+
+    const el = carousel.value;
+    if (!el) return;
+
+    el.addEventListener("touchstart", stopAutoScroll, { passive: true });
+    el.addEventListener("touchend", startAutoScroll, { passive: true });
   } catch (error: unknown) {
     console.error("Error fetching data:", error);
   }
+});
+
+onBeforeUnmount(() => {
+  const el = carousel.value;
+  if (!el) return;
+
+  el.removeEventListener("touchstart", stopAutoScroll);
+  el.removeEventListener("touchend", startAutoScroll);
 });
 </script>
 <style scoped>

@@ -13,6 +13,7 @@
         :alt="displayTitle"
         @load="loaded = true"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
+        loading="lazy"
       />
 
       <!-- Placeholder Image (fallback) -->
@@ -21,6 +22,7 @@
         src="/images/moviePlaceholder.png"
         alt="No Poster"
         class="w-full h-full object-cover"
+        loading="lazy"
       />
 
       <!-- Skeleton while loading -->

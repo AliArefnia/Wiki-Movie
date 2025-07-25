@@ -11,10 +11,15 @@
     <NuxtImg
       :src="posterUrl"
       :alt="movieTitle"
-      :style="{ height: imageHeight + 'px' }"
+      :width="imageWidth"
+      :height="imageHeight"
+      sizes="(max-width: 768px) 185px, 342px"
+      format="webp"
       class="w-full h-full object-cover transition-opacity duration-500"
       loading="lazy"
       @load="handleImageLoad"
+      decoding="async"
+      fetchpriority="high"
     />
   </div>
 </template>
@@ -50,6 +55,7 @@ function updateDimensions() {
 }
 
 onMounted(() => {
+  updateDimensions();
   window.addEventListener("resize", updateDimensions);
 });
 

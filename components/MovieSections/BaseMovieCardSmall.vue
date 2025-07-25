@@ -9,11 +9,15 @@
       <!-- Actual Image -->
       <NuxtImg
         v-if="posterUrl"
-        class="w-full h-full object-cover transition-opacity duration-300"
         :src="posterUrl"
         :alt="movieTitle"
+        :width="imageWidth"
+        sizes="(max-width: 150px) 125px, 100px"
+        class="w-full h-full object-cover transition-opacity duration-300"
         @load="loaded = true"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
+        loading="lazy"
+        decoding="async"
       />
 
       <!-- Placeholder Image (fallback) -->
@@ -21,7 +25,8 @@
         v-else
         src="/images/moviePlaceholder.png"
         alt="No Poster"
-        class="w-full h-full object-cover"
+        class="w-full h-full"
+        loading="lazy"
       />
 
       <!-- Skeleton while loading -->
@@ -69,6 +74,7 @@ function updateWidth() {
 }
 
 onMounted(() => {
+  updateWidth();
   window.addEventListener("resize", updateWidth);
 });
 

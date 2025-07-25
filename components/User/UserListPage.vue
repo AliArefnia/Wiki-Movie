@@ -26,6 +26,7 @@
           src="/images/loginIllustration.svg"
           alt="Please log in"
           class="w-40 h-40 opacity-80"
+          loading="lazy"
         />
         <div>
           <BaseButton

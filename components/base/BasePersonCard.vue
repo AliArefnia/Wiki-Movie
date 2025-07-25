@@ -11,10 +11,15 @@
 
       <NuxtImg
         v-show="isImageLoaded"
-        class="w-full h-full object-cover rounded-2xl transition-opacity duration-300"
         :src="computedProfileUrl"
         :alt="personName"
+        :width="imageWidth"
+        :height="imageHeight"
+        sizes="(max-width: 120px) 80px, 100px"
+        class="w-full h-full object-cover rounded-2xl transition-opacity duration-300"
         @load="isImageLoaded = true"
+        loading="lazy"
+        decoding="async"
       />
     </div>
     <div class="text-white text-center p-2">
@@ -64,6 +69,7 @@ function updateDimensions() {
 }
 
 onMounted(() => {
+  updateDimensions();
   window.addEventListener("resize", updateDimensions);
 });
 

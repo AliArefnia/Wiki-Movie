@@ -68,8 +68,7 @@ const imageWidth = ref(0);
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 768) return 500;
-  return 342;
+  return vw >= 768 ? 342 : 185;
 }
 
 function updateWidth() {

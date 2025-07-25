@@ -1,7 +1,8 @@
 <template>
   <NuxtLayout name="default">
+    <Transition name="fade" mode="out-in"></Transition>
     <div
-      class="flex flex-col items-center justify-center text-white px-6 text-center animate-fade-in mt-10"
+      class="flex flex-col items-center justify-center text-white px-6 text-center mt-10"
     >
       <h1 class="text-7xl font-bold text-primary mb-4">Dang</h1>
       <p class="text-gray-400 mb-8 max-w-md">
@@ -30,20 +31,3 @@ const handleError = () => {
   clearError({ redirect: "/" });
 };
 </script>
-
-<style scoped>
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
-}
-</style>

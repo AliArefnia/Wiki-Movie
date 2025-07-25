@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
           id: item.id,
           media_type: "tv",
           name: item.name ?? "Untitled",
-          vote_average: Number(item.vote_average?.toFixed(1) || 0),
+          vote_average: Number(item.vote_average?.toFixed(1) || 'N/A'),
           poster_path: item.poster_path
             ? `${IMAGE_URL}${item.poster_path}`
             : null,

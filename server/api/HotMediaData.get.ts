@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
         media_type: "movie",
         title: movie.title ?? "Untitled",
         poster_path: `${IMAGE_URL}${movie.poster_path}`,
-        vote_average: Number(movie.vote_average.toFixed(1) || 0),
+        vote_average: Number(movie.vote_average.toFixed(1) || "N/A"),
         release_date: movie.release_date?.slice(0, 4) ?? "N/A",
         genre_ids: movie.genre_ids ?? [],
       }));
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
         id: tv.id,
         media_type: "tv",
         name: tv.name ?? "Untitled",
-        vote_average: Number(tv.vote_average.toFixed(1) || 0),
+        vote_average: Number(tv.vote_average.toFixed(1) || "N/A"),
         poster_path: `${IMAGE_URL}${tv.poster_path}`,
         first_air_date: tv.first_air_date?.slice(0, 4) ?? "N/A",
         genre_ids: tv.genre_ids ?? [],

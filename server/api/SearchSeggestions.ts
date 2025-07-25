@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
         movies.push({
           id: item.id,
           title: item.title ?? "Untitled",
-          vote_average: Number(item.vote_average?.toFixed(1) || 0),
+          vote_average: Number(item.vote_average?.toFixed(1) || "N/A"),
           poster_path: item.poster_path || "",
           release_date: item.release_date?.slice(0, 4) || "N/A",
           genre_ids: item.genre_ids || [],

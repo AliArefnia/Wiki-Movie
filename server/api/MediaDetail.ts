@@ -29,8 +29,8 @@ export default defineEventHandler(async (event: H3Event) => {
           return {
             ...movie,
             media_type: "movie",
-            vote_average: Number(movie.vote_average?.toFixed(1) || 0),
-            popularity: Number(movie.popularity?.toFixed(2) || 0),
+            vote_average: Number(movie.vote_average?.toFixed(1) || "N/A"),
+            popularity: Number(movie.popularity?.toFixed(2) || "N/A"),
             release_date: movie.release_date?.slice(0, 4) || "N/A",
           };
 
@@ -39,8 +39,8 @@ export default defineEventHandler(async (event: H3Event) => {
           return {
             ...tv,
             media_type: "tv",
-            vote_average: Number(tv.vote_average?.toFixed(1) || 0),
-            popularity: Number(tv.popularity?.toFixed(2) || 0),
+            vote_average: Number(tv.vote_average?.toFixed(1) || "N/A"),
+            popularity: Number(tv.popularity?.toFixed(2) || "N/A"),
             release_date: tv.first_air_date?.slice(0, 4) || "N/A",
           };
 

@@ -10,7 +10,7 @@ useHead({
     return titleChunk ? `Wiki Movie | ${titleChunk} ` : "Wiki Movie";
   },
   link: [
-    { rel: "icon", type: "image/png", href: "/Logo.png" },
+    { rel: "icon", type: "image/webp", href: "/Logo.webp" },
     { rel: "apple-touch-icon", href: "/icons/web-app-manifest-192x192.png" },
     { rel: "manifest", href: "/manifest.webmanifest" },
   ],

@@ -35,5 +35,5 @@
 </template>
 
 <script setup lang="ts">
-import logo from "@/assets/images/Logo.png";
+import logo from "@/assets/images/Logo.webp";
 </script>

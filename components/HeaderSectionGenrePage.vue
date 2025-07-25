@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import logo from "@/assets/images/Logo.png";
+import logo from "@/assets/images/Logo.webp";
 const router = useRouter();
 const route = useRoute();
 

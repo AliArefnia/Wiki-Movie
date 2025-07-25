@@ -1,32 +1,37 @@
 <template>
   <div>
-    <Hero></Hero>
+    <Hero />
     <!-- <TrailerSection /> -->
-    <GenreSection></GenreSection>
-    <keep-alive>
-      <BaseMovieSection
-        v-for="genre in movieGenres"
-        :key="genre.id"
-        :genreId="genre.id"
-        :genreName="genre.name"
-        mediaType="movie"
-      />
-    </keep-alive>
-    <keep-alive>
-      <BaseMovieSection
-        v-for="genre in tvGenres"
-        :key="genre.id"
-        :genreId="genre.id"
-        :genreName="genre.name"
-        mediaType="tv"
-      />
-    </keep-alive>
+    <GenreSection />
+    <div v-if="movieGenres.length && tvGenres.length">
+      <keep-alive>
+        <SectionLazy v-for="genre in movieGenres" :key="'movie-' + genre.id">
+          <BaseMovieSection
+            :genreId="genre.id"
+            :genreName="genre.name"
+            mediaType="movie"
+          />
+        </SectionLazy>
+      </keep-alive>
+
+      <keep-alive>
+        <SectionLazy v-for="genre in tvGenres" :key="'tv-' + genre.id">
+          <BaseMovieSection
+            :genreId="genre.id"
+            :genreName="genre.name"
+            mediaType="tv"
+          />
+        </SectionLazy>
+      </keep-alive>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import BaseMovieSection from "~/components/MovieSections/BaseMovieSection.vue";
+import SectionLazy from "~/components/SectionLazy.vue";
 
 import { useMovieStore } from "~/store/store";
+import type { Genre } from "~/types/types";
 
 const movieStore = useMovieStore();
 

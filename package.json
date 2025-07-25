@@ -13,6 +13,7 @@
     "@nuxt/image": "^1.10.0",
     "@pinia/nuxt": "^0.10.1",
     "@supabase/supabase-js": "^2.49.1",
+    "@vite-pwa/nuxt": "^1.0.4",
     "@vueuse/core": "^13.5.0",
     "@vueuse/nuxt": "^13.0.0",
     "lucide-vue-next": "^0.483.0",

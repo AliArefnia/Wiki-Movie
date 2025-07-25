@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+import type { RouteMatchCallbackOptions } from "workbox-core";
+
 import tailwindcss from "@tailwindcss/vite";
 
-export default defineNuxtConfig({
+export default defineNuxtConfig(<any>{
   runtimeConfig: {
     public: {
       TMDB_API_KEY: process.env.NUXT_PUBLIC_TMDB_API_KEY,
@@ -15,16 +18,70 @@ export default defineNuxtConfig({
       mode: "out-in",
     },
   },
-  plugins: ["~/plugins/supabase.ts"], // Register the plugin
-  modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image"],
+  plugins: ["~/plugins/supabase.ts"],
+  modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image", "@vite-pwa/nuxt"],
   image: {
     provider: "ipx",
     dir: "public",
   },
   css: ["@/assets/css/tailwind.css"],
   compatibilityDate: "2024-11-01",
-  devtools: { enabled: true },
+  devtools: { enabled: true, timeline: { enabled: true } },
   vite: {
     plugins: [tailwindcss()],
+  },
+  pwa: {
+    registerType: "autoUpdate",
+    includeAssets: ["favicon.ico", "apple-touch-icon.png", "icons/*.png"],
+    manifest: {
+      name: "Wiki Movie",
+      short_name: "Wiki Movie",
+      description: "Explore and discover movies, shows, and people.",
+      theme_color: "#000000",
+      background_color: "#000000",
+      display: "standalone",
+      start_url: "/",
+      lang: "en",
+      icons: [
+        {
+          src: "/icons/web-app-manifest-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "/icons/web-app-manifest-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "/icons/icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable",
+        },
+      ],
+    },
+    workbox: {
+      globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      runtimeCaching: [
+        {
+          urlPattern: ({ url }: RouteMatchCallbackOptions) =>
+            url.origin === "https://image.tmdb.org",
+          handler: "CacheFirst",
+          options: {
+            cacheName: "tmdb-images",
+            expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 7 },
+          },
+        },
+        {
+          urlPattern: ({ url }: RouteMatchCallbackOptions) =>
+            url.origin === self.location.origin,
+          handler: "NetworkFirst",
+          options: {
+            cacheName: "app-pages",
+          },
+        },
+      ],
+    },
   },
 });

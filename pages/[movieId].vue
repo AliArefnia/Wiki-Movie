@@ -3,18 +3,35 @@
     <div v-if="mediaDetail" class="relative min-h-screen text-white">
       <div
         v-if="mediaType === 'movie' || mediaType === 'tv'"
-        class="relative h-[700px] w-full bg-cover bg-center"
-        :style="{ backgroundImage: `url(${backdropUrl})` }"
+        class="absolute w-full overflow-hidden"
       >
-        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <img
+          :src="backdropUrl"
+          alt="Backdrop"
+          class="w-full h-full sm:h-auto object-cover"
+        />
+        <!-- Dark fade overlay at bottom 10% -->
+        <div
+          class="absolute bottom-0 left-0 w-full h-1/2 pointer-events-none"
+          style="
+            background: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 0) 50%,
+              rgba(17, 24, 39, 1) 100%
+            );
+          "
+        ></div>
       </div>
-      <div
-        v-else
-        class="relative h-[300px] w-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center"
-      ></div>
 
       <!-- Content Container -->
-      <div class="relative z-10 -mt-90 max-w-6xl mx-auto px-6 pb-10">
+      <div
+        :class="[
+          'relative z-10 max-w-6xl mx-auto px-6 pb-10',
+          mediaType === 'movie' || mediaType === 'tv'
+            ? 'pt-40 sm:pt-20'
+            : 'pt-10',
+        ]"
+      >
         <!-- Movie Header -->
 
         <BaseMediaDetail
@@ -26,37 +43,46 @@
         <!-- Person Credits -->
 
         <div v-if="mediaType === 'person'">
-          <BasePersonCredits :media="personCredits"></BasePersonCredits>
+          <SectionLazy>
+            <BasePersonCredits :media="personCredits"></BasePersonCredits>
+          </SectionLazy>
         </div>
 
         <!-- Trailer -->
         <div v-if="mediaType === 'movie' || mediaType === 'tv'">
           <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
-          <BaseTrailerCard
-            v-if="officialTrailerKey"
-            class="shrink-0 mx-2"
-            :soloMovie="true"
-            :officialTrailerKey="officialTrailerKey"
-            :fallBackThumbnail="backdropUrl"
-            :trailerName="officialTrailerName"
-          />
+          <div v-if="officialTrailerKey">
+            <SectionLazy>
+              <BaseTrailerCard
+                class="shrink-0 mx-2"
+                :soloMovie="true"
+                :officialTrailerKey="officialTrailerKey"
+                :fallBackThumbnail="backdropUrl"
+                :trailerName="officialTrailerName"
+              />
+            </SectionLazy>
+          </div>
           <p v-else class="text-gray-400 text-center font-display mt-6">
             {{ officialTrailerName }}
           </p>
         </div>
-
-        <BaseSimilarMoviesSection
-          v-if="mediaType === 'movie' || mediaType === 'tv'"
-          :movieId="Number(route.params.movieId)"
-          :mediaType="mediaType"
-        ></BaseSimilarMoviesSection>
-        <BaseCastCrewSection
-          v-if="mediaType === 'movie' || mediaType === 'tv'"
-          :mediaId="Number(route.params.movieId)"
-          :mediaType="mediaType"
-        ></BaseCastCrewSection>
+        <SectionLazy v-if="mediaType === 'movie' || mediaType === 'tv'">
+          <BaseSimilarMoviesSection
+            :movieId="Number(route.params.movieId)"
+            :mediaType="mediaType"
+          ></BaseSimilarMoviesSection>
+        </SectionLazy>
+        <SectionLazy v-if="mediaType === 'movie' || mediaType === 'tv'">
+          <BaseCastCrewSection
+            :mediaId="Number(route.params.movieId)"
+            :mediaType="mediaType"
+          ></BaseCastCrewSection>
+        </SectionLazy>
       </div>
-      <CommentSection :media-id="mediaDetail.id"></CommentSection>
+
+      <SectionLazy>
+        <CommentSection :media-id="mediaDetail.id"></CommentSection>
+      </SectionLazy>
     </div>
     <!-- Loading State -->
     <div
@@ -78,6 +104,8 @@ import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
 import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import CommentSection from "~/components/MovieSections/CommentSection.vue";
+import SectionLazy from "~/components/SectionLazy.vue";
+
 import type {
   MovieDetail,
   TvDetail,
@@ -201,7 +229,15 @@ const backdropUrl = computed(() => {
     "backdrop_path" in mediaDetail.value &&
     mediaDetail.value.backdrop_path
   ) {
-    return `https://image.tmdb.org/t/p/w1280${mediaDetail.value.backdrop_path}`;
+    if (window.innerWidth > 1200) {
+      return `https://image.tmdb.org/t/p/w1280${mediaDetail.value.backdrop_path}`;
+    }
+    if (window.innerWidth > 780) {
+      return `https://image.tmdb.org/t/p/w1280${mediaDetail.value.backdrop_path}`;
+    }
+    if (window.innerWidth < 700) {
+      return `https://image.tmdb.org/t/p/w500${mediaDetail.value.backdrop_path}`;
+    }
   }
   return "/placeholder.jpg";
 });
@@ -231,15 +267,15 @@ watch(mediaDetail, (val) => {
   const imagePath = computed(() => {
     if ("poster_path" in val) {
       return val.poster_path
-        ? `https://image.tmdb.org/t/p/w500${val.poster_path}`
+        ? `https://image.tmdb.org/t/p/w342${val.poster_path}`
         : val.backdrop_path
-        ? `https://image.tmdb.org/t/p/w500${val.backdrop_path}`
+        ? `https://image.tmdb.org/t/p/w342${val.backdrop_path}`
         : "images/moviePlaceholder.png";
     }
 
     if ("profile_path" in val) {
       return val.profile_path
-        ? `https://image.tmdb.org/t/p/w500${val.profile_path}`
+        ? `https://image.tmdb.org/t/p/w342${val.profile_path}`
         : "images/personPlaceholder.png";
     }
   });

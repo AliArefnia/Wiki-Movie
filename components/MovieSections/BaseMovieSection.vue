@@ -67,13 +67,7 @@ import { ArrowRight } from "lucide-vue-next";
 
 import { useIntersectionObserver } from "@vueuse/core";
 
-const cardWidth = computed(() => {
-  const vw = window.innerWidth;
 
-  if (vw >= 1200) return "150px";
-  if (vw >= 768) return "130px";
-  return "100px";
-});
 
 const showImage = ref<boolean[]>([]);
 const observerElements = ref<(HTMLElement | null)[]>([]);
@@ -128,6 +122,18 @@ const props = defineProps<{
 const topRated = ref<(MediaItem & { overview: string }) | null>(null);
 
 const imageQuality = ref(getImageQuality());
+const cardWidth = ref(getCardWidth());
+
+function getCardWidth(){
+const vw = window.innerWidth;
+  if (vw >= 1200) return "150px";
+  if (vw >= 768) return "130px";
+  return "100px";
+}
+
+function updateCardWidth() {
+  cardWidth.value = getCardWidth();
+}
 
 function getImageQuality() {
   const vw = window.innerWidth;
@@ -187,13 +193,18 @@ async function getTopRatedMovie(mediaList: MediaItem[]) {
 onMounted(async () => {
   try {
     getImageQuality();
+    getCardWidth();
     await fetchMediaByGenre(props.genreId, props.mediaType);
     if (scrollContainer.value) {
       scrollContainer.value.scrollLeft = 0;
     }
     await observeMediaCards();
+    window.addEventListener("resize", updateCardWidth);
   } catch (error) {
     console.error("Failed to fetch movies:", error);
   }
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateCardWidth);
 });
 </script>

@@ -9,6 +9,7 @@
       :style="{ height: imageHeight + 'px' }"
     ></div>
     <NuxtImg
+      preload
       :src="posterUrl"
       :alt="movieTitle"
       :width="imageWidth"

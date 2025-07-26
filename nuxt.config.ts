@@ -46,6 +46,7 @@ export default defineNuxtConfig(<any>{
     registerType: "autoUpdate",
     includeAssets: ["favicon.ico", "apple-touch-icon.png", "icons/*.png"],
     manifest: {
+      id: "/",
       name: "Wiki Movie",
       short_name: "Wiki Movie",
       description: "Explore and discover movies, shows, and people.",
@@ -66,10 +67,24 @@ export default defineNuxtConfig(<any>{
           type: "image/png",
         },
         {
-          src: "/icons/icon-512x512.png",
+          src: "/icons/web-app-manifest-512x512.png",
           sizes: "512x512",
           type: "image/png",
           purpose: "any maskable",
+        },
+      ],
+      screenshots: [
+        {
+          src: "/screenshots/homepage.png",
+          sizes: "643x1365",
+          type: "image/png",
+          form_factor: "wide",
+        },
+        {
+          src: "/screenshots/mobileview.png",
+          sizes: "308x543",
+          type: "image/png",
+          form_factor: "narrow",
         },
       ],
     },

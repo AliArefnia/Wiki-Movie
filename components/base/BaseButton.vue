@@ -39,8 +39,9 @@ const variantMap: Record<string, string> = {
   secondary: "bg-btn-accent text-white hover:bg-gray-700",
   accent:
     "bg-btn-accent text-white hover:bg-btn-accent-hover hover:cursor-pointer hover:text-black  ",
-  footer: "text-primary bg-transparent",
-  danger: "bg-red-600 text-white hover:bg-red-700",
+  footer:
+    "text-primary bg-transparent hover:-translate-y-[5px] hover:text-primary",
+  danger: "bg-red-600 ext-white hover:bg-red-700",
   diactivae: "bg-transparent text-gray-700 hover:bg-gray-100",
 };
 

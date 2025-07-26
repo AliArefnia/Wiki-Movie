@@ -1,6 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-
 import type { RouteMatchCallbackOptions } from "workbox-core";
+import { visualizer } from "rollup-plugin-visualizer";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -29,6 +28,19 @@ export default defineNuxtConfig(<any>{
   devtools: { enabled: true, timeline: { enabled: true } },
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        plugins: [
+          visualizer({
+            filename: "./dist/stats.html",
+            open: true,
+            template: "treemap",
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ],
+      },
+    },
   },
   pwa: {
     registerType: "autoUpdate",

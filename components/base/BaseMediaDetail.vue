@@ -12,8 +12,10 @@
         :src="posterUrl"
         :alt="displayTitle"
         @load="loaded = true"
+        format="webp"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
-        loading="lazy"
+        decoding="async"
+        fetchpriority="high"
       />
 
       <!-- Placeholder Image (fallback) -->
@@ -149,7 +151,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { Genre, MovieDetail, TvDetail, PersonDetail } from "~/types/types";
+import type { MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import { useUserData } from "~/store/user";
 import BaseHeartButton from "./BaseHeartButton.vue";
 import BaseEyeButton from "./BaseEyeButton.vue";
@@ -221,7 +223,7 @@ const posterUrl = computed(() => {
 
   if ("profile_path" in props.mediaDetail) {
     return props.mediaDetail.profile_path
-      ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.profile_path}`
+      ? `https://image.tmdb.org/t/p/w185${props.mediaDetail.profile_path}`
       : "images/personPlaceholder.png";
   }
 

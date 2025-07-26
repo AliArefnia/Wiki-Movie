@@ -76,13 +76,13 @@ export default defineNuxtConfig(<any>{
       screenshots: [
         {
           src: "/screenshots/homepage.png",
-          sizes: "643x1365",
+          sizes: "1365x643",
           type: "image/png",
           form_factor: "wide",
         },
         {
           src: "/screenshots/mobileview.png",
-          sizes: "308x543",
+          sizes: "360x640",
           type: "image/png",
           form_factor: "narrow",
         },

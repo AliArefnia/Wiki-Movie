@@ -10,14 +10,21 @@
       ></div>
 
       <NuxtImg
-        v-show="isImageLoaded"
         :src="computedProfileUrl"
         :alt="personName"
         :width="imageWidth"
         :height="imageHeight"
         sizes="(max-width: 120px) 80px, 100px"
-        class="w-full h-full object-cover rounded-2xl transition-opacity duration-300"
-        @load="isImageLoaded = true"
+        :class="[
+          'w-full h-full object-cover rounded-2xl transition-opacity duration-300',
+          isImageLoaded ? 'opacity-100' : 'opacity-0',
+        ]"
+        @load="
+          () => {
+            console.log('Image loaded');
+            isImageLoaded = true;
+          }
+        "
         loading="lazy"
         decoding="async"
       />
@@ -46,7 +53,7 @@ const computedProfileUrl = computed(() => {
   return props.profileUrl &&
     props.profileUrl !== "null" &&
     !!props.profileUrl !== false
-    ? `https://image.tmdb.org/t/p/w185${props.profileUrl}`
+    ? `https://image.tmdb.org/t/p/w154${props.profileUrl}`
     : "images/personPlaceholder.png";
 });
 

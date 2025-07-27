@@ -1,6 +1,7 @@
 <template>
   <div
     class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 py-2 z-20"
+    :class="[isStandalone ? 'pb-4' : 'pb-2']"
   >
     <NuxtLink to="/"
       ><BaseButton
@@ -58,6 +59,8 @@
 import { LayoutGrid, Search, Heart, User, ShieldUser } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 import { useUserData } from "~/store/user";
+
+const { isStandalone } = useDisplayMode();
 
 const userData = useUserData();
 const route = useRoute();

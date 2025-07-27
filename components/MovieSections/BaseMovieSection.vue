@@ -67,8 +67,6 @@ import { ArrowRight } from "lucide-vue-next";
 
 import { useIntersectionObserver } from "@vueuse/core";
 
-
-
 const showImage = ref<boolean[]>([]);
 const observerElements = ref<(HTMLElement | null)[]>([]);
 const scrollContainer = ref<HTMLElement | null>(null);
@@ -124,8 +122,8 @@ const topRated = ref<(MediaItem & { overview: string }) | null>(null);
 const imageQuality = ref(getImageQuality());
 const cardWidth = ref(getCardWidth());
 
-function getCardWidth(){
-const vw = window.innerWidth;
+function getCardWidth() {
+  const vw = window.innerWidth;
   if (vw >= 1200) return "150px";
   if (vw >= 768) return "130px";
   return "100px";

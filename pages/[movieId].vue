@@ -66,12 +66,17 @@
             {{ officialTrailerName }}
           </p>
         </div>
-        <SectionLazy v-if="mediaType === 'movie' || mediaType === 'tv'">
+
+        <SectionLazy
+          v-if="mediaType === 'movie' || mediaType === 'tv'"
+          height="100"
+        >
           <BaseSimilarMoviesSection
             :movieId="Number(route.params.movieId)"
             :mediaType="mediaType"
           ></BaseSimilarMoviesSection>
         </SectionLazy>
+
         <SectionLazy v-if="mediaType === 'movie' || mediaType === 'tv'">
           <BaseCastCrewSection
             :mediaId="Number(route.params.movieId)"

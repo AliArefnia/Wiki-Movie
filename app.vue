@@ -22,8 +22,9 @@ useHead({
       content: "Discover and explore movies, TV shows, and actors.",
     },
     { name: "theme-color", content: "#111827" },
+    { name: "apple-mobile-web-app-title", content: "Wiki Movie" },
     { name: "mobile-web-app-capable", content: "yes" },
-    { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "#111827" },
   ],
 });
 </script>

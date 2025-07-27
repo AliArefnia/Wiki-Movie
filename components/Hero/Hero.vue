@@ -121,6 +121,18 @@ const updateScrollState = () => {
 const getTitle = (item: HotMedia) =>
   item.media_type === "movie" ? item.title : item.name;
 
+async function fetchAndUpdate() {
+  const data = await $fetch<HotMedia[]>(`/api/HotMediaData?...`);
+  HotMedia.value = data;
+  localStorage.setItem(
+    "HotMedia",
+    JSON.stringify({
+      timestamp: Date.now(),
+      data,
+    })
+  );
+}
+
 onMounted(async () => {
   imageWidth.value = getCardWidth();
   // add touchEnd and start
@@ -137,9 +149,19 @@ onMounted(async () => {
   }
 
   try {
-    if (sessionStorage.getItem("HotMedia")) {
-      HotMedia.value = JSON.parse(sessionStorage.getItem("HotMedia")!);
-      return;
+    const cache = localStorage.getItem("HotMedia");
+    if (cache) {
+      const { timestamp, data } = JSON.parse(cache);
+      const age = Date.now() - timestamp;
+      const maxAge = 1000 * 60 * 60 * 2;
+
+      if (age < maxAge) {
+        HotMedia.value = data;
+      } else {
+        fetchAndUpdate();
+      }
+    } else {
+      fetchAndUpdate();
     }
 
     const data = await $fetch<HotMedia[]>(

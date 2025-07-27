@@ -2,6 +2,8 @@
   <div
     @mouseenter="stopAutoScroll"
     @mouseleave="startAutoScroll"
+    @pointerdown="stopAutoScroll"
+    @pointerup="startAutoScroll"
     class="relative px-0 md:px-8"
   >
     <!-- Left Btn -->
@@ -97,6 +99,7 @@ const scrollRight = () => {
 };
 
 const startAutoScroll = () => {
+  clearInterval(autoScrollTimer);
   autoScrollTimer = setInterval(() => {
     scrollRight();
   }, SCROLL_INTERVAL);
@@ -120,9 +123,17 @@ const getTitle = (item: HotMedia) =>
 
 onMounted(async () => {
   imageWidth.value = getCardWidth();
+  // add touchEnd and start
   startAutoScroll();
   if (carousel.value) {
     carousel.value.addEventListener("scroll", updateScrollState);
+
+    carousel.value.addEventListener("touchstart", stopAutoScroll, {
+      passive: true,
+    });
+    carousel.value.addEventListener("touchend", startAutoScroll, {
+      passive: true,
+    });
   }
 
   try {
@@ -137,20 +148,13 @@ onMounted(async () => {
 
     HotMedia.value = data;
     sessionStorage.setItem("HotMedia", JSON.stringify(data));
-
-    // add touchEnd and start
-
-    const el = carousel.value;
-    if (!el) return;
-
-    el.addEventListener("touchstart", stopAutoScroll, { passive: true });
-    el.addEventListener("touchend", startAutoScroll, { passive: true });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Error fetching data:", error);
   }
 });
 
 onBeforeUnmount(() => {
+  clearInterval(autoScrollTimer);
   const el = carousel.value;
   if (!el) return;
 

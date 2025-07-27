@@ -17,7 +17,7 @@ useHead({
     {
       rel: "preload",
       as: "font",
-      href: "/fonts/inter-v19-latin-regular.woff2",
+      href: "/fonts/oswald-v56-latin-regular.woff2",
       type: "font/woff2",
       crossorigin: "anonymous",
     },

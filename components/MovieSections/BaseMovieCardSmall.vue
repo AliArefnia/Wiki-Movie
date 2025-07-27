@@ -13,7 +13,7 @@
         :alt="movieTitle"
         :width="imageWidth"
         sizes="(max-width: 150px) 125px, 100px"
-        class="object-cover transition-opacity duration-300"
+        class="w-full h-full object-cover transition-opacity duration-300"
         @load="loaded = true"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
         loading="lazy"

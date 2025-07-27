@@ -21,7 +21,6 @@
         ]"
         @load="
           () => {
-            console.log('Image loaded');
             isImageLoaded = true;
           }
         "

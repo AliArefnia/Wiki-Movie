@@ -9,8 +9,6 @@ export default defineNuxtRouteMiddleware(async () => {
   if (!userStore.isLoggedIn && !userStore.isUserLoaded) {
     try {
       await userStore.fetchUser();
-    } catch (err) {
-      console.warn("User not authenticated.");
-    }
+    } catch (err) {}
   }
 });

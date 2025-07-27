@@ -173,7 +173,6 @@ export const useUserData = defineStore("userData", {
       const authUser = user ?? (await supabase.auth.getUser()).data?.user;
 
       if (!authUser) {
-        console.warn("No user is currently logged in");
         this.user = null;
         this.isUserLoaded = true;
         return;

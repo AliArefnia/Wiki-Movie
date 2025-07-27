@@ -3,6 +3,7 @@
     <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
     <div class="flex overflow-auto py-4">
       <NuxtLink
+        v-if="similarMedia"
         v-for="media in similarMedia"
         :key="media.id"
         :to="`/${media.id}?mediaType=${media.media_type}`"
@@ -15,6 +16,9 @@
           :posterUrl="media.poster_path"
         />
       </NuxtLink>
+      <p v-else class="text-gray-400 text-center font-display mt-6">
+        No Similar movie found
+      </p>
     </div>
   </div>
 </template>

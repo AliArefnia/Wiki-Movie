@@ -17,48 +17,24 @@
           </div>
         </NuxtLink>
       </div>
-      <!-- Left Btn -->
-      <button
-        @click="scrollLeft"
-        class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
+      <BaseMediaScrollList
+        :items="genreMedia"
+        :cardWidth="cardWidth"
+        :getItemKey="(item:any) => item.id"
+        :getItemLink="(item:any) => `/${item.id}?mediaType=${item.media_type}`"
+        @visibility-change="({ index }:any) => showImage[index] = true"
       >
-        <CircleChevronLeft :size="CAROUSEL_BUTTON_WIDTH" />
-      </button>
-
-      <!-- Right Btn  -->
-      <button
-        @click="scrollRight"
-        class="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
-      >
-        <CircleChevronRight :size="CAROUSEL_BUTTON_WIDTH" />
-      </button>
-      <!-- Carousel -->
-      <div
-        ref="scrollContainer"
-        class="flex overflow-auto py-4 whitespace-nowrap"
-      >
-        <NuxtLink
-          v-for="(media, i) in genreMedia"
-          :key="media.id"
-          :to="`/${media.id}?mediaType=${media.media_type}`"
-        >
-          <div
-            :key="media.id"
-            :ref="(el) => setObserverRef(el, i)"
-            class="inline-block flex-shrink-0 mx-2"
-            :style="{ width: cardWidth }"
-          >
-            <BaseMovieCardSmall
-              v-if="showImage[i]"
-              class="shrink-0 mx-2"
-              :movieTitle="getTitle(media)"
-              :rating="media.vote_average"
-              :releaseDate="getReleaseDate(media)"
-              :posterUrl="media.poster_path"
-            />
-          </div>
-        </NuxtLink>
-      </div>
+        <template #card="{ item, index, visible }">
+          <BaseMovieCardSmall
+            v-if="visible"
+            class="shrink-0 mx-2"
+            :movieTitle="getTitle(item)"
+            :rating="item.vote_average"
+            :releaseDate="getReleaseDate(item)"
+            :posterUrl="item.poster_path"
+          />
+        </template>
+      </BaseMediaScrollList>
     </div>
     <div v-if="topRated" class="w-11/12 my-6 mx-auto sm:w-3/4">
       <NuxtLink
@@ -79,56 +55,14 @@
 <script setup lang="ts">
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import TopRatedMovie from "../TopRatedMovie.vue";
-
+import BaseCarousel from "../base/BaseCarousel.vue";
+import BaseMediaScrollList from "../base/BaseMediaScrollList.vue";
 import type { MediaItem } from "@/types/types";
 import { ArrowRight } from "lucide-vue-next";
 
-import { useIntersectionObserver } from "@vueuse/core";
-import { CircleChevronLeft, CircleChevronRight } from "lucide-vue-next";
-
-const SCROLL_AMOUNT = 300;
-const CAROUSEL_BUTTON_WIDTH = 36;
 const showImage = ref<boolean[]>([]);
 const observerElements = ref<(HTMLElement | null)[]>([]);
 const scrollContainer = ref<HTMLElement | null>(null);
-
-// dynamic list
-function setObserverRef(
-  el: Element | ComponentPublicInstance | null,
-  index: number
-) {
-  if (el instanceof HTMLElement) {
-    observerElements.value[index] = el;
-  } else {
-    observerElements.value[index] = null;
-  }
-}
-
-// Observer logic after cards are rendered
-async function observeMediaCards() {
-  await nextTick();
-
-  if (!scrollContainer.value) return;
-  const container = scrollContainer.value;
-
-  observerElements.value.forEach((el, index) => {
-    if (!el || !(el instanceof HTMLElement)) return;
-
-    const { stop } = useIntersectionObserver(
-      el,
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          showImage.value[index] = true;
-          stop();
-        }
-      },
-      {
-        root: scrollContainer,
-        threshold: 0.5, //  50%
-      }
-    );
-  });
-}
 
 const genreMedia = ref<MediaItem[]>([]);
 
@@ -176,9 +110,7 @@ async function fetchMediaByGenre(genreId: number, mediaType: string) {
     sessionStorage.setItem(sessionGenreMediaKey, JSON.stringify(data));
     observerElements.value = [];
   }
-  showImage.value = new Array(genreMedia.value.length).fill(false);
   await getTopRatedMovie(genreMedia.value);
-  await observeMediaCards(); // 👈 observe after loading
 }
 
 const getTitle = (item: MediaItem) =>
@@ -209,36 +141,7 @@ async function getTopRatedMovie(mediaList: MediaItem[]) {
   topRated.value = bestData;
 }
 
-const scrollLeft = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollBy({
-      left: -SCROLL_AMOUNT,
-      behavior: "smooth",
-    });
-  }
-};
-
-const scrollRight = () => {
-  if (!scrollContainer.value) return;
-  if (isAtEnd.value) {
-    scrollContainer.value.scrollTo({ left: 0, behavior: "smooth" });
-  } else {
-    scrollContainer.value.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
-  }
-};
-
-const isAtEnd = ref(false);
-const updateScrollState = () => {
-  if (!scrollContainer.value) return;
-  isAtEnd.value =
-    scrollContainer.value.scrollLeft + scrollContainer.value.clientWidth >=
-    scrollContainer.value.scrollWidth - 10;
-};
-
 onMounted(async () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.addEventListener("scroll", updateScrollState);
-  }
   try {
     getImageQuality();
     getCardWidth();
@@ -246,7 +149,6 @@ onMounted(async () => {
     if (scrollContainer.value) {
       scrollContainer.value.scrollLeft = 0;
     }
-    await observeMediaCards();
     window.addEventListener("resize", updateCardWidth);
   } catch (error) {
     console.error("Failed to fetch movies:", error);

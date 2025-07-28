@@ -1,7 +1,7 @@
 <template>
   <!-- Need to add dynamic font size for movie names -->
   <div
-    class="relative rounded-t-2xl overflow-hidden font-sans h-fit hover:scale-110 hover:z-10 transition-transform"
+    class="relative rounded-t-2xl overflow-hidden font-sans h-fit hover:scale-110 hover:z-9 transition-transform"
     :style="{ width: imageWidth + 'px' }"
   >
     <!-- Image Container -->

@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex justify-around bg-surface-card text-white shadow-lg sticky bottom-0 py-2 z-20"
-    :class="[isStandalone ? 'pb-4' : 'pb-2']"
+    :class="[isStandalone ? 'pb-6' : 'pb-2']"
   >
     <NuxtLink to="/"
       ><BaseButton

@@ -1,25 +1,17 @@
-/* bungee-spice-regular - latin */
+/* michroma-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Bungee Spice";
+  font-display: swap;
+  font-family: "Michroma";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/bungee-spice-v15-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("../fonts/michroma-v20-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 /* ............................................... */
 
-/* oswald-200 - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Oswald";
-  font-style: normal;
-  font-weight: 200;
-  src: url("/fonts/oswald-v56-latin-200.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
 /* oswald-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Oswald";
   font-style: normal;
   font-weight: 400;
@@ -27,7 +19,7 @@
 }
 /* oswald-600 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Oswald";
   font-style: normal;
   font-weight: 600;
@@ -35,7 +27,7 @@
 }
 /* oswald-700 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Oswald";
   font-style: normal;
   font-weight: 700;
@@ -44,25 +36,9 @@
 
 /* ................................................. */
 
-/* inter-100 - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 100;
-  src: url("/fonts/inter-v19-latin-100.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-/* inter-200 - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 200;
-  src: url("/fonts/inter-v19-latin-200.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
 /* inter-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -70,7 +46,7 @@
 }
 /* inter-600 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Inter";
   font-style: normal;
   font-weight: 600;
@@ -78,7 +54,7 @@
 }
 /* inter-800 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Inter";
   font-style: normal;
   font-weight: 800;
@@ -89,39 +65,7 @@
 
 @import "tailwindcss";
 
-/* @layer utilities {
-  .btn-custom {
-    @apply px-6 py-3 bg-customColor text-white font-bold rounded-lg shadow-md hover:bg-opacity-90;
-  }
-} */
-
-/* 
-Color Name	Hex Code	Tailwind Class	Usage
-Cinematic Black	#121212	bg-[#121212]	Main Background (Dark Mode)
-Deep Gray	#1A1A1A	bg-[#1A1A1A]	Secondary Background (Sections, Cards)
-Gunmetal Gray	#23272A	bg-[#23272A]	Navbar / Footer (Subtle contrast)
-Neon Yellow	#FFD700	text-[#FFD700]	Accent Color (Star Ratings, Highlights)
-Electric Blue	#00A6FB	text-[#00A6FB]	Secondary Accent (Links, Hover Effects)
-Crimson Red	#E50914	bg-[#E50914]	Primary CTA Buttons (Watch Now, Add to Favorites)
-Emerald Green	#10B981	bg-[#10B981]	Success Color (Watched, Liked)
-Light Gray	#B3B3B3	text-[#B3B3B3]	Muted Text (Descriptions, Small Text)
-Pure White	#FFFFFF	text-white	Primary Text Color
-🎬 How to Use These Colors
-Background (#121212) → Main dark background
-Sections / Cards (#1A1A1A) → Slightly lighter contrast
-Navbar / Footer (#23272A) → Separate header & footer from content
-Titles (#FFFFFF) → White text for clear readability
-Links & Hover Effects (#00A6FB) → Electric blue for interactive elements
-CTA Buttons (#E50914) → Netflix-style red for action buttons
-Highlight Elements (#FFD700) → Golden color for ratings/stars
-Muted Text (#B3B3B3) → Use for descriptions or less important text
-Success Messages (#10B981) → Green for positive actions (watched, liked)
- */
-
 @theme {
-  /* --font-display: "Satoshi", "sans-serif";
-    --breakpoint-3xl: 120rem; */
-
   /* Colors */
   --color-primary: #ef4444;
   --color-secondary: #6366f1;
@@ -144,10 +88,9 @@ Success Messages (#10B981) → Green for positive actions (watched, liked)
 
   /* Fonts */
 
-  /* --font-display: "Oswald", "sans-serif"; */
   --font-sans: "Inter", "ui-sans-serif", "system-ui", "sans-serif"; /* For body text */
   --font-display: "Oswald", "ui-sans-serif", "system-ui", "sans-serif"; /* For titles */
-  --font-special: "Bungee Spice", "ui-sans-serif", "system-ui", "sans-serif"; /* For titles */
+  --font-special: "Michroma", "Oswald", "Inter", sans-serif;
 }
 
 /* ScrollBar */

@@ -95,7 +95,7 @@ useInfiniteScroll(
   { distance: 100 }
 );
 definePageMeta({
-  layout: "genre-pages",
+  layout: "default",
 });
 
 onMounted(async () => {

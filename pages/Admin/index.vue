@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: "admin-panel",
+  layout: "default",
   pageTransition: {
     name: "page",
     mode: "out-in",

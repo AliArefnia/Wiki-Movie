@@ -156,18 +156,6 @@ body {
   transform: translateY(-10px);
 }
 
-.layout-enter-active,
-.layout-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.layout-enter-from {
-  opacity: 0.8;
-}
-.layout-leave-to {
-  opacity: 0.8;
-}
-
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0.3s ease;

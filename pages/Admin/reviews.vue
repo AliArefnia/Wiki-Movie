@@ -29,7 +29,7 @@ const headers = [
   { text: "Operations", value: "operation", fixed: true },
 ];
 definePageMeta({
-  layout: "admin-panel",
+  layout: "default",
   pageTransition: {
     name: "page",
     mode: "out-in",

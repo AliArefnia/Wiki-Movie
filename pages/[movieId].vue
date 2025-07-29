@@ -248,7 +248,7 @@ const backdropUrl = computed(() => {
 });
 
 definePageMeta({
-  layout: "movie-page",
+  layout: "default",
   middleware: ["validate-media"],
   pageTransition: {
     name: "page",

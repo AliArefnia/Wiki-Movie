@@ -24,7 +24,7 @@ const headers = [
 ];
 
 definePageMeta({
-  layout: "admin-panel",
+  layout: "default",
   pageTransition: {
     name: "page",
     mode: "out-in",

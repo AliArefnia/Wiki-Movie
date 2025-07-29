@@ -27,7 +27,7 @@ import { useIntersectionObserver } from "@vueuse/core";
 
 const props = defineProps<{
   items: any[];
-  cardWidth: string;
+  cardWidth?: string;
   imageThreshold?: number;
   getItemKey?: (item: any) => string | number;
   getItemLink?: (item: any) => string;

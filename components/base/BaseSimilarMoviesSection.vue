@@ -1,21 +1,33 @@
 <template>
   <div class="mt-10">
     <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
-    <div class="flex overflow-auto py-4">
-      <NuxtLink
+    <div class="relative">
+      <BaseCarousel
+        :scrollTarget="scrollTarget"
+        :buttonWidth="32"
+        left-button-placement="-left-5 top-1/2 -translate-y-11/12"
+        right-button-placement="-right-5 top-1/2 -translate-y-11/12"
         v-if="similarMedia"
-        v-for="media in similarMedia"
-        :key="media.id"
-        :to="`/${media.id}?mediaType=${media.media_type}`"
       >
-        <BaseMovieCardSmall
-          class="shrink-0 mx-2"
-          :movieTitle="getTitle(media)"
-          :rating="media.vote_average"
-          :releaseDate="getReleaseDate(media)"
-          :posterUrl="media.poster_path"
-        />
-      </NuxtLink>
+        <BaseMediaScrollList
+          ref="similarMediaRef"
+          :items="similarMedia"
+          :getItemKey="(item:any) => item.id"
+          :getItemLink="(item:any) => `/${item.id}?mediaType=${item.media_type}`"
+          @visibility-change="({ index }:any) => showImage[index] = true"
+        >
+          <template #card="{ item, index, visible }">
+            <BaseMovieCardSmall
+              v-if="visible"
+              class="shrink-0"
+              :movieTitle="getTitle(item)"
+              :rating="item.vote_average"
+              :releaseDate="getReleaseDate(item)"
+              :posterUrl="item.poster_path"
+            />
+          </template>
+        </BaseMediaScrollList>
+      </BaseCarousel>
       <p v-else class="text-gray-400 text-center font-display mt-6">
         No Similar movie found
       </p>
@@ -24,6 +36,8 @@
 </template>
 <script setup lang="ts">
 import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
+import BaseCarousel from "./BaseCarousel.vue";
+import BaseMediaScrollList from "./BaseMediaScrollList.vue";
 import type { MediaItem } from "@/types/types";
 
 const similarMedia = ref<MediaItem[]>([]);
@@ -31,6 +45,12 @@ const props = defineProps<{
   movieId: number;
   mediaType: "tv" | "movie";
 }>();
+
+const showImage = ref<boolean[]>([]);
+const similarMediaRef = ref<typeof BaseMediaScrollList | null>(null);
+
+const scrollTarget = computed(() => similarMediaRef.value?.container ?? null);
+
 const imageWidth = ref(getImageWidth());
 
 function getImageWidth() {
@@ -38,7 +58,7 @@ function getImageWidth() {
   if (vw >= 1280) return 500;
   if (vw >= 1024) return 342;
   if (vw >= 768) return 185;
-  return 154;
+  return 100;
 }
 
 async function fetchSimilarMedia(

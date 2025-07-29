@@ -9,7 +9,12 @@
     <!-- Left Btn -->
     <button
       @click="scrollLeft"
-      class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
+      :class="[
+        'absolute transform z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer',
+        leftButtonPlacement
+          ? leftButtonPlacement
+          : ' left-0 top-1/2 -translate-y-1/2 ',
+      ]"
     >
       <CircleChevronLeft :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
@@ -17,7 +22,12 @@
     <!-- Right Btn  -->
     <button
       @click="scrollRight"
-      class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
+      :class="[
+        'absolute  transform  z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer',
+        rightButtonPlacement
+          ? rightButtonPlacement
+          : 'right-0 top-1/2 -translate-y-1/2',
+      ]"
     >
       <CircleChevronRight :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
@@ -26,14 +36,19 @@
       class="flex overflow-x-auto py-4 scrollbar-hide scroll-smooth"
       @scroll="updateScrollState"
     >
-      <slot></slot>
+      <slot :scrollContainer="carousel"></slot>
     </div>
   </div>
   <div v-else>
     <!-- Left Btn -->
     <button
       @click="scrollLeft"
-      class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
+      :class="[
+        'absolute transform z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer',
+        leftButtonPlacement
+          ? leftButtonPlacement
+          : ' left-0 top-1/2 -translate-y-1/2 ',
+      ]"
     >
       <CircleChevronLeft :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
@@ -41,7 +56,12 @@
     <!-- Right Btn  -->
     <button
       @click="scrollRight"
-      class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer"
+      :class="[
+        'absolute  transform  z-10 bg-gray-900/50 text-white p-2 rounded-full hover:bg-gray-900 transition hidden md:block hover:cursor-pointer',
+        rightButtonPlacement
+          ? rightButtonPlacement
+          : 'right-0 top-1/2 -translate-y-1/2',
+      ]"
     >
       <CircleChevronRight :size="CAROUSEL_BUTTON_WIDTH" />
     </button>
@@ -65,6 +85,8 @@ const props = withDefaults(
     interval?: number;
     autoScroll?: boolean;
     buttonWidth?: number;
+    rightButtonPlacement?: string;
+    leftButtonPlacement?: string;
   }>(),
   {
     scrollTarget: null,

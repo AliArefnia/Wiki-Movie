@@ -1,8 +1,8 @@
 <template>
-  <div id="hero" class="relative px-0 md:px-8">
+  <div id="hero" class="min-h-[318px] relative px-0 md:px-8">
     <!-- Carousel -->
 
-    <BaseCarousel :autoScroll="!!true">
+    <BaseCarousel v-if="HotMedia.length > 0" :autoScroll="!!true">
       <NuxtLink
         v-for="media in HotMedia"
         :key="media.id"
@@ -17,7 +17,6 @@
           class="transform transition-transform duration-300 group-hover:scale-105 will-change-transform"
         />
 
-        <!-- Rating badge on hover -->
         <div
           class="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur"
         >
@@ -25,12 +24,16 @@
         </div>
       </NuxtLink>
     </BaseCarousel>
+    <div v-else class="min-h-[318px] flex justify-center items-center">
+      <BaseLoader message="Getting Hot Movies..."></BaseLoader>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseHeroCard from "./BaseHeroCard.vue";
 import BaseCarousel from "../base/BaseCarousel.vue";
+import BaseLoader from "../base/BaseLoader.vue";
 import type { HotMedia } from "@/types/types";
 
 const HotMedia = ref<HotMedia[]>([]);
@@ -85,7 +88,6 @@ onMounted(async () => {
     } else {
       fetchAndUpdate();
     }
-
     const data = await $fetch<HotMedia[]>(
       `/api/HotMediaData?type=all&width=${imageWidth.value}`
     );
@@ -101,5 +103,23 @@ onMounted(async () => {
 <style scoped>
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+.carousel-skeleton {
+  height: 300px;
+  background: #eee;
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% {
+    background-color: #eee;
+  }
+  50% {
+    background-color: #ddd;
+  }
+  100% {
+    background-color: #eee;
+  }
 }
 </style>

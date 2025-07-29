@@ -50,7 +50,7 @@
       class="flex overflow-x-auto py-4 scrollbar-hide scroll-smooth"
       @scroll="updateScrollState"
     >
-      <slot></slot>
+      <slot :scrollContainer="carousel"></slot>
     </div>
   </div>
 </template>
@@ -60,12 +60,14 @@ import { CircleChevronLeft, CircleChevronRight } from "lucide-vue-next";
 
 const props = withDefaults(
   defineProps<{
+    scrollTarget?: HTMLElement | null;
     scrollAmount?: number;
     interval?: number;
     autoScroll?: boolean;
     buttonWidth?: number;
   }>(),
   {
+    scrollTarget: null,
     scrollAmount: 300,
     interval: 4000,
     autoScroll: false,
@@ -73,23 +75,24 @@ const props = withDefaults(
   }
 );
 const carousel = ref<HTMLElement | null>(null);
+const scrollElement = computed(() => props.scrollTarget || carousel.value);
 const SCROLL_AMOUNT = props.scrollAmount;
 const SCROLL_INTERVAL = props.interval;
 const CAROUSEL_BUTTON_WIDTH = props.buttonWidth;
 let autoScrollTimer: NodeJS.Timeout;
 
 const scrollLeft = () => {
-  if (carousel.value) {
-    carousel.value.scrollBy({ left: -SCROLL_AMOUNT, behavior: "smooth" });
+  if (scrollElement.value) {
+    scrollElement.value?.scrollBy({ left: -SCROLL_AMOUNT, behavior: "smooth" });
   }
 };
 
 const scrollRight = () => {
-  if (!carousel.value) return;
+  if (!scrollElement.value) return;
   if (isAtEnd.value) {
-    carousel.value.scrollTo({ left: 0, behavior: "smooth" });
+    scrollElement.value.scrollTo({ left: 0, behavior: "smooth" });
   } else {
-    carousel.value.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
+    scrollElement.value.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
   }
 };
 
@@ -107,23 +110,23 @@ const stopAutoScroll = () => {
 // Update scroll position and adjust for rounding issue
 const isAtEnd = ref(false);
 const updateScrollState = () => {
-  if (!carousel.value) return;
+  if (!scrollElement.value) return;
   isAtEnd.value =
-    carousel.value.scrollLeft + carousel.value.clientWidth >=
-    carousel.value.scrollWidth - 10;
+    scrollElement.value.scrollLeft + scrollElement.value.clientWidth >=
+    scrollElement.value.scrollWidth - 10;
 };
 
 onMounted(() => {
   props.autoScroll && startAutoScroll();
-  if (carousel.value) {
-    carousel.value.addEventListener("scroll", updateScrollState);
+  if (scrollElement.value) {
+    scrollElement.value.addEventListener("scroll", updateScrollState);
 
     if (!props.autoScroll) return;
 
-    carousel.value.addEventListener("touchstart", stopAutoScroll, {
+    scrollElement.value.addEventListener("touchstart", stopAutoScroll, {
       passive: true,
     });
-    carousel.value.addEventListener("touchend", startAutoScroll, {
+    scrollElement.value.addEventListener("touchend", startAutoScroll, {
       passive: true,
     });
   }

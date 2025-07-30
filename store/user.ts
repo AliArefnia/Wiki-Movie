@@ -201,7 +201,7 @@ export const useUserData = defineStore("userData", {
         user_role: profileData.user_role,
       };
 
-      await this.getUserWishList(Number(authUser.id));
+      await this.getUserWishList(authUser.id);
       await this.getUserWatchList(authUser.id);
       await this.getUserFavouritePersonList(authUser.id);
       this.isUserLoaded = true;

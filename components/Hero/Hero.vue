@@ -1,10 +1,22 @@
 <template>
   <div id="hero" class="min-h-[318px] relative px-0 md:px-8">
-    <!-- Carousel -->
+    <div
+      v-if="status === 'pending'"
+      class="min-h-[318px] flex justify-center items-center"
+    >
+      <BaseLoader message="Getting Hot Movies..." />
+    </div>
 
-    <BaseCarousel v-if="HotMedia.length > 0" :autoScroll="!!true">
+    <div
+      v-else-if="error"
+      class="min-h-[318px] flex justify-center items-center"
+    >
+      <BaseErrorContainer :error="error" :refresh="refresh" />
+    </div>
+
+    <BaseCarousel v-else :autoScroll="true">
       <NuxtLink
-        v-for="media in HotMedia"
+        v-for="media in hotMedia"
         :key="media.id"
         :to="`/${media.id}?mediaType=${media.media_type}`"
         class="shrink-0 mx-2 group relative overflow-hidden rounded-xl"
@@ -24,102 +36,30 @@
         </div>
       </NuxtLink>
     </BaseCarousel>
-    <div v-else class="min-h-[318px] flex justify-center items-center">
-      <BaseLoader message="Getting Hot Movies..."></BaseLoader>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import BaseHeroCard from "./BaseHeroCard.vue";
-import BaseCarousel from "../base/BaseCarousel.vue";
-import BaseLoader from "../base/BaseLoader.vue";
+import BaseHeroCard from "@/components/Hero/BaseHeroCard.vue";
+import BaseCarousel from "@/components/base/BaseCarousel.vue";
+import BaseLoader from "@/components/base/BaseLoader.vue";
+import BaseErrorContainer from "../base/BaseErrorContainer.vue";
 import type { HotMedia } from "@/types/types";
 
-const HotMedia = ref<HotMedia[]>([]);
-const imageWidth = ref(0);
-
-function getCardWidth() {
-  const vw = window.innerWidth;
-  return vw >= 768 ? 342 : 185;
+function getTitle(item: HotMedia) {
+  return item.media_type === "movie" ? item.title : item.name;
 }
 
-function updateWidth() {
-  imageWidth.value = getCardWidth();
-}
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateWidth);
-});
-
-const getTitle = (item: HotMedia) =>
-  item.media_type === "movie" ? item.title : item.name;
-
-async function fetchAndUpdate() {
-  const data = await $fetch<HotMedia[]>(`/api/HotMediaData?...`);
-  HotMedia.value = data;
-  localStorage.setItem(
-    "HotMedia",
-    JSON.stringify({
-      timestamp: Date.now(),
-      data,
-    })
-  );
-}
-
-onMounted(async () => {
-  imageWidth.value = getCardWidth();
-  try {
-    const cache = localStorage.getItem("HotMedia");
-    if (cache) {
-      const { timestamp, data } = JSON.parse(cache);
-      const age = Date.now() - timestamp;
-      const maxAge = 1000 * 60 * 60 * 2;
-
-      if (age < maxAge) {
-        HotMedia.value = data;
-      } else {
-        fetchAndUpdate();
-      }
-    } else {
-      fetchAndUpdate();
-    }
-    const data = await $fetch<HotMedia[]>(
-      `/api/HotMediaData?type=all&width=${imageWidth.value}`
-    );
-
-    HotMedia.value = data;
-    sessionStorage.setItem("HotMedia", JSON.stringify(data));
-  } catch (error: any) {
-    console.error("Error fetching data:", error);
+const {
+  data: hotMedia,
+  status,
+  error,
+  refresh,
+} = useAsyncData<HotMedia[]>(
+  "hot-media-fetch",
+  () => $fetch("/api/HotMediaData?type=all"),
+  {
+    default: () => [],
   }
-});
+);
 </script>
-
-<style scoped>
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-skeleton {
-  height: 300px;
-  background: #eee;
-  border-radius: 12px;
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse {
-  0% {
-    background-color: #eee;
-  }
-  50% {
-    background-color: #ddd;
-  }
-  100% {
-    background-color: #eee;
-  }
-}
-</style>

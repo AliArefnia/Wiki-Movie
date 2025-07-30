@@ -10,19 +10,20 @@
     ></div>
     <NuxtImg
       preload
-      :src="posterUrl"
+      :src="imageURL"
       :alt="movieTitle"
       :width="imageWidth"
       :height="imageHeight"
       sizes="(max-width: 768px) 185px, 342px"
       format="webp"
       class="w-full h-full object-cover transition-opacity duration-500"
-      @load="handleImageLoad"
+      @load="isImageLoaded = true"
       decoding="async"
       fetchpriority="high"
     />
   </div>
 </template>
+
 <script setup lang="ts">
 const props = defineProps<{
   movieTitle: string;
@@ -30,28 +31,28 @@ const props = defineProps<{
   posterUrl: string;
 }>();
 
-const imageWidth = ref(getCardWidth());
-const imageHeight = ref(getCardHeight());
+const imageWidth = ref(0);
+const imageHeight = ref(0);
 const isImageLoaded = ref(false);
 
-function handleImageLoad() {
-  isImageLoaded.value = true;
-}
+const imageURL = computed(() => {
+  const width = imageWidth.value || 185;
+  return `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`;
+});
 
 function getCardWidth() {
   const vw = window.innerWidth;
   return vw >= 768 ? 342 : 185;
 }
 
-function getCardHeight() {
-  //  2:3
-  return Math.round(getCardWidth() * 1.5);
+function getCardHeight(width: number) {
+  return Math.round(width * 1.5); // 2:3
 }
 
 function updateDimensions() {
   const width = getCardWidth();
   imageWidth.value = width;
-  imageHeight.value = Math.round(width * 1.5);
+  imageHeight.value = getCardHeight(width);
 }
 
 onMounted(() => {
@@ -63,5 +64,3 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", updateDimensions);
 });
 </script>
-
-<style scoped></style>

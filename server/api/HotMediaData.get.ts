@@ -7,8 +7,6 @@ export default defineEventHandler(async (event) => {
     const NUMBER_OF_SELECTED_TVS = 3;
     const query = getQuery(event);
     const mediaType = query.type || "all";
-    const posterWidth = query.width;
-    const IMAGE_URL = `https://image.tmdb.org/t/p/w${posterWidth}`;
 
     const fetchHeaders = {
       accept: "application/json",
@@ -24,7 +22,7 @@ export default defineEventHandler(async (event) => {
         ...movie,
         media_type: "movie",
         title: movie.title ?? "Untitled",
-        poster_path: `${IMAGE_URL}${movie.poster_path}`,
+        poster_path: movie.poster_path ?? null,
         vote_average: Number(movie.vote_average.toFixed(1) || "N/A"),
         release_date: movie.release_date?.slice(0, 4) ?? "N/A",
         genre_ids: movie.genre_ids ?? [],
@@ -41,7 +39,7 @@ export default defineEventHandler(async (event) => {
         media_type: "tv",
         name: tv.name ?? "Untitled",
         vote_average: Number(tv.vote_average.toFixed(1) || "N/A"),
-        poster_path: `${IMAGE_URL}${tv.poster_path}`,
+        poster_path: tv.poster_path ?? null,
         first_air_date: tv.first_air_date?.slice(0, 4) ?? "N/A",
         genre_ids: tv.genre_ids ?? [],
       }));
@@ -63,8 +61,10 @@ export default defineEventHandler(async (event) => {
     }
 
     return selectedForHero;
-  } catch (error) {
-    console.error("Error fetching trending media:", error);
-    return { error: "Failed to fetch trending media" };
+  } catch (err: any) {
+    throw createError({
+      statusCode: err.statusCode || 500,
+      statusMessage: err.message || "Internal Server Error",
+    });
   }
 });

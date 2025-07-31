@@ -60,12 +60,20 @@
             :mediaType="mediaType"
           ></BaseSimilarMoviesSection>
         </SectionLazy>
+        <!-- CastsAndCrews -->
+        <div
+          v-if="mediaType === 'movie' || mediaType === 'tv'"
+          id="CastsAndCrews"
+        >
+          <SectionLazy height="100">
+            <CastsAndCrews
+              :mediaId="Number(route.params.movieId)"
+              :mediaType="mediaType"
+            ></CastsAndCrews>
+          </SectionLazy>
+        </div>
+      </div>
 
-        <SectionLazy v-if="mediaType === 'movie' || mediaType === 'tv'">
-          <BaseCastCrewSection
-            :mediaId="Number(route.params.movieId)"
-            :mediaType="mediaType"
-          ></BaseCastCrewSection>
         </SectionLazy>
       </div>
 
@@ -86,11 +94,11 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import BaseCastCrewSection from "~/components/base/BaseCastCrewSection.vue";
 
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
 import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
+import CastsAndCrews from "~/components/MediaPage/CastsAndCrews.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import CommentSection from "~/components/MovieSections/CommentSection.vue";
 import SectionLazy from "~/components/SectionLazy.vue";
@@ -181,23 +189,10 @@ async function fetchMediaDetail() {
   }
 }
 
-async function fetchPersonCredits() {
-  if (mediaType.value !== "person" || !mediaDetail.value?.id) return;
-
-  const credits = await $fetch(`/api/PersonCredits?id=${mediaDetail.value.id}`);
-  if (credits.success) {
-    personCredits.value = credits.data;
-  } else {
-    console.error(credits.error);
-  }
-}
 
 onMounted(async () => {
   await fetchMediaDetail();
 
-  if (mediaType.value === "person") {
-    await fetchPersonCredits();
-  }
   if (mediaType.value !== "person") {
     const data = await $fetch<trailer>(
       `/api/MediaTrailer?mediaId=${mediaDetail.value?.id}&mediaType=${mediaType.value} `

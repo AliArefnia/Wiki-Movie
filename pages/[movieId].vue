@@ -101,6 +101,7 @@ import { useRoute } from "vue-router";
 
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
+import PersonCredits from "~/components/MediaPage/PersonCredits.vue";
 import CastsAndCrews from "~/components/MediaPage/CastsAndCrews.vue";
 import MediaDetail from "~/components/MediaPage/MediaDetail.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";

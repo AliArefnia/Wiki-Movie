@@ -13,6 +13,20 @@ useHead({
     { rel: "icon", type: "image/webp", href: "/Logo.webp" },
     { rel: "apple-touch-icon", href: "/icons/web-app-manifest-192x192.png" },
     { rel: "manifest", href: "/manifest.webmanifest" },
+    {
+      rel: "preload",
+      as: "font",
+      href: "/fonts/oswald-v56-latin-regular.woff2",
+      type: "font/woff2",
+      crossorigin: "anonymous",
+    },
+    {
+      rel: "preload",
+      as: "font",
+      href: "/fonts/oswald-v56-latin-700.woff2",
+      type: "font/woff2",
+      crossorigin: "anonymous",
+    },
   ],
   meta: [
     { charset: "utf-8" },

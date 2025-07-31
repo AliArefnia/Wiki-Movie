@@ -1,3 +1,5 @@
+<!-- change posterUrl impelementation -->
+
 <template>
   <div
     class="flex flex-col md:flex-row items-center md:items-start md:space-x-6"
@@ -46,28 +48,32 @@
             "{{ displayTagline }}"
           </p>
         </div>
+
+        <!-- wish, watch and fave person controls -->
         <section
           id="watchControls"
           class="flex flex-col justify-center items-center"
         >
-          <BaseHeartButton
-            v-if="mediaType !== 'person' && userData.user"
-            class=""
-            :isInWishList="isInWishList"
-            @toggleMovieWishList="toggleMovieWishList()"
-          ></BaseHeartButton>
-          <BaseEyeButton
-            v-if="mediaType !== 'person' && userData.user"
-            :isWatched="isInWatchList"
-            @toggleMovieWatched="toggleMovieWatched()"
-          >
-          </BaseEyeButton>
-          <BasePersonButton
-            v-if="mediaType === 'person' && userData.user"
-            :isFavouritePerson="isInFavouritePersonList"
-            @toggleFavouritePerson="toggleFavouritePerson()"
-          >
-          </BasePersonButton>
+          <ClientOnly>
+            <BaseHeartButton
+              v-if="mediaType !== 'person' && userData.user"
+              class=""
+              :isInWishList="isInWishList"
+              @toggleMovieWishList="toggleMovieWishList()"
+            ></BaseHeartButton>
+            <BaseEyeButton
+              v-if="mediaType !== 'person' && userData.user"
+              :isWatched="isInWatchList"
+              @toggleMovieWatched="toggleMovieWatched()"
+            >
+            </BaseEyeButton>
+            <BasePersonButton
+              v-if="mediaType === 'person' && userData.user"
+              :isFavouritePerson="isInFavouritePersonList"
+              @toggleFavouritePerson="toggleFavouritePerson()"
+            >
+            </BasePersonButton>
+          </ClientOnly>
         </section>
       </div>
 
@@ -153,9 +159,9 @@
 <script setup lang="ts">
 import type { MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import { useUserData } from "~/store/user";
-import BaseHeartButton from "./BaseHeartButton.vue";
-import BaseEyeButton from "./BaseEyeButton.vue";
-import BasePersonButton from "./BasePersonButton.vue";
+import BaseHeartButton from "../base/BaseHeartButton.vue";
+import BaseEyeButton from "../base/BaseEyeButton.vue";
+import BasePersonButton from "../base/BasePersonButton.vue";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;

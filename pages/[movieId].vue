@@ -17,12 +17,13 @@
         ]"
       >
         <!-- Movie Header -->
-
-        <BaseMediaDetail
-          :media-detail="mediaDetail"
-          :media-type="mediaType"
-          :id="mediaDetail.id"
-        ></BaseMediaDetail>
+        <div id="mediaDetail">
+          <MediaDetail
+            :media-detail="mediaDetail"
+            :media-type="mediaType"
+            :id="mediaDetail.id"
+          ></MediaDetail>
+        </div>
 
         <!-- Person Credits -->
 
@@ -89,6 +90,9 @@
       <!-- loader -->
       <BaseLoader message="Loading Media Details!"></BaseLoader>
     </div>
+    <p v-else class="text-gray-400 text-center font-display mt-6">
+      No Details found!
+    </p>
   </div>
 </template>
 
@@ -97,8 +101,8 @@ import { useRoute } from "vue-router";
 
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
-import BaseMediaDetail from "~/components/base/BaseMediaDetail.vue";
 import CastsAndCrews from "~/components/MediaPage/CastsAndCrews.vue";
+import MediaDetail from "~/components/MediaPage/MediaDetail.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import CommentSection from "~/components/MovieSections/CommentSection.vue";
 import SectionLazy from "~/components/SectionLazy.vue";
@@ -173,25 +177,7 @@ function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
   return person;
 }
 
-async function fetchMediaDetail() {
-  try {
-    const id = route.params.movieId;
-    mediaType.value = route.query.mediaType as "movie" | "tv" | "person" | null;
-
-    const rawData = await $fetch<MediaDetailUnion>(
-      `/api/MediaDetail?id=${id}&media_type=${mediaType.value}`
-    );
-    mediaType.value = rawData.media_type;
-    mediaDetail.value = parseMediaDetail(rawData);
-  } catch (error) {
-    console.error("Failed to fetch movie details:", error);
-  } finally {
-  }
-}
-
-
 onMounted(async () => {
-  await fetchMediaDetail();
 
   if (mediaType.value !== "person") {
     const data = await $fetch<trailer>(

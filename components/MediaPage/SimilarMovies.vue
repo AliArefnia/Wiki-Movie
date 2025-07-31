@@ -1,20 +1,17 @@
 <template>
   <div class="mt-10">
     <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
-    <div class="relative min-h-[260px]">
+    <div class="relative">
       <!-- Loading -->
       <div
         v-if="status === 'pending'"
-        class="flex justify-center items-center min-h-[260px]"
+        class="flex justify-center items-center mt-6"
       >
         <BaseLoader message="Fetching similar media..." />
       </div>
 
       <!-- Error -->
-      <div
-        v-else-if="error"
-        class="flex justify-center items-center min-h-[260px]"
-      >
+      <div v-else-if="error" class="flex justify-center items-center">
         <BaseErrorContainer :error="error" :refresh="refresh" />
       </div>
 

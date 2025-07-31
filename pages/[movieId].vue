@@ -34,22 +34,14 @@
         </div>
 
         <!-- Trailer -->
-        <div v-if="mediaType === 'movie' || mediaType === 'tv'">
-          <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
-          <div v-if="officialTrailerKey">
-            <SectionLazy>
-              <BaseTrailerCard
-                class="shrink-0 mx-2"
-                :soloMovie="true"
-                :officialTrailerKey="officialTrailerKey"
-                :fallBackThumbnail="backdropUrl"
-                :trailerName="officialTrailerName"
-              />
-            </SectionLazy>
-          </div>
-          <p v-else class="text-gray-400 text-center font-display mt-6">
-            {{ officialTrailerName }}
-          </p>
+        <div v-if="mediaType === 'movie' || mediaType === 'tv'" id="trailer">
+          <SectionLazy height="100">
+            <Trailer
+              :mediaId="mediaDetail.id"
+              :media-type="mediaType"
+              :fall-back-thumbnail="backdropPath"
+            ></Trailer>
+          </SectionLazy>
         </div>
 
         <SectionLazy
@@ -100,9 +92,9 @@
 import { useRoute } from "vue-router";
 
 import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
-import BaseTrailerCard from "~/components/base/BaseTrailerCard.vue";
 import PersonCredits from "~/components/MediaPage/PersonCredits.vue";
 import CastsAndCrews from "~/components/MediaPage/CastsAndCrews.vue";
+import Trailer from "~/components/MediaPage/Trailer.vue";
 import MediaDetail from "~/components/MediaPage/MediaDetail.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import CommentSection from "~/components/MovieSections/CommentSection.vue";
@@ -113,7 +105,6 @@ import type {
   MovieDetail,
   TvDetail,
   PersonDetail,
-  trailer,
   MediaDetailUnion,
   TvShow,
   Movie,
@@ -124,8 +115,6 @@ const mediaType = ref<"movie" | "tv" | "person" | null>(null);
 const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
 const personCredits = ref<(Movie | TvShow)[]>([]);
 
-const officialTrailerKey = ref();
-const officialTrailerName = ref("");
 
 function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
   const mediaType = data.media_type;
@@ -177,23 +166,6 @@ function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
   };
   return person;
 }
-
-onMounted(async () => {
-
-  if (mediaType.value !== "person") {
-    const data = await $fetch<trailer>(
-      `/api/MediaTrailer?mediaId=${mediaDetail.value?.id}&mediaType=${mediaType.value} `
-    );
-
-    if (!data) {
-      officialTrailerKey.value = null;
-      officialTrailerName.value = "No trailer available";
-    } else {
-      officialTrailerKey.value = data.key;
-      officialTrailerName.value = data.name;
-    }
-  }
-});
 
 const backdropPath = computed(() => {
   if (

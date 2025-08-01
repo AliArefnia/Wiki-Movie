@@ -7,7 +7,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig();
 
   if (!id || !media_type) {
-    return { error: "Missing ID or media type" };
+    throw createError({ statusCode: 400, message: "Missing ID or media type" });
   }
 
   const headers = {
@@ -22,39 +22,77 @@ export default defineEventHandler(async (event: H3Event) => {
       headers,
     });
 
-    if (res && res.id) {
-      switch (media_type) {
-        case "movie":
-          const movie = res as MovieDetail;
-          return {
-            ...movie,
-            media_type: "movie",
-            vote_average: Number(movie.vote_average?.toFixed(1) || "N/A"),
-            popularity: Number(movie.popularity?.toFixed(2) || "N/A"),
-            release_date: movie.release_date?.slice(0, 4) || "N/A",
-          };
-
-        case "tv":
-          const tv = res as TvDetail;
-          return {
-            ...tv,
-            media_type: "tv",
-            vote_average: Number(tv.vote_average?.toFixed(1) || "N/A"),
-            popularity: Number(tv.popularity?.toFixed(2) || "N/A"),
-            release_date: tv.first_air_date?.slice(0, 4) || "N/A",
-          };
-
-        case "person":
-          const person = res as PersonDetail;
-          return {
-            ...person,
-            media_type: "person",
-          };
-      }
+    if (!res || !res.id) {
+      throw createError({ statusCode: 404, message: "Media not found" });
     }
-  } catch (e) {
-    return { error: `Failed to fetch ${media_type} with ID ${id}` };
-  }
 
-  return { error: `No detail found for ${media_type} with ID: ${id}` };
+    if (media_type === "movie" && isMovieDetail(res)) {
+      return {
+        media_type: "movie",
+        id: res.id,
+        title: res.title,
+        vote_average: Number(res.vote_average?.toFixed(1) || "0.0"),
+        popularity: Number(res.popularity?.toFixed(2) || "0.0"),
+        release_date: res.release_date?.slice(0, 4) || "N/A",
+        poster_path: res.poster_path,
+        backdrop_path: res.backdrop_path,
+        runtime: res.runtime,
+        overview: res.overview,
+        tagline: res.tagline,
+        genres: res.genres ?? [],
+        genre_ids: res.genres?.map((g: any) => g.id) ?? [],
+      };
+    }
+
+    if (media_type === "tv" && isTvDetail(res)) {
+      return {
+        media_type: "tv",
+        id: res.id,
+        name: res.name,
+        vote_average: Number(res.vote_average?.toFixed(1) || "0.0"),
+        popularity: Number(res.popularity?.toFixed(2) || "0.0"),
+        release_date: res.first_air_date?.slice(0, 4) || "N/A",
+        poster_path: res.poster_path,
+        backdrop_path: res.backdrop_path,
+        overview: res.overview,
+        tagline: res.tagline,
+        genres: res.genres ?? [],
+        genre_ids: res.genres?.map((g: any) => g.id) ?? [],
+        number_of_seasons: res.number_of_seasons,
+      };
+    }
+
+    if (media_type === "person" && isPersonDetail(res)) {
+      return {
+        media_type: "person",
+        id: res.id,
+        name: res.name,
+        profile_path: res.profile_path,
+        biography: res.biography,
+        birthday: res.birthday,
+        place_of_birth: res.place_of_birth,
+        popularity: res.popularity,
+        known_for_department: res.known_for_department,
+      };
+    }
+
+    throw createError({ statusCode: 400, message: "Invalid media type" });
+  } catch (err: any) {
+    throw createError({
+      statusCode: err.statusCode || 500,
+      statusMessage: err.message || "Failed to fetch media detail",
+    });
+  }
 });
+
+function isMovieDetail(obj: any): obj is MovieDetail {
+  return "title" in obj && "runtime" in obj;
+}
+
+function isTvDetail(obj: any): obj is TvDetail {
+  return "name" in obj && "number_of_seasons" in obj;
+}
+
+function isPersonDetail(obj: any): obj is PersonDetail {
+  return "biography" in obj && "known_for_department" in obj;
+}

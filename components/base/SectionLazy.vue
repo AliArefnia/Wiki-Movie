@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="el"
-    :class="[height ? `min-h-[${Number(height)}px]` : 'min-h-[300px]']"
-  >
+  <div ref="el" :class="[height ? `min-h-[${height}px]` : 'min-h-[300px]']">
     <Transition name="fade" appear>
       <slot v-if="visible" />
     </Transition>

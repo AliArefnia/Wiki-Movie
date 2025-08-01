@@ -8,8 +8,8 @@
     <div class="relative aspect-[2/3] w-full bg-gray-800">
       <!-- Actual Image -->
       <NuxtImg
-        v-if="posterUrl"
-        :src="posterUrl"
+        v-if="imageURL"
+        :src="imageURL"
         :alt="movieTitle"
         :width="imageWidth"
         sizes="(max-width: 150px) 125px, 100px"
@@ -61,14 +61,26 @@ const props = defineProps<{
   posterUrl: string | null;
 }>();
 
-const imageWidth = ref(getCardWidth());
+const imageURL = computed(() => {
+  const width = imageWidth.value || 92;
+  return props.posterUrl && props.posterUrl !== "null"
+    ? `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`
+    : "images/moviePlaceholder.png";
+});
+
+const imageWidth = ref(0);
 const loaded = ref(false);
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 1280) return 150;
-  if (vw >= 768) return 125;
-  return 100;
+  // if (vw >= 1280) return 500;
+  if (vw >= 1280) return 154;
+  // if (vw >= 1280) return 342;
+  if (vw >= 1024) return 154;
+  // if (vw >= 1024) return 185;
+  if (vw >= 768) return 154;
+  // if (vw >= 768) return 154;
+  return 92;
 }
 
 function updateWidth() {

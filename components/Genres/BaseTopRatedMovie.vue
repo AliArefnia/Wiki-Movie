@@ -5,18 +5,17 @@
   >
     <!-- Image Container -->
     <div
-      class="relative aspect-[2/3] bg-gray-800 shrink-0 my-auto sm:my-0"
+      class="relative aspect-[2/3] bg-gray-800 shrink-0"
       :style="{ width: imageWidth + 'px' }"
     >
       <!-- Actual Image -->
       <NuxtImg
         v-if="posterUrl"
-        class="w-full sm:h-full object-cover transition-opacity duration-300"
+        class="w-full h-full object-cover transition-opacity duration-300"
         :src="posterUrl"
         :alt="movieTitle"
         @load="loaded = true"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
-        loading="lazy"
       />
 
       <!-- Placeholder Image (fallback) -->
@@ -35,29 +34,32 @@
       ></div>
     </div>
 
+    <!-- info -->
     <div
-      class="flex flex-col left-4 bottom-4 text-white font-display grow px-2 py-4 sm:p-6"
+      class="flex flex-col left-4 bottom-4 text-white font-display grow p-2 sm:p-6"
     >
-      <div class="flex flex-row justify-between items-center">
-        <div class="font-bold line-clamp-3 text-xl lg:text-3xl my-1">
-          {{ movieTitle }}
+      <div
+        class="font-bold line-clamp-2 sm:line-clamp-none text-md sm:text-2xl my-1"
+      >
+        {{ movieTitle }}
+      </div>
+
+      <div class="my-2 flex flex-row gap-2">
+        <div
+          v-if="releaseDate || rating"
+          class="text-[11px] sm:text-base text-gray-300 px-3 py-1 bg-gray-700/40 rounded-full whitespace-nowrap"
+        >
+          {{ releaseDate }}
         </div>
         <div
-          class="flex items-center text-[10px] sm:text-base bg-yellow-100/20 text-yellow-400 sm:px-3 rounded-2xl whitespace-nowrap h-fit sm:h-auto p-1"
+          class="flex items-center text-[11px] sm:text-base bg-yellow-100/20 text-yellow-400 sm:px-3 rounded-2xl whitespace-nowrap p-1"
         >
           {{ rating }}/10 ★
         </div>
       </div>
-
-      <div class="font-mono w-fit text-md lg:text-xl mt-2">
-        <div
-          v-if="releaseDate"
-          class="text-sm text-gray-300 px-3 py-1 bg-gray-700/40 rounded-full whitespace-nowrap"
-        >
-          {{ releaseDate }}
-        </div>
-      </div>
-      <div class="text-lg mt-6 line-clamp-3 sm:line-clamp-4">
+      <div
+        class="text-xs sm:text-base md:text-lg my-auto line-clamp-3 sm:line-clamp-4 font-sans leading-5 sm:leading-normal"
+      >
         {{ description }}
       </div>
     </div>
@@ -73,9 +75,8 @@ const props = defineProps<{
   description: string;
 }>();
 
-const imageWidth = ref(getCardWidth());
+const imageWidth = ref(0);
 const loaded = ref(false);
-const viewPortWidth = ref(window.innerWidth);
 
 function getCardWidth() {
   const vw = window.innerWidth;
@@ -85,10 +86,10 @@ function getCardWidth() {
 
 function updateWidth() {
   imageWidth.value = getCardWidth();
-  viewPortWidth.value = window.innerWidth;
 }
 
 onMounted(() => {
+  updateWidth();
   window.addEventListener("resize", updateWidth);
 });
 

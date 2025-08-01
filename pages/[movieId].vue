@@ -113,61 +113,24 @@ import Backdrop from "~/components/MediaPage/Backdrop.vue";
 import type { MediaDetailUnion } from "~/types/types";
 
 const route = useRoute();
-const mediaType = ref<"movie" | "tv" | "person" | null>(null);
-const mediaDetail = ref<MovieDetail | TvDetail | PersonDetail | null>(null);
-const personCredits = ref<(Movie | TvShow)[]>([]);
+const id = computed(() => route.params.movieId);
 
+const mediaType = (route.query.mediaType || null) as
+  | "movie"
+  | "tv"
+  | "person"
+  | null;
 
-function parseMediaDetail(data: any): MovieDetail | TvDetail | PersonDetail {
-  const mediaType = data.media_type;
-  if (mediaType === "movie") {
-    const movie: MovieDetail = {
-      id: data.id,
-      title: data.title,
-      genre_ids: data.genre_ids || [],
-      vote_average: data.vote_average,
-      poster_path: data.poster_path,
-      backdrop_path: data.backdrop_path,
-      release_date: data.release_date,
-      popularity: data.popularity,
-      runtime: data.runtime,
-      overview: data.overview,
-      genres: data.genres || [],
-      tagline: data.tagline,
-    };
-    return movie;
-  }
-
-  if (mediaType === "tv") {
-    const tv: TvDetail = {
-      id: data.id,
-      name: data.name,
-      genre_ids: data.genre_ids || [],
-      vote_average: data.vote_average,
-      poster_path: data.poster_path,
-      backdrop_path: data.backdrop_path,
-      first_air_date: data.first_air_date,
-      popularity: data.popularity,
-      overview: data.overview,
-      number_of_seasons: data.number_of_seasons,
-      genres: data.genres || [],
-      tagline: data.tagline,
-    };
-    return tv;
-  }
-
-  const person: PersonDetail = {
-    id: data.id,
-    name: data.name,
-    profile_path: data.profile_path,
-    biography: data.biography,
-    birthday: data.birthday,
-    place_of_birth: data.place_of_birth,
-    popularity: data.popularity,
-    known_for_department: data.known_for_department,
-  };
-  return person;
-}
+const {
+  data: mediaDetail,
+  status,
+  error,
+  refresh,
+} = useAsyncData(`MediaDetail-${route.params.movieId}`, () =>
+  $fetch<MediaDetailUnion>(
+    `/api/MediaDetail?id=${id.value}&media_type=${mediaType}`
+  )
+);
 
 const backdropPath = computed(() => {
   if (

@@ -44,7 +44,7 @@ import { useMovieStore } from "~/store/store";
 
 import type { Genre, MediaItem } from "@/types/types";
 
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
+import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
 const movieStore = useMovieStore();
 const route = useRoute();
 

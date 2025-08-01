@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useMovieStore } from "~/store/store";
+import BaseGenreCard from "./BaseGenreCard.vue";
 
 const active = ref<"movie" | "tv">("movie");
 const store = useMovieStore();

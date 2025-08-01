@@ -2,7 +2,9 @@
   <div>
     <div class="relative">
       <div class="flex justify-between items-center px-4 py-2 mt-2">
-        <p class="text-white text-xl font-special">{{ genreName }}</p>
+        <p class="text-white text-xl font-special">
+          {{ genreName }}
+        </p>
 
         <NuxtLink
           class="text-primary cursor-pointer group w-fit"
@@ -17,31 +19,34 @@
           </div>
         </NuxtLink>
       </div>
-      <BaseMediaScrollList
-        :items="genreMedia"
-        :cardWidth="cardWidth"
-        :getItemKey="(item:any) => item.id"
-        :getItemLink="(item:any) => `/${item.id}?mediaType=${item.media_type}`"
-        @visibility-change="({ index }:any) => showImage[index] = true"
-      >
-        <template #card="{ item, index, visible }">
-          <BaseMovieCardSmall
-            v-if="visible"
-            class="shrink-0 mx-2"
-            :movieTitle="getTitle(item)"
-            :rating="item.vote_average"
-            :releaseDate="getReleaseDate(item)"
-            :posterUrl="item.poster_path"
-          />
-        </template>
-      </BaseMediaScrollList>
+      <BaseCarousel :scrollTarget="scrollTarget" :buttonWidth="32">
+        <BaseMediaScrollList
+          ref="mediaListRef"
+          :items="genreMedia"
+          :cardWidth="cardWidth"
+          :getItemKey="(item:any) => item.id"
+          :getItemLink="(item:any) => `/${item.id}?mediaType=${item.media_type}`"
+          @visibility-change="({ index }:any) => showImage[index] = true"
+        >
+          <template #card="{ item, index, visible }">
+            <BaseMovieCardSmall
+              v-if="visible"
+              class="shrink-0 mx-2"
+              :movieTitle="getTitle(item)"
+              :rating="item.vote_average"
+              :releaseDate="getReleaseDate(item)"
+              :posterUrl="item.poster_path"
+            />
+          </template>
+        </BaseMediaScrollList>
+      </BaseCarousel>
     </div>
     <div v-if="topRated" class="w-11/12 my-6 mx-auto sm:w-3/4">
       <NuxtLink
         :key="topRated.id"
         :to="`/${topRated.id}?mediaType=${topRated.media_type}`"
       >
-        <TopRatedMovie
+        <BaseTopRatedMovie
           class="bg-surface-card w-full"
           :movieTitle="getTitle(topRated)"
           :rating="topRated.vote_average"
@@ -53,16 +58,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
-import TopRatedMovie from "../TopRatedMovie.vue";
-import BaseCarousel from "../base/BaseCarousel.vue";
 import BaseMediaScrollList from "../base/BaseMediaScrollList.vue";
+import BaseTopRatedMovie from "./BaseTopRatedMovie.vue";
 import type { MediaItem } from "@/types/types";
 import { ArrowRight } from "lucide-vue-next";
 
 const showImage = ref<boolean[]>([]);
 const observerElements = ref<(HTMLElement | null)[]>([]);
-const scrollContainer = ref<HTMLElement | null>(null);
+
+const mediaListRef = ref<typeof BaseMediaScrollList | null>(null);
+
+const scrollTarget = computed(() => mediaListRef.value?.container ?? null);
 
 const genreMedia = ref<MediaItem[]>([]);
 
@@ -79,9 +85,9 @@ const cardWidth = ref(getCardWidth());
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 1200) return "150px";
-  if (vw >= 768) return "130px";
-  return "100px";
+  if (vw >= 1200) return "170px";
+  if (vw >= 768) return "150px";
+  return "90px";
 }
 
 function updateCardWidth() {
@@ -90,8 +96,8 @@ function updateCardWidth() {
 
 function getImageQuality() {
   const vw = window.innerWidth;
-  if (vw >= 768) return 154;
-  return 92;
+  if (vw >= 768) return 185;
+  return 154;
 }
 
 async function fetchMediaByGenre(genreId: number, mediaType: string) {
@@ -146,9 +152,6 @@ onMounted(async () => {
     getImageQuality();
     getCardWidth();
     await fetchMediaByGenre(props.genreId, props.mediaType);
-    if (scrollContainer.value) {
-      scrollContainer.value.scrollLeft = 0;
-    }
     window.addEventListener("resize", updateCardWidth);
   } catch (error) {
     console.error("Failed to fetch movies:", error);

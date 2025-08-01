@@ -3,12 +3,16 @@
     <Heart
       :size="50"
       :class="[
-        isInWishList ? 'fill-red-500' : 'fill-none stroke-gray-600',
+        isInWishList
+          ? 'fill-primary stroke-0'
+          : 'fill-none stroke-gray-600 hover:stroke-primary',
         'transition-transform duration-300 ease-in-out',
-        isInWishList ? 'scale-110 brightness-125' : 'scale-100 brightness-100',
+        isInWishList
+          ? 'scale-110 brightness-125 hover:scale-115'
+          : 'scale-100 brightness-100 hover:scale-105',
         isInWishList ? 'animate-pulse' : '',
       ]"
-      class="hover:cursor-pointer hover:scale-105 hover:stroke-red-500"
+      class="hover:cursor-pointer"
       color="red"
     />
   </button>

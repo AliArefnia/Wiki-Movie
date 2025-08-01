@@ -1,13 +1,7 @@
 <template>
   <div>
     <div
-      v-if="
-        isInitialLoadDone &&
-        mediaList?.length === 0 &&
-        !loading &&
-        !error &&
-        isUserLoggedIn
-      "
+      v-if="isInitialLoadDone && mediaList?.length === 0 && !loading && !error"
       class="text-gray-400 text-center font-display mt-6"
     >
       {{ emptyText }}
@@ -106,7 +100,6 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-
 import type { MediaItem, Person } from "~/types/types";
 
 const props = defineProps<{
@@ -120,6 +113,9 @@ const props = defineProps<{
   emptyText: string;
 }>();
 
+watch(props, (newval) => {
+  console.log(newval.mediaList);
+});
 const mediaItems = computed(() =>
   props.type === "movie" && props.mediaList
     ? (props.mediaList as MediaItem[])

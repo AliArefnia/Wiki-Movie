@@ -1,4 +1,3 @@
-<!-- /components/sections/CastCrewSection.vue -->
 <template>
   <div class="mt-10 text-white">
     <h3 class="font-display mx-4 text-2xl">Top Cast</h3>
@@ -32,20 +31,27 @@
         />
       </NuxtLink>
       <!-- Empty -->
-      <p
-        v-else-if="castCrew?.cast.length === 0 && !error"
-        class="font-display mx-auto text-gray-400"
-      >
-        No Cast Found
-      </p>
-      <BaseErrorContainer v-if="error" :error="error" :refresh="refresh">
-      </BaseErrorContainer>
+      <p v-else class="font-display mx-auto text-gray-400">No Cast Found</p>
     </div>
 
     <h3 class="font-display mx-4 text-2xl mt-6">Crew</h3>
     <div class="flex overflow-auto py-4">
+      <!-- Loading -->
+      <div
+        v-if="status === 'pending'"
+        class="flex justify-center items-center min-h-[260px]"
+      >
+        <BaseLoader message="Fetching Person Credits..." />
+      </div>
+      <!-- Error -->
+      <div
+        v-else-if="error"
+        class="flex justify-center items-center min-h-[260px]"
+      >
+        <BaseErrorContainer :error="error" :refresh="refresh" />
+      </div>
       <NuxtLink
-        v-if="castCrew && status === 'success'"
+        v-if="castCrew?.crew.length"
         v-for="person in castCrew?.crew"
         :key="person.id"
         :to="`/${person.id}?mediaType=${'person'}`"
@@ -57,16 +63,7 @@
           :profileUrl="person.profile_path"
         />
       </NuxtLink>
-      <p
-        v-else-if="
-          castCrew?.crew.length === 0 && !error && status === 'success'
-        "
-        class="font-display mx-auto text-gray-400"
-      >
-        No Crew Found
-      </p>
-      <BaseErrorContainer v-if="error" :error="error" :refresh="refresh">
-      </BaseErrorContainer>
+      <p v-else class="font-display mx-auto text-gray-400">No Crew Found</p>
     </div>
   </div>
 </template>

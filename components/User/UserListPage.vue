@@ -106,10 +106,6 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
-import BasePersonCard from "../base/BasePersonCard.vue";
-import BaseLoader from "~/components/base/BaseLoader.vue";
-import BaseButton from "~/components/base/BaseButton.vue";
 
 import type { MediaItem, Person } from "~/types/types";
 

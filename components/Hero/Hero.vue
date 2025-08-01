@@ -40,11 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import BaseHeroCard from "@/components/Hero/BaseHeroCard.vue";
-import BaseCarousel from "@/components/base/BaseCarousel.vue";
-import BaseLoader from "@/components/base/BaseLoader.vue";
-import BaseErrorContainer from "../base/BaseErrorContainer.vue";
 import type { HotMedia } from "@/types/types";
+import BaseHeroCard from "./BaseHeroCard.vue";
 
 function getTitle(item: HotMedia) {
   return item.media_type === "movie" ? item.title : item.name;

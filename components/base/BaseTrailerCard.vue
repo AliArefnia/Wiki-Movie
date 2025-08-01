@@ -1,11 +1,5 @@
 <template>
   <div>
-    <p
-      class="bg-black/50 text-white px-2 mx-4 py-1 rounded text-xs inline-block"
-    >
-      {{ props.trailerName }}
-    </p>
-
     <div
       class="relative rounded-2xl overflow-hidden font-sans cursor-pointer flex justify-center"
       :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
@@ -33,6 +27,7 @@
         ></iframe>
       </transition>
     </div>
+
     <div class="flex justify-center my-4">
       <a
         :href="`https://www.youtube.com/watch?v=${officialTrailerKey}`"
@@ -81,14 +76,3 @@ const thumbnailUrl = computed(() =>
     : props.fallBackThumbnail
 );
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

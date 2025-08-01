@@ -107,7 +107,6 @@
 import { useUserData } from "~/store/user";
 import type { Comments } from "~/types/types";
 import BaseCommentCard from "./BaseComponents/BaseCommentCard.vue";
-import BaseButton from "../base/BaseButton.vue";
 
 const props = defineProps<{
   mediaId: number;

@@ -56,14 +56,13 @@
             >Log In</NuxtLink
           >
         </p>
-
-        <!-- <p v-if="message" class="mt-4 text-green-400">{{ message }}</p> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import BaseSmallSpinner from "~/components/base/BaseSmallSpinner.vue";
 import logo from "@/assets/images/Logo.webp";
 definePageMeta({
   layout: "default",
@@ -86,7 +85,6 @@ const router = useRouter();
 const email = ref("");
 const password = ref("");
 const repeatPassword = ref("");
-const message = ref("");
 const error = ref("");
 const isSigninUp = ref(false);
 const emailInput = ref<HTMLInputElement | null>(null);

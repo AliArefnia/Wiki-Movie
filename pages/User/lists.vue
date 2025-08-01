@@ -55,7 +55,7 @@ useHead({ title: "My Lists" });
 
 import { useUserData } from "~/store/user";
 import { useRouter, useRoute } from "vue-router";
-import UserListPage from "~/components/User/UserListPage.vue";
+import UserListPage from "~/components/Wishes/UserListPage.vue";
 import type {
   MediaItem,
   WishListItem,

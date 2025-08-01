@@ -10,7 +10,7 @@
       <!-- Actual Image -->
       <NuxtImg
         v-if="posterUrl"
-        class="w-72 rounded-lg shadow-lg transition-opacity duration-300"
+        class="w-72 rounded-lg shadow-lg transition-opacity duration-300 h-full"
         :src="posterUrl"
         :alt="displayTitle"
         @load="loaded = true"
@@ -93,7 +93,7 @@
         <h2 class="text-xl font-light mb-2 text-primary">
           {{ mediaType === "person" ? "Biography" : "Overview" }}
         </h2>
-        <p class="text-gray-200 leading-relaxed font-display lg:text-lg">
+        <p class="text-gray-200 leading-relaxed lg:text-lg">
           {{ displayOverview }}
         </p>
       </div>
@@ -159,9 +159,9 @@
 <script setup lang="ts">
 import type { MovieDetail, TvDetail, PersonDetail } from "~/types/types";
 import { useUserData } from "~/store/user";
-import BaseHeartButton from "../base/BaseHeartButton.vue";
-import BaseEyeButton from "../base/BaseEyeButton.vue";
-import BasePersonButton from "../base/BasePersonButton.vue";
+import BaseHeartButton from "./BaseComponents/BaseHeartButton.vue";
+import BaseEyeButton from "./BaseComponents/BaseEyeButton.vue";
+import BasePersonButton from "./BaseComponents/BasePersonButton.vue";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;

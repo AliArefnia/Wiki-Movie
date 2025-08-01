@@ -20,7 +20,7 @@
         d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
       ></path>
     </svg>
-    <p class="text-lg font-semibold text-gray-300">
+    <p class="text-sm font-semibold text-gray-300">
       {{ message }}
     </p>
   </div>

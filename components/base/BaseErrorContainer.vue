@@ -4,7 +4,7 @@
   >
     <div class="flex items-center justify-between">
       <p class="font-semibold text-white">Something went wrong</p>
-      <BaseButton @click="refresh" variant="accent" size="sm">
+      <BaseButton @click="refresh" variant="accent" size="sm" class="ml-3">
         Try Again
       </BaseButton>
     </div>

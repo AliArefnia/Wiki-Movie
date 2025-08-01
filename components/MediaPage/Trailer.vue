@@ -35,8 +35,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseLoader from "../base/BaseLoader.vue";
-import BaseErrorContainer from "../base/BaseErrorContainer.vue";
 import BaseTrailerCard from "../base/BaseTrailerCard.vue";
 
 import type { trailer } from "@/types/types";

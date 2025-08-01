@@ -1,5 +1,3 @@
-<!-- change button and use basebutton -->
-
 <template>
   <div class="mt-10">
     <h3 class="font-display mx-4 text-2xl">Person Credits</h3>
@@ -67,8 +65,8 @@
     </p>
   </div>
 </template>
+
 <script setup lang="ts">
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
 import type { Movie, TvShow } from "@/types/types";
 
 const props = defineProps<{

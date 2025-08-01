@@ -52,11 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
-import BaseCarousel from "../base/BaseCarousel.vue";
 import BaseMediaScrollList from "../base/BaseMediaScrollList.vue";
-import BaseLoader from "../base/BaseLoader.vue";
-import BaseErrorContainer from "../base/BaseErrorContainer.vue";
 import type { MediaItem } from "@/types/types";
 
 const props = defineProps<{

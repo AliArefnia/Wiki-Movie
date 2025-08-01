@@ -43,7 +43,8 @@
 <script setup lang="ts">
 import { useMovieStore } from "~/store/store";
 import type { Genre } from "~/types/types";
-import BaseMovieSection from "~/components/MovieSections/BaseMovieSection.vue";
+import GenreSection from "~/components/Genres/GenreList.vue";
+import BaseMovieSection from "~/components/Genres/GenreMovies.vue";
 import SectionLazy from "~/components/base/SectionLazy.vue";
 
 const movieStore = useMovieStore();

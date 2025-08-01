@@ -10,7 +10,7 @@
       ></div>
 
       <NuxtImg
-        :src="computedProfileUrl"
+        :src="imageURL"
         :alt="personName"
         :width="imageWidth"
         :height="imageHeight"
@@ -44,28 +44,24 @@ const props = defineProps<{
   profileUrl: string | null;
 }>();
 
-const imageWidth = ref(getCardWidth());
-const imageHeight = ref(getCardHeight());
+const imageWidth = ref(0);
+const imageHeight = ref(0);
 const isImageLoaded = ref(false);
 
-const computedProfileUrl = computed(() => {
-  return props.profileUrl &&
-    props.profileUrl !== "null" &&
-    !!props.profileUrl !== false
-    ? `https://image.tmdb.org/t/p/w154${props.profileUrl}`
+const imageURL = computed(() => {
+  const width = imageWidth.value || 92;
+  return props.profileUrl && props.profileUrl !== "null"
+    ? `https://image.tmdb.org/t/p/w${width}${props.profileUrl}`
     : "images/personPlaceholder.png";
 });
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 1280) return 120;
-  if (vw >= 768) return 100;
-  return 80;
-}
-
-function getCardHeight() {
-  // 2:3
-  return Math.round(getCardWidth() * 1.5);
+  if (vw >= 1280) return 92;
+  // if (vw >= 1280) return 185;
+  if (vw >= 768) return 92;
+  // if (vw >= 768) return 154;
+  return 92;
 }
 
 function updateDimensions() {

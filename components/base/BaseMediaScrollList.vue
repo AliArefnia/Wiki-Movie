@@ -50,15 +50,17 @@ function setObserverRef(
   }
 }
 
-watch(
-  () => props.items,
-  async () => {
-    await nextTick();
-    showImage.value = new Array(props.items.length).fill(false);
-    observeMediaCards();
-  },
-  { immediate: true }
-);
+onMounted(() => {
+  watch(
+    () => props.items,
+    async () => {
+      showImage.value = new Array(props.items.length).fill(false);
+      await nextTick();
+      observeMediaCards();
+    },
+    { immediate: true }
+  );
+});
 
 function observeMediaCards() {
   observerElements.value.forEach((el, index) => {

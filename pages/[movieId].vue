@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- Loading -->
+    <div
+      v-if="status === 'pending'"
+      class="flex justify-center items-center min-h-[260px]"
+    >
+      <BaseLoader message="Fetching Media Detail..." />
+    </div>
+    <!-- Error -->
+    <div
+      v-else-if="error"
+      class="flex justify-center items-center min-h-[260px]"
+    >
+      <BaseErrorContainer :error="error" :refresh="refresh" />
+    </div>
+    <!-- Success -->
     <div v-if="mediaDetail" class="relative min-h-screen text-white">
       <!-- Backdrop -->
       <Backdrop
@@ -10,7 +25,7 @@
       <!-- Content Container -->
       <div
         :class="[
-          'relative z-10 max-w-6xl mx-auto px-6 pb-10',
+          'relative z-10 max-w-6xl mx-auto px-6',
           mediaType === 'movie' || mediaType === 'tv'
             ? 'pt-40 sm:pt-20'
             : 'pt-10',
@@ -26,10 +41,9 @@
         </div>
 
         <!-- Person Credits -->
-
-        <div v-if="mediaType === 'person'">
-          <SectionLazy>
-            <BasePersonCredits :media="personCredits"></BasePersonCredits>
+        <div v-if="mediaType === 'person'" id="personCredits">
+          <SectionLazy height="100">
+            <PersonCredits :person-id="mediaDetail.id"></PersonCredits>
           </SectionLazy>
         </div>
 
@@ -44,15 +58,18 @@
           </SectionLazy>
         </div>
 
-        <SectionLazy
+        <!-- SimilarMovies -->
+        <div
           v-if="mediaType === 'movie' || mediaType === 'tv'"
-          height="100"
+          id="SimilarMovies"
         >
-          <BaseSimilarMoviesSection
-            :movieId="Number(route.params.movieId)"
-            :mediaType="mediaType"
-          ></BaseSimilarMoviesSection>
-        </SectionLazy>
+          <SectionLazy height="100">
+            <SimilarMovies
+              :movieId="Number(route.params.movieId)"
+              :mediaType="mediaType"
+            ></SimilarMovies>
+          </SectionLazy>
+        </div>
         <!-- CastsAndCrews -->
         <div
           v-if="mediaType === 'movie' || mediaType === 'tv'"
@@ -67,21 +84,14 @@
         </div>
       </div>
 
+      <!-- Comments -->
+      <div id="comments">
+        <SectionLazy>
+          <Comments :media-id="mediaDetail.id"></Comments>
         </SectionLazy>
       </div>
-
-      <SectionLazy>
-        <CommentSection :media-id="mediaDetail.id"></CommentSection>
-      </SectionLazy>
     </div>
-    <!-- Loading State -->
-    <div
-      v-else
-      class="absolute inset-0 flex items-center justify-center text-white"
-    >
-      <!-- loader -->
-      <BaseLoader message="Loading Media Details!"></BaseLoader>
-    </div>
+    <!-- Empty -->
     <p v-else class="text-gray-400 text-center font-display mt-6">
       No Details found!
     </p>
@@ -90,25 +100,17 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-
-import BaseSimilarMoviesSection from "~/components/base/BaseSimilarMoviesSection.vue";
 import PersonCredits from "~/components/MediaPage/PersonCredits.vue";
 import CastsAndCrews from "~/components/MediaPage/CastsAndCrews.vue";
+import SimilarMovies from "~/components/MediaPage/SimilarMovies.vue";
 import Trailer from "~/components/MediaPage/Trailer.vue";
 import MediaDetail from "~/components/MediaPage/MediaDetail.vue";
+import Comments from "~/components/MediaPage/Comments.vue";
+import SectionLazy from "~/components/base/SectionLazy.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
-import CommentSection from "~/components/MovieSections/CommentSection.vue";
-import SectionLazy from "~/components/SectionLazy.vue";
 import Backdrop from "~/components/MediaPage/Backdrop.vue";
 
-import type {
-  MovieDetail,
-  TvDetail,
-  PersonDetail,
-  MediaDetailUnion,
-  TvShow,
-  Movie,
-} from "~/types/types";
+import type { MediaDetailUnion } from "~/types/types";
 
 const route = useRoute();
 const mediaType = ref<"movie" | "tv" | "person" | null>(null);
@@ -195,7 +197,7 @@ watch(mediaDetail, (val) => {
     description =
       val.overview?.slice(0, 150) || "Watch trailers, cast, and more.";
   } else {
-    description = val.name + "Watch trailers, cast, and more.";
+    description = val.name + "Watch movies, casts, and more.";
   }
 
   const imagePath = computed(() => {

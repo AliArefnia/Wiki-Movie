@@ -73,7 +73,8 @@ definePageMeta({
 useHead({
   title: "Search",
 });
-import BaseMovieCardSmall from "~/components/MovieSections/BaseMovieCardSmall.vue";
+
+import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
 import type { SearchResult } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
 

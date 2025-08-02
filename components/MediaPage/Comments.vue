@@ -107,6 +107,7 @@
 import { useUserData } from "~/store/user";
 import type { Comments } from "~/types/types";
 import BaseCommentCard from "./BaseComponents/BaseCommentCard.vue";
+import { useToast } from "vue-toastification";
 
 const props = defineProps<{
   mediaId: number;
@@ -128,6 +129,8 @@ const userId = computed(() => userStore.userInfo.id);
 
 const newComment = ref("");
 const isSubmitting = ref(false);
+
+const toast = useToast();
 
 const sortedComment = computed(() =>
   [...comments.value].sort((a, b) => {
@@ -160,11 +163,9 @@ const submitComment = async () => {
     if ("success" in response && response.success) {
       newComment.value = "";
       await refresh();
-    } else {
-      console.error((response as { error: string }).error);
     }
   } catch (error) {
-    console.error("Failed to send comment", error);
+    toast.error("Couldn't submit comment! try again!");
   } finally {
     isSubmitting.value = false;
   }

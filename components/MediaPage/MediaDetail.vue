@@ -162,6 +162,7 @@ import { useUserData } from "~/store/user";
 import BaseHeartButton from "./BaseComponents/BaseHeartButton.vue";
 import BaseEyeButton from "./BaseComponents/BaseEyeButton.vue";
 import BasePersonButton from "./BaseComponents/BasePersonButton.vue";
+import { useToast } from "vue-toastification";
 
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;
@@ -177,6 +178,7 @@ const isInWishList = ref(false);
 const isInFavouritePersonList = ref(false);
 const loaded = ref(false);
 const isInWatchList = ref(false);
+const toast = useToast();
 
 const movieDetail = computed(() =>
   props.mediaType === "movie" ? (props.mediaDetail as MovieDetail) : null
@@ -246,8 +248,8 @@ async function toggleMovieWishList() {
     });
     isLoadingWishList.value = false;
     isInWishList.value = !isInWishList.value;
-  } catch (error) {
-    console.error("Failed to toggle movie wish list:", error);
+  } catch (error: any) {
+    toast.error("Couldn't update wish list! try again!");
   }
 }
 async function toggleMovieWatched() {
@@ -261,7 +263,7 @@ async function toggleMovieWatched() {
     isLoadingWatchList.value = false;
     isInWatchList.value = !isInWatchList.value;
   } catch (error) {
-    console.error("Failed to toggle movie Watch list:", error);
+    toast.error("Couldn't update watch list! try again!");
   }
 }
 async function toggleFavouritePerson() {
@@ -275,7 +277,7 @@ async function toggleFavouritePerson() {
     isLoadingFavouritePersonList.value = false;
     isInFavouritePersonList.value = !isInFavouritePersonList.value;
   } catch (error) {
-    console.error("Failed to toggle favourite person list:", error);
+    toast.error("Couldn't update favorite person list! try again!");
   }
 }
 

@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
           );
 
     const { error } = await supabase
-      .from("userss")
+      .from("users")
       .update({ watch_list: updatedList })
       .eq("id", userId);
 

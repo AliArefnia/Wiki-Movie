@@ -65,7 +65,7 @@ export const useUserData = defineStore("userData", {
       }
 
       try {
-        await fetch("/api/user/userWishList", {
+        await $fetch("/api/user/userWishList", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,9 +76,12 @@ export const useUserData = defineStore("userData", {
             action: alreadyIsInList ? "remove" : "add",
           }),
         });
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
         this.user.wishList = originalList;
+        throw createError({
+          statusCode: error.data.statusCode || 500,
+          statusMessage: error.data.statusMessage || "API Error",
+        });
       }
     },
 
@@ -104,9 +107,8 @@ export const useUserData = defineStore("userData", {
       } else {
         this.user?.watchList.push(watchedMedia);
       }
-
       try {
-        await fetch("/api/user/userWatchList", {
+        const response = await $fetch("/api/user/userWatchList", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -117,9 +119,12 @@ export const useUserData = defineStore("userData", {
             action: alreadyIsInList ? "remove" : "add",
           }),
         });
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
         this.user.watchList = originalList;
+        throw createError({
+          statusCode: error.data.statusCode || 500,
+          statusMessage: error.data.statusMessage || "API Error",
+        });
       }
     },
 
@@ -147,7 +152,7 @@ export const useUserData = defineStore("userData", {
       }
 
       try {
-        await fetch("/api/user/userFavouritePersonList", {
+        await $fetch("/api/user/userFavouritePersonList", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -158,9 +163,12 @@ export const useUserData = defineStore("userData", {
             action: alreadyIsInList ? "remove" : "add",
           }),
         });
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
         this.user.favouritePersonList = originalList;
+        throw createError({
+          statusCode: error.data.statusCode || 500,
+          statusMessage: error.data.statusMessage || "API Error",
+        });
       }
     },
 

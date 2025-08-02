@@ -6,7 +6,10 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
     if (!mediaId || !mediaType) {
-      return { error: "Media ID or Media Type is required" };
+      throw createError({
+        statusCode: 400,
+        statusMessage: "mediaId or mediaType not found!",
+      });
     }
 
     const IMAGE_URL = "https://image.tmdb.org/t/p/w154";

@@ -6,7 +6,10 @@ export default defineEventHandler(async (event) => {
     const { mediaId, mediaType } = getQuery(event);
 
     if (!mediaId || !mediaType) {
-      throw new Error("Missing mediaId or mediaType");
+      throw createError({
+        statusCode: 400,
+        statusMessage: "mediaId or mediaType not found!",
+      });
     }
 
     const moviesResponse = await $fetch<trailerOfMovie>(
@@ -22,8 +25,10 @@ export default defineEventHandler(async (event) => {
     return moviesResponse.results.find(
       (video) => video.type === "Trailer" && video.official === true
     );
-  } catch (error) {
-    console.error("Error fetching movie Trailer:", error);
-    return { error: "Failed to fetch movie trailer" };
+  } catch (err: any) {
+    throw createError({
+      statusCode: err.statusCode || 500,
+      statusMessage: err.message || "Internal Server Error",
+    });
   }
 });

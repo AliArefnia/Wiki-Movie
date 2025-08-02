@@ -75,8 +75,10 @@ export default defineEventHandler(async (event) => {
     }
 
     return combined satisfies MediaItem[];
-  } catch (error) {
-    console.error("Error fetching movies by genre:", error);
-    return { error: "Failed to fetch movies by genre" };
+  } catch (error: any) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: error.message || "Internal Server Error",
+    });
   }
 });

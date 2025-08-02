@@ -5,7 +5,10 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   if (!id) {
-    return { error: "Missing person ID" };
+    throw createError({
+      statusCode: 400,
+      statusMessage: "id not found!",
+    });
   }
 
   const headers = {
@@ -42,11 +45,11 @@ export default defineEventHandler(async (event) => {
         return tvShow;
       }
     });
-    return { success: true, data: personCredits };
-  } catch (error) {
-    return {
-      success: false,
-      error: "Failed to fetch credits for person",
-    } as any;
+    return personCredits;
+  } catch (err: any) {
+    throw createError({
+      statusCode: err.statusCode || 500,
+      statusMessage: err.message || "Internal Server Error",
+    });
   }
 });

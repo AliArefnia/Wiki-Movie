@@ -13,7 +13,10 @@ export default defineEventHandler(async (event) => {
     const { comment, userId, mediaId } = body;
 
     if (!comment || !userId || !mediaId) {
-      return { error: "Missing required fields" };
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Comment/User/mediaId not found",
+      });
     }
 
     const { data, error } = await supabase.from("reviews").insert([
@@ -25,12 +28,17 @@ export default defineEventHandler(async (event) => {
     ]);
 
     if (error) {
-      console.error(error);
-      return { error: "Failed to insert comment" };
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message || "Failed to insert comment",
+      });
     }
 
     return { success: true };
-  } catch (e) {
-    return { error: "Server error while inserting comment" };
+  } catch (error: any) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: error.message || "Internal Server Error",
+    });
   }
 });

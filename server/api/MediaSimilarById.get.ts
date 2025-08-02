@@ -6,7 +6,10 @@ export default defineEventHandler(async (event) => {
     const { mediaId, mediaType } = getQuery(event);
 
     if (!mediaId || !mediaType) {
-      return { error: "Missing mediaId or mediaType in query" };
+      throw createError({
+        statusCode: 400,
+        statusMessage: "mediaId or mediaType not found!",
+      });
     }
 
     const response = await $fetch<{ results: any[] }>(

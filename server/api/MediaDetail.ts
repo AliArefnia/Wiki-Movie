@@ -7,7 +7,10 @@ export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig();
 
   if (!id || !media_type) {
-    throw createError({ statusCode: 400, message: "Missing ID or media type" });
+    throw createError({
+      statusCode: 400,
+      statusMessage: "id or media_type not found!",
+    });
   }
 
   const headers = {

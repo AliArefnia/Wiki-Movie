@@ -10,28 +10,47 @@ const supabase = createClient(
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { userId, favouritePerson, action } = body;
-  const { data: user, error: getError } = await supabase
-    .from("users")
-    .select("favourite_person_list")
-    .eq("id", userId)
-    .single();
 
-  if (getError || !user)
-    return { error: getError?.message || "User not found" };
+  try {
+    const { data: user, error: getError } = await supabase
+      .from("users")
+      .select("favourite_person_list")
+      .eq("id", userId)
+      .single();
 
-  const updatedList =
-    action === "add"
-      ? [...(user.favourite_person_list || []), favouritePerson]
-      : user.favourite_person_list.filter(
-          (person: { id: number; mediaType: "person" }) =>
-            person.id !== favouritePerson.id
-        );
+    if (getError || !user) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: getError?.message || "User not found",
+      });
+    }
 
-  const { error } = await supabase
-    .from("users")
-    .update({ favourite_person_list: updatedList })
-    .eq("id", userId);
+    const updatedList =
+      action === "add"
+        ? [...(user.favourite_person_list || []), favouritePerson]
+        : user.favourite_person_list.filter(
+            (person: { id: number; mediaType: "person" }) =>
+              person.id !== favouritePerson.id
+          );
 
-  if (error) return { error: error.message };
-  return { message: "favourite person list updated" };
+    const { error } = await supabase
+      .from("users")
+      .update({ favourite_person_list: updatedList })
+      .eq("id", userId);
+
+    if (error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message,
+      });
+    }
+    return {
+      message: "Favorite person list updated",
+    };
+  } catch (error: any) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: error.message || "Internal Server Error",
+    });
+  }
 });

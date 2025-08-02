@@ -10,28 +10,48 @@ const supabase = createClient(
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { userId, watchedMedia, action } = body;
-  const { data: user, error: getError } = await supabase
-    .from("users")
-    .select("watch_list")
-    .eq("id", userId)
-    .single();
 
-  if (getError || !user)
-    return { error: getError?.message || "User not found" };
+  try {
+    const { data: user, error: getError } = await supabase
+      .from("users")
+      .select("watch_list")
+      .eq("id", userId)
+      .single();
 
-  const updatedList =
-    action === "add"
-      ? [...(user.watch_list || []), watchedMedia]
-      : user.watch_list.filter(
-          (media: { id: number; mediaType: "tv" | "movie" }) =>
-            media.id !== watchedMedia.id
-        );
+    if (getError || !user) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: getError?.message || "User not found",
+      });
+    }
 
-  const { error } = await supabase
-    .from("users")
-    .update({ watch_list: updatedList })
-    .eq("id", userId);
+    const updatedList =
+      action === "add"
+        ? [...(user.watch_list || []), watchedMedia]
+        : user.watch_list.filter(
+            (media: { id: number; mediaType: "tv" | "movie" }) =>
+              media.id !== watchedMedia.id
+          );
 
-  if (error) return { error: error.message };
-  return { message: "Watch list updated" };
+    const { error } = await supabase
+      .from("userss")
+      .update({ watch_list: updatedList })
+      .eq("id", userId);
+
+    if (error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message,
+      });
+    }
+
+    return {
+      message: "Watch list updated",
+    };
+  } catch (error: any) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: error.message || "Internal Server Error",
+    });
+  }
 });

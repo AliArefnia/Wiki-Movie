@@ -17,7 +17,7 @@ export default defineNuxtConfig(<any>{
       mode: "out-in",
     },
   },
-  plugins: ["~/plugins/supabase.ts"],
+  plugins: ["~/plugins/supabase.ts", "~/plugins/vue-toastification.ts"],
   modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image", "@vite-pwa/nuxt"],
   image: {
     provider: "ipx",

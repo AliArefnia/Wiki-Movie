@@ -5,7 +5,12 @@
     :style="{ width: imageWidth + 'px' }"
   >
     <!-- Image Container -->
-    <div class="relative aspect-[2/3] w-full bg-gray-800">
+    <div
+      :class="[
+        'relative aspect-[2/3] w-full',
+        isImageLoaded ? 'bg-transparent' : 'bg-gray-800',
+      ]"
+    >
       <!-- Actual Image -->
       <NuxtImg
         v-if="imageURL"
@@ -13,25 +18,22 @@
         :alt="movieTitle"
         :width="imageWidth"
         sizes="(max-width: 150px) 125px, 100px"
-        class="w-full h-full object-cover transition-opacity duration-300"
-        @load="loaded = true"
-        :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
+        :class="[
+          'w-full h-full rounded-2xl transition-opacity duration-300',
+          isImageLoaded ? 'opacity-100' : 'opacity-0',
+        ]"
+        @load="
+          () => {
+            isImageLoaded = true;
+          }
+        "
         loading="lazy"
         decoding="async"
       />
 
-      <!-- Placeholder Image (fallback) -->
-      <NuxtImg
-        v-else
-        src="/images/moviePlaceholder.png"
-        alt="No Poster"
-        class="w-full h-full"
-        loading="lazy"
-      />
-
       <!-- Skeleton while loading -->
       <div
-        v-if="!loaded"
+        v-if="!isImageLoaded"
         class="absolute inset-0 animate-pulse bg-gray-700"
       ></div>
     </div>
@@ -71,7 +73,7 @@ const imageURL = computed(() => {
 });
 
 const imageWidth = ref(0);
-const loaded = ref(false);
+const isImageLoaded = ref(false);
 
 function getCardWidth() {
   const vw = window.innerWidth;

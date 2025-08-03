@@ -54,6 +54,8 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
+
 const props = defineProps<{
   movieTitle: string;
   releaseDate?: string;
@@ -87,13 +89,15 @@ function updateWidth() {
   imageWidth.value = getCardWidth();
 }
 
+const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);
+
 onMounted(() => {
   updateWidth();
-  window.addEventListener("resize", updateWidth);
+  window.addEventListener("resize", debouncedUpdateWidth);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateWidth);
+  window.removeEventListener("resize", debouncedUpdateWidth);
 });
 </script>
 

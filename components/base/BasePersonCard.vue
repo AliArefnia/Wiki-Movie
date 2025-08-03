@@ -38,6 +38,8 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
+
 const props = defineProps<{
   personName: string;
   role?: string;
@@ -69,13 +71,14 @@ function updateDimensions() {
   imageWidth.value = width;
   imageHeight.value = Math.round(width * 1.5);
 }
+const debouncedUpdateDimensions = useDebounceFn(updateDimensions, 300);
 
 onMounted(() => {
   updateDimensions();
-  window.addEventListener("resize", updateDimensions);
+  window.addEventListener("resize", debouncedUpdateDimensions);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateDimensions);
+  window.removeEventListener("resize", debouncedUpdateDimensions);
 });
 </script>

@@ -19,6 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
 const props = defineProps<{
   backdropPath: string;
 }>();
@@ -36,7 +37,7 @@ function updateWidth() {
   imageWidth.value = getCardWidth();
 }
 
-const debouncedUpdateWidth = useDebounce(updateWidth, 300);
+const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);
 
 const backdropUrl = computed(() => {
   if (props.backdropPath && imageWidth.value > 0) {

@@ -16,7 +16,7 @@
         :height="imageHeight"
         sizes="(max-width: 120px) 80px, 100px"
         :class="[
-          'w-full h-full object-cover rounded-2xl transition-opacity duration-300',
+          'w-full h-full rounded-2xl transition-opacity duration-300',
           isImageLoaded ? 'opacity-100' : 'opacity-0',
         ]"
         @load="
@@ -27,6 +27,11 @@
         loading="lazy"
         decoding="async"
       />
+      <!-- Skeleton while loading -->
+      <div
+        v-if="!isImageLoaded"
+        class="absolute inset-0 animate-pulse bg-gray-700"
+      ></div>
     </div>
     <div class="text-white text-center p-2">
       <div class="font-bold text-sm line-clamp-2 lg:text-base">

@@ -2,7 +2,7 @@
   <!-- Need to add dynamic font size for movie names -->
   <div
     class="relative rounded-t-2xl overflow-hidden font-sans h-fit hover:scale-110 hover:z-9 transition-transform"
-    :style="{ width: imageWidth + 'px' }"
+    :style="{ width: cardWidth + 'px' }"
   >
     <!-- Image Container -->
     <div
@@ -17,7 +17,7 @@
         :src="imageURL"
         :alt="movieTitle"
         :width="imageWidth"
-        sizes="(max-width: 150px) 125px, 100px"
+        sizes="(max-width: 154px) 92px"
         :class="[
           'w-full h-full rounded-2xl transition-opacity duration-300',
           isImageLoaded ? 'opacity-100' : 'opacity-0',
@@ -73,22 +73,23 @@ const imageURL = computed(() => {
 });
 
 const imageWidth = ref(0);
+const cardWidth = ref(92);
 const isImageLoaded = ref(false);
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  // if (vw >= 1280) return 500;
-  if (vw >= 1280) return 154;
-  // if (vw >= 1280) return 342;
   if (vw >= 1024) return 154;
-  // if (vw >= 1024) return 185;
-  if (vw >= 768) return 154;
-  // if (vw >= 768) return 154;
+  if (vw >= 768) return 125;
   return 92;
+}
+function getImgWidth() {
+  const vw = window.innerWidth;
+  return vw >= 768 ? 154 : 92;
 }
 
 function updateWidth() {
-  imageWidth.value = getCardWidth();
+  imageWidth.value = getImgWidth();
+  cardWidth.value = getCardWidth();
 }
 
 const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);

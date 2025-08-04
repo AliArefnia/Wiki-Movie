@@ -1,9 +1,9 @@
 <template>
   <div
     class="relative rounded-2xl overflow-hidden font-sans h-fit hover:scale-110 transition-transform"
-    :style="{ width: imageWidth + 'px' }"
+    :style="{ width: cardWidth + 'px' }"
   >
-    <div class="relative w-full" :style="{ height: imageHeight + 'px' }">
+    <div class="relative w-full">
       <div
         v-if="!isImageLoaded"
         class="absolute inset-0 bg-gray-700 animate-pulse rounded-2xl"
@@ -14,7 +14,7 @@
         :alt="personName"
         :width="imageWidth"
         :height="imageHeight"
-        sizes="(max-width: 120px) 80px, 100px"
+        sizes="(max-width: 154px) 92px"
         :class="[
           'w-full h-full rounded-2xl transition-opacity duration-300',
           isImageLoaded ? 'opacity-100' : 'opacity-0',
@@ -53,6 +53,7 @@ const props = defineProps<{
 
 const imageWidth = ref(0);
 const imageHeight = ref(0);
+const cardWidth = ref(92);
 const isImageLoaded = ref(false);
 
 const imageURL = computed(() => {
@@ -62,17 +63,21 @@ const imageURL = computed(() => {
     : "images/personPlaceholder.png";
 });
 
+function getImgWidth() {
+  const vw = window.innerWidth;
+  return vw >= 768 ? 154 : 92;
+}
+
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 1280) return 92;
-  // if (vw >= 1280) return 185;
-  if (vw >= 768) return 92;
-  // if (vw >= 768) return 154;
+  if (vw >= 1024) return 120;
+  if (vw >= 768) return 110;
   return 92;
 }
 
 function updateDimensions() {
-  const width = getCardWidth();
+  const width = getImgWidth();
+  cardWidth.value = getCardWidth();
   imageWidth.value = width;
   imageHeight.value = Math.round(width * 1.5);
 }

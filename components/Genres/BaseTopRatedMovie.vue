@@ -6,30 +6,21 @@
     <!-- Image Container -->
     <div
       class="relative aspect-[2/3] bg-gray-800 shrink-0"
-      :style="{ width: imageWidth + 'px' }"
+      :style="{ width: cardWidth + 'px' }"
     >
       <!-- Actual Image -->
       <NuxtImg
-        v-if="posterUrl"
+        v-if="imageURL"
         class="w-full h-full object-cover transition-opacity duration-300"
-        :src="posterUrl"
+        :src="imageURL"
         :alt="movieTitle"
-        @load="loaded = true"
-        :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
-      />
-
-      <!-- Placeholder Image (fallback) -->
-      <NuxtImg
-        v-else
-        src="/images/moviePlaceholder.png"
-        alt="No Poster"
-        class="w-full h-full object-cover"
-        loading="lazy"
+        @load="isImageLoaded = true"
+        :class="{ 'opacity-0': !isImageLoaded, 'opacity-100': isImageLoaded }"
       />
 
       <!-- Skeleton while loading -->
       <div
-        v-if="!loaded"
+        v-if="!isImageLoaded"
         class="absolute inset-0 animate-pulse bg-gray-700"
       ></div>
     </div>
@@ -75,27 +66,40 @@ const props = defineProps<{
   description: string;
 }>();
 
+const imageURL = computed(() => {
+  const width = imageWidth.value || 92;
+  return props.posterUrl && props.posterUrl !== "null"
+    ? `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`
+    : "images/moviePlaceholder.png";
+});
+
 const imageWidth = ref(0);
-const loaded = ref(false);
+const cardWidth = ref(92);
+const isImageLoaded = ref(false);
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 640) return 185;
-  return 125;
+  if (vw >= 768) return 154;
+  return 110;
+}
+function getImgWidth() {
+  const vw = window.innerWidth;
+  return vw >= 768 ? 154 : 92;
 }
 
 function updateWidth() {
-  imageWidth.value = getCardWidth();
+  imageWidth.value = getImgWidth();
+  cardWidth.value = getCardWidth();
 }
+
+const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);
 
 onMounted(() => {
   updateWidth();
-  window.addEventListener("resize", updateWidth);
+  window.addEventListener("resize", debouncedUpdateWidth);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateWidth);
+  window.removeEventListener("resize", debouncedUpdateWidth);
 });
 </script>
-
-<style scoped></style>

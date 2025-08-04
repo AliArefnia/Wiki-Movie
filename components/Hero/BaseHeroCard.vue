@@ -1,12 +1,11 @@
 <template>
   <div
     class="relative rounded-2xl overflow-hidden font-sans transition-transform"
-    :style="{ width: imageWidth + 'px' }"
+    :style="{ width: cardWidth + 'px' }"
   >
     <div
       v-if="!isImageLoaded"
       class="absolute inset-0 bg-gray-700 animate-pulse"
-      :style="{ height: imageHeight + 'px' }"
     ></div>
     <NuxtImg
       preload
@@ -32,6 +31,7 @@ const props = defineProps<{
 }>();
 
 const imageWidth = ref(0);
+const cardWidth = ref(92);
 const imageHeight = ref(0);
 const isImageLoaded = ref(false);
 
@@ -42,17 +42,17 @@ const imageURL = computed(() => {
 
 function getCardWidth() {
   const vw = window.innerWidth;
+  return vw >= 768 ? 315 : 185;
+}
+function getImgWidth() {
+  const vw = window.innerWidth;
   return vw >= 768 ? 342 : 185;
 }
 
-function getCardHeight(width: number) {
-  return Math.round(width * 1.5); // 2:3
-}
-
 function updateDimensions() {
-  const width = getCardWidth();
+  const width = getImgWidth();
   imageWidth.value = width;
-  imageHeight.value = getCardHeight(width);
+  cardWidth.value = getCardWidth();
 }
 
 onMounted(() => {

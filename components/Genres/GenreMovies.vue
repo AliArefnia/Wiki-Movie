@@ -67,10 +67,9 @@ const showImage = ref<boolean[]>([]);
 const observerElements = ref<(HTMLElement | null)[]>([]);
 
 const mediaListRef = ref<typeof BaseMediaScrollList | null>(null);
+const cardWidth = ref(90);
 
 const scrollTarget = computed(() => mediaListRef.value?.container ?? null);
-
-const genreMedia = ref<MediaItem[]>([]);
 
 const props = defineProps<{
   genreId: number;
@@ -80,44 +79,41 @@ const props = defineProps<{
 
 const topRated = ref<(MediaItem & { overview: string }) | null>(null);
 
-const imageQuality = ref(getImageQuality());
-const cardWidth = ref(getCardWidth());
+const {
+  data: genreMedia,
+  status,
+  error,
+  refresh,
+} = useAsyncData<MediaItem[]>(
+  `genreMedia-${props.genreName}`,
+  () =>
+    $fetch(
+      `/api/MediaByGenre?genreId=${props.genreId}&mediaType=${
+        props.mediaType || "all"
+      }&page=1`
+    ),
+  { default: () => [] }
+);
+
+watch(status, async (newStatus) => {
+  if (newStatus === "success") {
+    observerElements.value = [];
+    await getTopRatedMovie(genreMedia.value);
+  }
+});
 
 function getCardWidth() {
   const vw = window.innerWidth;
-  if (vw >= 1200) return "170px";
-  if (vw >= 768) return "150px";
-  return "90px";
+  if (vw >= 1024) return 160;
+  if (vw >= 768) return 125;
+  return 90;
 }
 
-function updateCardWidth() {
+function updateWidth() {
   cardWidth.value = getCardWidth();
 }
 
-function getImageQuality() {
-  const vw = window.innerWidth;
-  if (vw >= 768) return 185;
-  return 154;
-}
-
-async function fetchMediaByGenre(genreId: number, mediaType: string) {
-  const sessionGenreMediaKey = `Genre-${props.genreName}-${mediaType}`;
-  if (sessionStorage.getItem(sessionGenreMediaKey)) {
-    genreMedia.value = JSON.parse(
-      sessionStorage.getItem(sessionGenreMediaKey)!
-    );
-  } else {
-    let data = await $fetch<MediaItem[]>(
-      `/api/MediaByGenre?genreId=${genreId}&mediaType=${
-        props.mediaType || "all"
-      }&page=1&width=${imageQuality.value}`
-    );
-    genreMedia.value = data;
-    sessionStorage.setItem(sessionGenreMediaKey, JSON.stringify(data));
-    observerElements.value = [];
-  }
-  await getTopRatedMovie(genreMedia.value);
-}
+const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);
 
 const getTitle = (item: MediaItem) =>
   item.media_type === "movie" ? item.title : item.name;
@@ -148,16 +144,11 @@ async function getTopRatedMovie(mediaList: MediaItem[]) {
 }
 
 onMounted(async () => {
-  try {
-    getImageQuality();
-    getCardWidth();
-    await fetchMediaByGenre(props.genreId, props.mediaType);
-    window.addEventListener("resize", updateCardWidth);
-  } catch (error) {
-    console.error("Failed to fetch movies:", error);
-  }
+  updateWidth();
+  window.addEventListener("resize", debouncedUpdateWidth);
 });
+
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateCardWidth);
+  window.removeEventListener("resize", debouncedUpdateWidth);
 });
 </script>

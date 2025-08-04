@@ -6,9 +6,6 @@ export default defineEventHandler(async (event) => {
     const genreId = query.genreId;
     const mediaType = query.mediaType || "all";
     const page = query.page || 1;
-    const imageQuality = query.width || 154;
-
-    const IMAGE_URL = `https://image.tmdb.org/t/p/w${imageQuality}`;
 
     if (!genreId) {
       throw createError({
@@ -41,9 +38,7 @@ export default defineEventHandler(async (event) => {
       media_type: "movie",
       title: movie.title ?? "Untitled",
       vote_average: Number(movie.vote_average.toFixed(1) || "N/A"),
-      poster_path: movie.poster_path
-        ? `${IMAGE_URL}${movie.poster_path}`
-        : null,
+      poster_path: movie.poster_path || null,
       release_date: movie.release_date?.slice(0, 4) || "N/A",
       genre_ids: movie.genre_ids || [],
     });
@@ -53,7 +48,7 @@ export default defineEventHandler(async (event) => {
       media_type: "tv",
       name: tv.name ?? "Untitled",
       vote_average: Number(tv.vote_average.toFixed(1) || "N/A"),
-      poster_path: tv.poster_path ? `${IMAGE_URL}${tv.poster_path}` : null,
+      poster_path: tv.poster_path || null,
       first_air_date: tv.first_air_date?.slice(0, 4) || "N/A",
       genre_ids: tv.genre_ids || [],
     });

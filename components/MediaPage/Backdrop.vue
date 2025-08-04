@@ -26,7 +26,7 @@ const props = defineProps<{
 
 const imageWidth = ref(0);
 
-function getCardWidth() {
+function getImgWidth() {
   const vw = window.innerWidth;
   if (vw >= 1024) return 1280;
   if (vw >= 780) return 780;
@@ -34,7 +34,7 @@ function getCardWidth() {
 }
 
 function updateWidth() {
-  imageWidth.value = getCardWidth();
+  imageWidth.value = getImgWidth();
 }
 
 const debouncedUpdateWidth = useDebounceFn(updateWidth, 300);

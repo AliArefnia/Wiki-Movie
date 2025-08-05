@@ -4,6 +4,11 @@
       :src="backdropUrl"
       :alt="`${mediaName} image`"
       class="w-full h-full sm:h-auto object-cover"
+      @load="isImageLoaded = true"
+      format="webp"
+      :class="{ 'opacity-0': !isImageLoaded, 'opacity-100': isImageLoaded }"
+      decoding="async"
+      fetchpriority="high"
     />
     <!-- overlay -->
     <div
@@ -22,9 +27,11 @@
 import { useDebounceFn } from "@vueuse/core";
 const props = defineProps<{
   backdropPath: string;
+  mediaName: string;
 }>();
 
 const imageWidth = ref(0);
+const isImageLoaded = ref(false);
 
 function getImgWidth() {
   const vw = window.innerWidth;

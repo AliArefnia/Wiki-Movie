@@ -20,6 +20,7 @@
       <Backdrop
         v-if="(mediaType === 'movie' || mediaType === 'tv') && backdropPath"
         :backdrop-path="backdropPath"
+        :media-name="displayTitle"
       ></Backdrop>
 
       <!-- Content Container -->
@@ -110,7 +111,7 @@ import SectionLazy from "~/components/base/SectionLazy.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import Backdrop from "~/components/MediaPage/Backdrop.vue";
 
-import type { MediaDetailUnion } from "~/types/types";
+import type { MediaDetailUnion, MovieDetail, TvDetail } from "~/types/types";
 
 const route = useRoute();
 const id = computed(() => route.params.movieId);
@@ -139,6 +140,13 @@ const backdropPath = computed(() => {
     mediaDetail.value.backdrop_path
   )
     return mediaDetail.value.backdrop_path;
+});
+
+const displayTitle = computed(() => {
+  return (
+    (mediaDetail.value as MovieDetail)?.title ||
+    (mediaDetail.value as TvDetail)?.name
+  );
 });
 
 definePageMeta({

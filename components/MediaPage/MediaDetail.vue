@@ -12,10 +12,10 @@
         v-if="posterUrl"
         class="w-72 rounded-lg shadow-lg transition-opacity duration-300 h-full"
         :src="posterUrl"
-        @load="loaded = true"
         :alt="`${displayTitle} image`"
+        @load="isImageLoaded = true"
         format="webp"
-        :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
+        :class="{ 'opacity-0': !isImageLoaded, 'opacity-100': isImageLoaded }"
         decoding="async"
         fetchpriority="high"
       />
@@ -31,7 +31,7 @@
 
       <!-- Skeleton while loading -->
       <div
-        v-if="!loaded"
+        v-if="!isImageLoaded"
         class="absolute inset-0 animate-pulse bg-gray-700"
       ></div>
     </div>
@@ -176,7 +176,7 @@ const isLoadingWatchList = ref(false);
 const isLoadingFavouritePersonList = ref(false);
 const isInWishList = ref(false);
 const isInFavouritePersonList = ref(false);
-const loaded = ref(false);
+const isImageLoaded = ref(false);
 const isInWatchList = ref(false);
 const toast = useToast();
 

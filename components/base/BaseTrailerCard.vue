@@ -5,9 +5,8 @@
       :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
       @click="showIframe = true"
     >
-      <!-- <img :src="fallBackThumbnail" alt="fallback" /> -->
       <transition name="fade" mode="out-in">
-        <img
+        <NuxtImg
           v-if="!showIframe"
           :src="thumbnailUrl"
           :width="trailerWidth"

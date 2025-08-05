@@ -1,6 +1,6 @@
 <template>
   <div v-if="backdropUrl" class="absolute w-full overflow-hidden">
-    <img
+    <NuxtImg
       :src="backdropUrl"
       :alt="`${mediaName} image`"
       class="w-full h-full sm:h-auto object-cover"

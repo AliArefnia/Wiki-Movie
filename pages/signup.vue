@@ -3,7 +3,7 @@
     <div
       class="flex flex-col items-center justify-center bg-surface-dark text-white"
     >
-      <img :src="logo" alt="Wiki Movie Logo" class="w-30 mb-4" />
+      <NuxtImg src="Logo.webp" alt="Wiki Movie Logo" class="w-30 mb-4" />
       <div
         class="flex flex-col w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg"
       >
@@ -62,8 +62,6 @@
 </template>
 
 <script setup lang="ts">
-import BaseSmallSpinner from "~/components/base/BaseSmallSpinner.vue";
-import logo from "@/assets/images/Logo.webp";
 definePageMeta({
   layout: "default",
   pageTransition: {

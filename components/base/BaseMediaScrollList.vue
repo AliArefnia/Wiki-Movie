@@ -8,7 +8,7 @@
       <div
         :ref="(el) => setObserverRef(el, index)"
         class="inline-block flex-shrink-0 mx-2"
-        :style="{ width: cardWidth }"
+        :style="{ width: cardWidth + 'px' }"
       >
         <slot
           name="card"
@@ -27,7 +27,7 @@ import { useIntersectionObserver } from "@vueuse/core";
 
 const props = defineProps<{
   items: any[];
-  cardWidth?: string;
+  cardWidth?: number;
   imageThreshold?: number;
   getItemKey?: (item: any) => string | number;
   getItemLink?: (item: any) => string;

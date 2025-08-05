@@ -12,8 +12,8 @@
         v-if="posterUrl"
         class="w-72 rounded-lg shadow-lg transition-opacity duration-300 h-full"
         :src="posterUrl"
-        :alt="displayTitle"
         @load="loaded = true"
+        :alt="`${displayTitle} image`"
         format="webp"
         :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
         decoding="async"
@@ -24,7 +24,7 @@
       <NuxtImg
         v-else
         src="/images/moviePlaceholder.png"
-        alt="No Poster"
+        alt="No Poster found"
         class="w-full h-full object-cover"
         loading="lazy"
       />

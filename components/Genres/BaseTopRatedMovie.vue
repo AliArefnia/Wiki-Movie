@@ -13,7 +13,7 @@
         v-if="imageURL"
         class="w-full h-full object-cover transition-opacity duration-300"
         :src="imageURL"
-        :alt="movieTitle"
+        :alt="`${movieTitle} image`"
         @load="isImageLoaded = true"
         :class="{ 'opacity-0': !isImageLoaded, 'opacity-100': isImageLoaded }"
       />

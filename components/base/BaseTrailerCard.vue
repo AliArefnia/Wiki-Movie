@@ -13,7 +13,7 @@
           :width="trailerWidth"
           :height="trailerHeight"
           class="object-cover transition-opacity duration-500 rounded-2xl"
-          :alt="`${trailerName} Trailer Thumbnail`"
+          :alt="`${trailerName} Thumbnail`"
         />
         <iframe
           v-else

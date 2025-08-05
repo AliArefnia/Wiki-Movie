@@ -10,7 +10,7 @@
     <NuxtImg
       preload
       :src="imageURL"
-      :alt="movieTitle"
+      :alt="`${movieTitle} image`"
       :width="imageWidth"
       :height="imageHeight"
       sizes="(max-width: 768px) 185px, 342px"

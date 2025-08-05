@@ -11,7 +11,7 @@
 
       <NuxtImg
         :src="imageURL"
-        :alt="personName"
+        :alt="`${personName} image`"
         :width="imageWidth"
         :height="imageHeight"
         sizes="(max-width: 154px) 92px"

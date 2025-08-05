@@ -15,7 +15,7 @@
       <NuxtImg
         v-if="imageURL"
         :src="imageURL"
-        :alt="movieTitle"
+        :alt="`${movieTitle} image`"
         :width="imageWidth"
         sizes="(max-width: 154px) 92px"
         :class="[

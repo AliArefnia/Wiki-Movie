@@ -31,7 +31,7 @@ const props = defineProps<{
 }>();
 
 const imageWidth = ref(0);
-const cardWidth = ref(92);
+const cardWidth = ref(185);
 const imageHeight = ref(0);
 const isImageLoaded = ref(false);
 

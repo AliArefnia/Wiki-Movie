@@ -5,15 +5,12 @@
       <!-- Loading -->
       <div
         v-if="status === 'pending'"
-        class="flex justify-center items-center min-h-[260px]"
+        class="flex justify-center items-center w-full"
       >
         <BaseLoader message="Fetching Person Credits..." />
       </div>
       <!-- Error -->
-      <div
-        v-else-if="error"
-        class="flex justify-center items-center min-h-[260px]"
-      >
+      <div v-else-if="error" class="flex justify-center items-center w-full">
         <BaseErrorContainer :error="error" :refresh="refresh" />
       </div>
       <!-- Success -->
@@ -39,15 +36,12 @@
       <!-- Loading -->
       <div
         v-if="status === 'pending'"
-        class="flex justify-center items-center min-h-[260px]"
+        class="flex justify-center items-center w-full"
       >
         <BaseLoader message="Fetching Person Credits..." />
       </div>
       <!-- Error -->
-      <div
-        v-else-if="error"
-        class="flex justify-center items-center min-h-[260px]"
-      >
+      <div v-else-if="error" class="flex justify-center items-center w-full">
         <BaseErrorContainer :error="error" :refresh="refresh" />
       </div>
       <NuxtLink

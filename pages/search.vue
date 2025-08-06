@@ -32,7 +32,6 @@
     >
       Sorry, couldn't find this movie!
     </div>
-          :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
     <div
       v-else
       class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
@@ -41,6 +40,7 @@
         <template v-for="item in searchMovie" :key="item.id">
           <NuxtLink
             v-if="item.media_type === 'movie' || item.media_type === 'tv'"
+            :to="`/${item.id}?mediaType=${item.media_type}&from=search&searchTerm=${searchQuery}`"
           >
             <BaseMovieCardSmall
               class="shrink-0 mx-2"
@@ -51,9 +51,9 @@
             />
           </NuxtLink>
 
-          :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
           <NuxtLink
             v-else-if="item.media_type === 'person'"
+            :to="`/${item.id}?mediaType=${item.media_type}&from=search&searchTerm=${searchQuery}`"
           >
             <BasePersonCard
               :personName="item.name"
@@ -82,11 +82,15 @@ useHead({
 import BaseMovieCardSmall from "~/components/base/BaseMovieCardSmall.vue";
 import type { SearchResult } from "~/types/types";
 import { useInfiniteScroll, useDebounceFn } from "@vueuse/core";
+import { useRoute, useRouter } from "vue-router";
 
+const route = useRoute();
+const router = useRouter();
 const searchMovie = ref<SearchResult[]>([]);
-const page = ref(1);
+const page = ref(0);
 const isLoading = ref(false);
-const searchQuery = ref("");
+const searchQuery = ref((route.query.searchTerm as string) ?? "");
+
 const {
   data: hotMedia,
   status,

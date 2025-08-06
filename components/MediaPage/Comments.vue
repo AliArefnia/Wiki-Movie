@@ -93,7 +93,7 @@
     </div>
     <!-- 0 comment -->
     <div
-      v-if="visibleComments.length === 0"
+      v-if="visibleComments.length === 0 && status !== 'pending' && !error"
       class="mx-auto mt-6 p-4 text-center w-1/2"
     >
       <p class="text-sm sm:text-base font-display text-gray-400">

@@ -28,7 +28,12 @@
         />
       </NuxtLink>
       <!-- Empty -->
-      <p v-else class="font-display mx-auto text-gray-400">No Cast Found</p>
+      <p
+        v-else-if="status !== 'pending' && !error"
+        class="font-display mx-auto text-gray-400"
+      >
+        No Cast Found
+      </p>
     </div>
 
     <h3 class="font-display mx-4 text-2xl mt-6">Crew</h3>
@@ -57,7 +62,12 @@
           :profileUrl="person.profile_path"
         />
       </NuxtLink>
-      <p v-else class="font-display mx-auto text-gray-400">No Crew Found</p>
+      <p
+        v-else-if="status !== 'pending' && !error"
+        class="font-display mx-auto text-gray-400"
+      >
+        No Crew Found
+      </p>
     </div>
   </div>
 </template>

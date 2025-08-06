@@ -105,26 +105,6 @@ const debouncedSearch = useDebounceFn(async () => {
 
 watch(searchQuery, debouncedSearch);
 
-const imageWidth = ref(154);
-
-function getCardWidth() {
-  const vw = window.innerWidth;
-  if (vw >= 1280) return 342;
-  if (vw >= 768) return 185;
-  return 154;
-}
-
-function updateWidth() {
-  imageWidth.value = getCardWidth();
-}
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateWidth);
-});
 
 
 async function getMovieBySearch() {
@@ -133,7 +113,7 @@ async function getMovieBySearch() {
     isLoading.value = true;
     const encodedTerm = encodeURIComponent(searchQuery.value);
     let data = await $fetch<SearchResult[]>(
-      `/api/MediaBySearch?searchTerm=${encodedTerm}&page=${page.value}&width=${imageWidth.value}`
+      `/api/MediaBySearch?searchTerm=${encodedTerm}&page=${page.value}`
     );
 
     const movieIds = new Set(searchMovie.value.map((m) => m.id));
@@ -164,7 +144,6 @@ useInfiniteScroll(
   { distance: 100 }
 );
 
-  imageWidth.value = getCardWidth();
 onMounted(() => {
   searchMovie.value.push(...hotMedia.value);
 });

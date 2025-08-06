@@ -82,6 +82,16 @@ const searchMovie = ref<SearchResult[]>([]);
 const page = ref(1);
 const isLoading = ref(false);
 const searchQuery = ref("");
+const {
+  data: hotMedia,
+  status,
+  error,
+  refresh,
+} = useAsyncData(
+  "Hot-media",
+  () => $fetch<SearchResult[]>(`/api/HotMediaData`),
+  { default: () => [] }
+);
 
 const debouncedSearch = useDebounceFn(async () => {
   if (searchQuery.value.length > 2) {
@@ -116,12 +126,6 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-async function getHotNewMovies() {
-  let data = await $fetch<SearchResult[]>(
-    `/api/HotMediaData?width=${imageWidth.value}`
-  );
-  searchMovie.value.push(...data);
-}
 
 async function getMovieBySearch() {
   if (page.value > 10 || searchQuery.value === "") return;
@@ -160,8 +164,8 @@ useInfiniteScroll(
   { distance: 100 }
 );
 
-onMounted(async () => {
   imageWidth.value = getCardWidth();
-  await getHotNewMovies();
+onMounted(() => {
+  searchMovie.value.push(...hotMedia.value);
 });
 </script>

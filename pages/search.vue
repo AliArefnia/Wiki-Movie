@@ -102,6 +102,14 @@ const {
   { default: () => [] }
 );
 
+watch(searchQuery, (newVal) => {
+  router.replace({
+    query: {
+      ...route.query,
+      searchTerm: newVal || undefined,
+    },
+  });
+});
 const debouncedSearch = useDebounceFn(async () => {
   if (searchQuery.value.length > 2) {
     page.value = 1;
@@ -112,9 +120,16 @@ const debouncedSearch = useDebounceFn(async () => {
   }
 }, 400);
 
+const executeSearch = async () => {
+  console.log("execution");
+  if (searchQuery.value.length > 2) {
+    page.value = 1;
+    searchMovie.value = [];
+    await getMovieBySearch();
+  }
+};
+
 watch(searchQuery, debouncedSearch);
-
-
 
 async function getMovieBySearch() {
   if (page.value > 10 || searchQuery.value === "") return;
@@ -155,5 +170,8 @@ useInfiniteScroll(
 
 onMounted(() => {
   searchMovie.value.push(...hotMedia.value);
+  if (searchQuery.value) {
+    executeSearch();
+  }
 });
 </script>

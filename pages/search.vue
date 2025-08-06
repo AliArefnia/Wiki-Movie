@@ -1,11 +1,11 @@
 <template>
   <div class="bg-surface-dark pt-2 min-h-screen">
-    <div class="sticky top-17 w-full max-w-md mx-auto px-4 z-20">
+    <div class="sticky top-18 w-full max-w-md mx-auto px-4 z-20">
       <input
         type="text"
         v-model="searchQuery"
         placeholder="Search movies..."
-        class="w-full bg-surface-card pl-10 pr-4 py-2 text-sm rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors text-white mb-2 font-sans"
+        class="w-full bg-surface-card pl-10 pr-4 py-2 text-sm rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors text-white mb-2 font-sans z-12"
       />
       <div
         class="absolute left-7 bottom-1/5 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -32,32 +32,37 @@
     >
       Sorry, couldn't find this movie!
     </div>
-    <div v-else class="grid grid-cols-3 gap-2 justify-items-center pt-2">
-      <template v-for="item in searchMovie" :key="item.id">
-        <NuxtLink
-          v-if="item.media_type === 'movie' || item.media_type === 'tv'"
           :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
-        >
-          <BaseMovieCardSmall
-            class="shrink-0 mx-2"
-            :movieTitle="item.media_type === 'movie' ? item.title : item.name"
-            :rating="item.vote_average"
-            :releaseDate="getReleaseDate(item)"
-            :posterUrl="item.poster_path"
-          />
-        </NuxtLink>
+    <div
+      v-else
+      class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
+    >
+      <ClientOnly>
+        <template v-for="item in searchMovie" :key="item.id">
+          <NuxtLink
+            v-if="item.media_type === 'movie' || item.media_type === 'tv'"
+          >
+            <BaseMovieCardSmall
+              class="shrink-0 mx-2"
+              :movieTitle="item.media_type === 'movie' ? item.title : item.name"
+              :rating="item.vote_average"
+              :releaseDate="getReleaseDate(item)"
+              :posterUrl="item.poster_path"
+            />
+          </NuxtLink>
 
-        <NuxtLink
-          v-else-if="item.media_type === 'person'"
           :to="`/${item.id}?from=search&mediaType=${item.media_type}`"
-        >
-          <BasePersonCard
-            :personName="item.name"
-            :role="item.known_for_department || 'Actor'"
-            :profileUrl="item.profile_path"
-          />
-        </NuxtLink>
-      </template>
+          <NuxtLink
+            v-else-if="item.media_type === 'person'"
+          >
+            <BasePersonCard
+              :personName="item.name"
+              :role="item.known_for_department || 'Actor'"
+              :profileUrl="item.profile_path"
+            />
+          </NuxtLink>
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>

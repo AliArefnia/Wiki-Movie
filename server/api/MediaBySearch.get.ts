@@ -58,6 +58,7 @@ export default defineEventHandler(async (event) => {
         return null;
       })
       .filter((item): item is SearchResult => item !== null);
+    return results;
   } catch (error) {
     console.error("Error fetching movies by search:", error);
     return { error: "Failed to fetch movies by search" };

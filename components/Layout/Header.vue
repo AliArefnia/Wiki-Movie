@@ -142,6 +142,16 @@ const isInHome = computed(() => route.path === "/");
 
 const goBack = () => {
   if (route.query.from) {
+    console.log(route.query.searchTerm);
+    if (route.query.from === "search") {
+      router.push({
+        path: route.query.from as string,
+        query: {
+          searchTerm: route.query.searchTerm,
+        },
+      });
+      return;
+    }
     router.push(route.query.from as string);
   } else {
     router.back();

@@ -69,6 +69,25 @@
               >Joined Date</label
             >
             <p class="text-lg text-gray-500">{{ JoinDate }}</p>
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-6 mt-auto">
+              <BaseButton
+                @click="toggleEdit"
+                varient="primary"
+                class="flex-1 py-2 text-white"
+                :disabled="isEditing && !name?.trim()"
+              >
+                {{ isEditing ? "Save" : "Edit Profile" }}
+              </BaseButton>
+
+              <BaseButton
+                variant="danger"
+                class="flex-1 py-2 hover:bg-white hover:text-btn-accent transition"
+                @click="logOutAlert"
+              >
+                Log Out
+              </BaseButton>
+            </div>
           </div>
         </div>
         <div class="flex justify-around">

@@ -41,6 +41,34 @@ export const useUserData = defineStore("userData", {
       this.user = userData;
     },
 
+    async updateUserName(newName: string) {
+      if (!this.user) return;
+
+      const originalName = this.user?.name;
+
+      try {
+        await $fetch("/api/user/userNameUpdate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.user?.id,
+            userName: newName,
+          }),
+        });
+
+        this.user.name = newName;
+      } catch (error: any) {
+        this.user.name = originalName;
+
+        throw createError({
+          statusCode: error.data.statusCode || 500,
+          statusMessage: error.data.statusMessage || "API Error",
+        });
+      }
+    },
+
     async toggleMovieWishList({
       movieId,
       mediaType,

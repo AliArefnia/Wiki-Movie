@@ -1,48 +1,58 @@
 <template>
   <div class="bg-surface-dark pt-2">
-    <div class="tabs flex justify-center gap-4 mb-4 text-white">
-      <button
-        v-if="isUserLoggedIn"
-        v-for="tab in tabs"
-        :key="tab.key"
-        @click="selectTab(tab.key as 'wishlist' | 'watchlist')"
-        :class="[
-          'px-4 py-2 rounded-full hover:cursor-pointer transition-all duration-300 hover:scale-105',
-          activeTab === tab.key ? 'bg-primary' : 'bg-gray-700',
-        ]"
-      >
-        {{ tab.label }}
-      </button>
-    </div>
-
-    <UserListPage
-      :mediaList="
-        activeTab === 'wishlist'
-          ? wishListMedia
-          : activeTab === 'watchlist'
-          ? watchListMedia
-          : favouritePersonListMedia
-      "
-      :type="
-        activeTab === 'wishlist'
-          ? 'movie'
-          : activeTab === 'watchlist'
-          ? 'movie'
-          : 'person'
-      "
-      :loading="isLoading"
-      :error="error"
-      :isUserLoggedIn="isUserLoggedIn"
-      :isInitialLoadDone="isInitialLoadDone"
-      :from="`user/lists?tab=${activeTab}`"
-      :emptyText="
-        activeTab === 'wishlist'
-          ? 'You can add movies to your wishlist by clicking the heart icon in the movie page.'
-          : activeTab === 'watchlist'
-          ? 'You can add movies to your Watch List by clicking the Eye icon in the movie page.'
-          : 'You can add your favorite person to your favourite person List by clicking the person icon in the person page.'
-      "
-    />
+    <ClientOnly>
+      <div class="tabs flex justify-center gap-4 mb-4 text-white">
+        <button
+          v-if="isUserLoggedIn"
+          v-for="tab in tabs"
+          :key="tab.key"
+          @click="selectTab(tab.key as 'wishlist' | 'watchlist')"
+          :class="[
+            'px-4 py-2 rounded-full hover:cursor-pointer transition-all duration-300 hover:scale-105',
+            activeTab === tab.key ? 'bg-primary' : 'bg-gray-700',
+          ]"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+      <Transition name="fade-slide" mode="out-in">
+        <UserListPage
+          :key="
+            activeTab === 'wishlist'
+              ? 'wishlist'
+              : activeTab === 'watchlist'
+              ? 'watchlist'
+              : 'Favorite person'
+          "
+          :mediaList="
+            activeTab === 'wishlist'
+              ? wishListMedia
+              : activeTab === 'watchlist'
+              ? watchListMedia
+              : favouritePersonListMedia
+          "
+          :type="
+            activeTab === 'wishlist'
+              ? 'movie'
+              : activeTab === 'watchlist'
+              ? 'movie'
+              : 'person'
+          "
+          :loading="isLoading"
+          :error="error"
+          :isUserLoggedIn="isUserLoggedIn"
+          :isInitialLoadDone="isInitialLoadDone"
+          :from="`user/lists?tab=${activeTab}`"
+          :emptyText="
+            activeTab === 'wishlist'
+              ? 'You can add movies to your wishlist by clicking the heart icon in the movie page.'
+              : activeTab === 'watchlist'
+              ? 'You can add movies to your Watch List by clicking the Eye icon in the movie page.'
+              : 'You can add your favorite person to your favourite person List by clicking the person icon in the person page.'
+          "
+        />
+      </Transition>
+    </ClientOnly>
   </div>
 </template>
 
@@ -71,7 +81,7 @@ const userData = useUserData();
 const tabs = [
   { label: "Wishlist", key: "wishlist" },
   { label: "Watchlist", key: "watchlist" },
-  { label: "Fav Person", key: "favouritePerson" },
+  { label: "Favorite Person", key: "favouritePerson" },
 ];
 
 const activeTab = ref<"wishlist" | "watchlist" | "favouritePerson">("wishlist");

@@ -49,6 +49,20 @@
             >
               See Favorite Movies
             </p>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Name</label>
+              <p v-if="!isEditing" class="text-lg text-gray-300 ml-2">
+                {{ name || "Set Name" }}
+              </p>
+              <input
+                v-else
+                ref="nameInput"
+                v-model="name"
+                type="text"
+                placeholder="Enter your name"
+                class="w-full text-lg bg-transparent border-b p-2 border-gray-400 focus:border-white transition duration-300 text-gray-100 placeholder-gray-500 focus:border-2"
+              />
+            </div>
           </div>
           <div>
             <label class="block text-sm font-medium text-white"
@@ -95,6 +109,7 @@ const JoinDate = computed(() => {
   return date ? new Date(date).toLocaleDateString() : "Unknown";
 });
 
+const isEditing = ref(false);
 const loggingOut = ref(false);
 const router = useRouter();
 
@@ -109,5 +124,11 @@ function logOut(choice: boolean) {
   } else {
     loggingOut.value = false;
   }
+}
+function toggleEdit() {
+  if (isEditing.value) {
+    userData.updateUserName(name.value!);
+  }
+  isEditing.value = !isEditing.value;
 }
 </script>

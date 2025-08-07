@@ -130,6 +130,7 @@ const JoinDate = computed(() => {
 
 const isEditing = ref(false);
 const loggingOut = ref(false);
+const nameInput = ref<HTMLInputElement | null>(null);
 const router = useRouter();
 
 function logOutAlert() {
@@ -150,4 +151,10 @@ function toggleEdit() {
   }
   isEditing.value = !isEditing.value;
 }
+watch(isEditing, async (val) => {
+  if (val) {
+    await nextTick();
+    nameInput.value?.focus();
+  }
+});
 </script>

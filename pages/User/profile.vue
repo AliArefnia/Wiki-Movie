@@ -71,7 +71,7 @@
           <div class="flex flex-col justify-between space-y-8">
             <!-- FAVORITE MOVIES -->
             <div class="md:mx-auto">
-              <label class="block text-sm font-semibold mb-1 w-fit mx-auto"
+              <label class="block text-sm font-semibold mb-1 w-fit md:mx-auto"
                 >Favorite Movies</label
               >
               <NuxtLink

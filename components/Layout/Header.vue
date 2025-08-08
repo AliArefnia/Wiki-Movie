@@ -117,7 +117,7 @@
         </Transition>
       </ClientOnly>
       <NuxtImg
-        src="/Logo.webp"
+        :src="Logo"
         alt="Wiki Movie Logo"
         class="w-14 m-0 absolute right-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
         @click="navigateTo('/')"
@@ -130,6 +130,7 @@
 import { useRoute, useRouter } from "vue-router";
 
 import { useUserData } from "~/store/user";
+import Logo from "@/public/Logo.webp";
 const userData = useUserData();
 const userRole = computed(() => userData.GetUserRole);
 

@@ -7,8 +7,6 @@ export default defineNuxtRouteMiddleware(async () => {
   const userStore = useUserData();
 
   if (!userStore.isLoggedIn && !userStore.isUserLoaded) {
-    try {
-      await userStore.fetchUser();
-    } catch (err) {}
+    userStore.fetchUser().catch(() => {});
   }
 });

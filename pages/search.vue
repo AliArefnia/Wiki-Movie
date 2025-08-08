@@ -74,6 +74,7 @@ definePageMeta({
     name: "page",
     mode: "out-in",
   },
+  key: (route) => route.path + ":" + (route.query.from || "default"),
 });
 useHead({
   title: "Search",
@@ -110,6 +111,7 @@ watch(searchQuery, (newVal) => {
     },
   });
 });
+
 const debouncedSearch = useDebounceFn(async () => {
   if (searchQuery.value.length > 2) {
     page.value = 1;
@@ -136,6 +138,7 @@ async function getMovieBySearch() {
   try {
     isLoading.value = true;
     const encodedTerm = encodeURIComponent(searchQuery.value);
+
     let data = await $fetch<SearchResult[]>(
       `/api/MediaBySearch?searchTerm=${encodedTerm}&page=${page.value}`
     );
@@ -146,7 +149,7 @@ async function getMovieBySearch() {
 
     page.value++;
   } catch (error) {
-    console.log("error fetching searched movie");
+    console.error("error fetching searched movie");
   } finally {
     isLoading.value = false;
   }

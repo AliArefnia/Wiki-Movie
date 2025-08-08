@@ -3,7 +3,7 @@
     <div
       class="flex flex-col items-center justify-center bg-surface-dark text-white"
     >
-      <NuxtImg src="Logo.webp" alt="Wiki Movie Logo" class="w-30 mb-4" />
+      <img :src="Logo" alt="Wiki Movie Logo" class="w-30 mb-4" />
       <div class="w-11/12 sm:w-full max-w-md bg-surface-card p-6 rounded-lg">
         <h2 class="text-2xl font-bold mb-6 text-center">Log In</h2>
         <form @submit.prevent="logIn" class="space-y-4">
@@ -51,6 +51,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import Logo from "@/public/Logo.webp";
+
 definePageMeta({
   layout: "default",
   pageTransition: {

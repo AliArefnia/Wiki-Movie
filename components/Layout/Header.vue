@@ -117,7 +117,7 @@
         </Transition>
       </ClientOnly>
       <NuxtImg
-        src="Logo.webp"
+        src="/Logo.webp"
         alt="Wiki Movie Logo"
         class="w-14 m-0 absolute right-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
         @click="navigateTo('/')"

@@ -1,84 +1,71 @@
 <template>
   <div id="mainPage">
     <Hero />
-    <!-- <TrailerSection /> -->
 
-    <!-- Loading -->
-    <div v-if="status === 'pending'" class="flex justify-center items-center">
+    <div v-if="loading" class="flex justify-center items-center">
       <BaseLoader message="Fetching Genres..." />
     </div>
-    <!-- Error -->
+
     <div v-else-if="error" class="flex justify-center items-center">
       <BaseErrorContainer :error="error" :refresh="refresh" />
     </div>
-    <!-- Success -->
-    <div v-else-if="movieGenres && tvGenres">
-      <GenreSection />
-      <div v-if="movieGenres.length && tvGenres.length">
-        <keep-alive>
-          <SectionLazy v-for="genre in movieGenres" :key="'movie-' + genre.id">
-            <BaseMovieSection
-              :genreId="genre.id"
-              :genreName="genre.name"
-              mediaType="movie"
-            />
-          </SectionLazy>
-        </keep-alive>
 
-        <keep-alive>
-          <SectionLazy v-for="genre in tvGenres" :key="'tv-' + genre.id">
-            <BaseMovieSection
-              :genreId="genre.id"
-              :genreName="genre.name"
-              mediaType="tv"
-            />
-          </SectionLazy>
-        </keep-alive>
-      </div>
+    <div v-else-if="movieGenres.length !== 0 && tvGenres.length !== 0">
+      <GenreSection />
+      <keep-alive>
+        <SectionLazy v-for="genre in movieGenres" :key="'movie-' + genre.id">
+          <BaseMovieSection
+            :genreId="genre.id"
+            :genreName="genre.name"
+            mediaType="movie"
+          />
+        </SectionLazy>
+      </keep-alive>
+
+      <keep-alive>
+        <SectionLazy v-for="genre in tvGenres" :key="'tv-' + genre.id">
+          <BaseMovieSection
+            :genreId="genre.id"
+            :genreName="genre.name"
+            mediaType="tv"
+          />
+        </SectionLazy>
+      </keep-alive>
     </div>
+
     <p v-else class="font-display mx-auto text-gray-400">No Genres Found</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useMovieStore } from "~/store/store";
-import type { Genre } from "~/types/types";
 import GenreSection from "~/components/Genres/GenreList.vue";
 import BaseMovieSection from "~/components/Genres/GenreMovies.vue";
 import SectionLazy from "~/components/base/SectionLazy.vue";
 
 const movieStore = useMovieStore();
 
-const {
-  data: movieGenres,
-  status: statusMovies,
-  error: errorMovies,
-  refresh: refreshMovies,
-} = await useAsyncData<Genre[]>("movieGenres", () =>
-  $fetch("/api/GetGenres?type=movie")
-);
+const error = ref<Error | null>(null);
+const loading = ref(true);
 
-const {
-  data: tvGenres,
-  status: statusTV,
-  error: errorTV,
-  refresh: refreshTV,
-} = await useAsyncData<Genre[]>("tvGenres", () =>
-  $fetch("/api/GetGenres?type=tv")
-);
-
-// Combine loading and error
-const status = computed(() => statusMovies.value || statusTV.value);
-const error = computed(() => errorMovies.value || errorTV.value);
-
-if (!error.value && movieGenres.value && tvGenres.value) {
-  movieStore.setMovieGenres(movieGenres.value);
-  movieStore.setTvGenres(tvGenres.value);
+try {
+  await movieStore.fetchGenresOnce();
+} catch (err) {
+  error.value = err as Error;
+} finally {
+  loading.value = false;
 }
 
+const movieGenres = computed(() => movieStore.getMovieGenres);
+const tvGenres = computed(() => movieStore.getTvGenres);
+
 function refresh() {
-  refreshMovies();
-  refreshTV();
+  movieStore.genresLoaded = false;
+  loading.value = true;
+  movieStore
+    .fetchGenresOnce()
+    .catch((err) => (error.value = err))
+    .finally(() => (loading.value = false));
 }
 
 definePageMeta({

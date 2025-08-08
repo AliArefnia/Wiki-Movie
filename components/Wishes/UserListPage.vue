@@ -16,8 +16,8 @@
         v-if="!isUserLoggedIn"
         class="flex flex-col items-center justify-center gap-4 mt-10 text-center text-gray-300"
       >
-        <NuxtImg
-          src="/images/loginIllustration.svg"
+        <img
+          :src="loginIllustration"
           alt="Please log in"
           class="w-40 h-40 opacity-80"
           loading="lazy"
@@ -48,59 +48,59 @@
     <div v-if="loading" class="text-gray-400 text-center font-display mt-6">
       <BaseLoader />
     </div>
-    <Transition name="fade-slide" mode="out-in">
-      <template v-if="mediaItems.length">
-        <div
-          class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
-          :class="{ 'fade-in': !loading }"
+    <template v-if="mediaItems.length">
+      <div
+        class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
+        :class="{ 'fade-in': !loading }"
+      >
+        <NuxtLink
+          v-for="media in mediaItems"
+          :key="media.id"
+          :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
         >
-          <NuxtLink
-            v-for="media in mediaItems"
-            :key="media.id"
-            :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
-          >
-            <BaseMovieCardSmall
-              class="shrink-0 mx-2"
-              :movieTitle="
-                media.media_type === 'movie' ? media.title : media.name
-              "
-              :rating="media.vote_average"
-              :releaseDate="
-                media.media_type === 'movie'
-                  ? media.release_date
-                  : media.first_air_date
-              "
-              :posterUrl="media.poster_path"
-            />
-          </NuxtLink>
-        </div>
-      </template>
+          <BaseMovieCardSmall
+            class="shrink-0 mx-2"
+            :movieTitle="
+              media.media_type === 'movie' ? media.title : media.name
+            "
+            :rating="media.vote_average"
+            :releaseDate="
+              media.media_type === 'movie'
+                ? media.release_date
+                : media.first_air_date
+            "
+            :posterUrl="media.poster_path"
+          />
+        </NuxtLink>
+      </div>
+    </template>
 
-      <template v-else-if="personItems.length">
-        <div
-          class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
-          :class="{ 'fade-in': !loading }"
+    <template v-else-if="personItems.length">
+      <div
+        class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
+        :class="{ 'fade-in': !loading }"
+      >
+        <NuxtLink
+          v-for="media in personItems"
+          :key="media.id"
+          :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
         >
-          <NuxtLink
-            v-for="media in personItems"
-            :key="media.id"
-            :to="`/${media.id}?mediaType=${media.media_type}&from=${from}`"
-          >
-            <BasePersonCard
-              class="shrink-0 mx-2"
-              :personName="media.name"
-              :profileUrl="media.profile_path"
-            />
-          </NuxtLink>
-        </div>
-      </template>
-    </Transition>
+          <BasePersonCard
+            class="shrink-0 mx-2"
+            :personName="media.name"
+            :profileUrl="media.profile_path"
+          />
+        </NuxtLink>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import type { MediaItem, Person } from "~/types/types";
+
+import loginIllustration from "@/public/images/loginIllustration.svg";
 
 const props = defineProps<{
   mediaList: MediaItem[] | Person[] | null;
@@ -113,9 +113,6 @@ const props = defineProps<{
   emptyText: string;
 }>();
 
-watch(props, (newval) => {
-  console.log(newval.mediaList);
-});
 const mediaItems = computed(() =>
   props.type === "movie" && props.mediaList
     ? (props.mediaList as MediaItem[])

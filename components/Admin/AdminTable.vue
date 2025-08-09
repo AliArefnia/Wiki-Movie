@@ -1,19 +1,21 @@
 <template>
   <div
-    class="p-6 bg-surface-card rounded-2xl shadow-md max-w-6xl mx-auto mb-20"
+    class="sm:p-6 p-3 bg-surface-card rounded-2xl shadow-md max-w-6xl mx-auto mb-20"
   >
     <div
       v-if="title || statusFilter"
       class="flex justify-between items-center mb-4"
     >
-      <h2 class="text-xl font-bold text-white" v-if="title">{{ title }}</h2>
+      <h2 class="ml-4 text-lg font-bold text-white" v-if="title">
+        {{ title }}
+      </h2>
 
       <!-- Optional filter dropdown -->
       <select
         v-if="statusFilter"
         v-model="selectedStatus"
         @change="fetchData"
-        class="bg-surface-card border px-3 py-2 rounded-md text-sm hover:cursor-pointer"
+        class="bg-surface-card border px-3 py-2 rounded-md text-sm hover:cursor-pointer text-white"
         :disabled="isFetching"
       >
         <option value="pending">Pending</option>
@@ -246,18 +248,8 @@ function formatDate(dateStr: string) {
 <style scoped>
 .customize-table {
   --easy-table-rows-per-page-selector-width: 70px;
-  --easy-table-rows-per-page-selector-option-padding: 10px;
-  --easy-table-rows-per-page-selector-z-index: 1;
-  --easy-table-rows-per-page-selector-width: 70px;
   --easy-table-rows-per-page-selector-option-padding: 5px;
   --easy-table-rows-per-page-selector-z-index: 1;
-}
-.easy-table-rows-selector {
-  background-color: #1e293b !important; /* slate-800 */
-  color: #f8fafc !important; /* slate-50 */
-  border: 1px solid #334155 !important; /* slate-700 */
-  border-radius: 0.375rem !important; /* rounded-md */
-  padding: 0.25rem 0.5rem !important;
 }
 
 .easy-table-rows-selector option {

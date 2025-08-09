@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4">
+  <div class="sm:px-4">
     <h1 class="text-white text-2xl font-bold ml-5 mb-4 pt-5 font-display">
       Review Moderation
     </h1>

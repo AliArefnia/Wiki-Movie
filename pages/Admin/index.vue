@@ -2,7 +2,7 @@
   <section>
     <!-- Page content -->
     <div class="p-6">
-      <h1 class="text-2xl font-bold mb-4">Welcome, Admin!</h1>
+      <h1 class="text-2xl font-bold mb-4 text-white">Welcome, Admin!</h1>
       <p class="mb-6 text-gray-300">
         Choose a section to begin managing the application.
       </p>
@@ -10,7 +10,7 @@
       <!-- Optional: Overview section -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-surface-card p-4 rounded shadow group">
-          <h2 class="text-lg font-semibold mb-2">👥 Users</h2>
+          <h2 class="text-lg font-semibold mb-2 text-white">👥 Users</h2>
           <p class="text-sm text-gray-400">
             Manage registered users, delete accounts, and more.
           </p>
@@ -26,7 +26,7 @@
           </NuxtLink>
         </div>
         <div class="bg-surface-card p-4 rounded shadow group">
-          <h2 class="text-lg font-semibold mb-2">📝 Reviews</h2>
+          <h2 class="text-lg font-semibold mb-2 text-white">📝 Reviews</h2>
           <p class="text-sm text-gray-400">
             Moderate user comments and change review statuses.
           </p>

@@ -22,7 +22,7 @@
             ✕
           </button>
         </div>
-        <nav class="flex flex-col space-y-4 mt-4">
+        <nav class="flex flex-col space-y-6 mt-6">
           <div @click="isSidebarOpen = false">
             <NuxtLink
               to="/admin/users"

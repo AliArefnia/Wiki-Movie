@@ -181,6 +181,9 @@ import BaseEyeButton from "./BaseComponents/BaseEyeButton.vue";
 import BasePersonButton from "./BaseComponents/BasePersonButton.vue";
 import { useToast } from "vue-toastification";
 
+import moviePlaceholder from "/images/moviePlaceholder.png";
+import personPlaceholder from "/images/personPlaceholder.png";
+
 const props = defineProps<{
   mediaType: "movie" | "tv" | "person" | null;
   mediaDetail: MovieDetail | TvDetail | PersonDetail;
@@ -240,19 +243,17 @@ const displayTagline = computed(() => {
 const posterUrl = computed(() => {
   if ("poster_path" in props.mediaDetail) {
     return props.mediaDetail.poster_path
-      ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.poster_path}`
+      ? `https://image.tmdb.org/t/p/w342${props.mediaDetail.poster_path}`
       : props.mediaDetail.backdrop_path
-      ? `https://image.tmdb.org/t/p/w500${props.mediaDetail.backdrop_path}`
-      : "images/moviePlaceholder.png";
+      ? `https://image.tmdb.org/t/p/w342${props.mediaDetail.backdrop_path}`
+      : moviePlaceholder;
   }
 
   if ("profile_path" in props.mediaDetail) {
     return props.mediaDetail.profile_path
-      ? `https://image.tmdb.org/t/p/w185${props.mediaDetail.profile_path}`
-      : "images/personPlaceholder.png";
+      ? `https://image.tmdb.org/t/p/w342${props.mediaDetail.profile_path}`
+      : personPlaceholder;
   }
-
-  // return "/images/moviePlaceholder.png";
 });
 
 async function toggleMovieWishList() {

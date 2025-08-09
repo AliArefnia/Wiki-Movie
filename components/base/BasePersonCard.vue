@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/core";
+import personPlaceholder from "/images/personPlaceholder.png";
 
 const props = defineProps<{
   personName: string;
@@ -60,7 +61,7 @@ const imageURL = computed(() => {
   const width = imageWidth.value || 92;
   return props.profileUrl && props.profileUrl !== "null"
     ? `https://image.tmdb.org/t/p/w${width}${props.profileUrl}`
-    : "images/personPlaceholder.png";
+    : personPlaceholder;
 });
 
 function getImgWidth() {

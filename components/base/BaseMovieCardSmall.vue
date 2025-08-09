@@ -57,6 +57,7 @@
 
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/core";
+import moviePlaceholder from "/images/moviePlaceholder.png";
 
 const props = defineProps<{
   movieTitle: string;
@@ -69,7 +70,7 @@ const imageURL = computed(() => {
   const width = imageWidth.value || 92;
   return props.posterUrl && props.posterUrl !== "null"
     ? `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`
-    : "images/moviePlaceholder.png";
+    : moviePlaceholder;
 });
 
 const imageWidth = ref(0);

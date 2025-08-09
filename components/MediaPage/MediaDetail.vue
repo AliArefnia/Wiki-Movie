@@ -93,8 +93,20 @@
         <h2 class="text-xl font-light mb-2 text-primary">
           {{ mediaType === "person" ? "Biography" : "Overview" }}
         </h2>
-        <p class="text-gray-200 leading-relaxed lg:text-lg">
+        <p
+          v-if="displayOverview"
+          class="text-gray-200 leading-relaxed lg:text-lg"
+        >
           {{ displayOverview }}
+        </p>
+        <p
+          v-else-if="mediaType === 'person'"
+          class="text-gray-200 leading-relaxed lg:text-lg"
+        >
+          No Biography found!
+        </p>
+        <p v-else class="text-gray-200 leading-relaxed lg:text-lg">
+          No Overview found!
         </p>
       </div>
 

@@ -6,7 +6,12 @@
   >
     <!-- Movie Poster -->
 
-    <div class="relative aspect-[2/3] rounded-lg bg-gray-800">
+    <div
+      :class="[
+        'relative aspect-[2/3] rounded-lg',
+        isImageLoaded ? 'bg-transparent' : 'bg-gray-800',
+      ]"
+    >
       <!-- Actual Image -->
       <NuxtImg
         v-if="posterUrl"

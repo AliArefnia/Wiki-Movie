@@ -37,7 +37,7 @@
       class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center pt-2"
     >
       <ClientOnly>
-        <template v-for="item in searchMovie" :key="item.id">
+        <template v-if="searchMovie" v-for="item in searchMovie" :key="item.id">
           <NuxtLink
             v-if="item.media_type === 'movie' || item.media_type === 'tv'"
             :to="`/${item.id}?mediaType=${item.media_type}&from=search&searchTerm=${searchQuery}`"
@@ -59,6 +59,20 @@
               :personName="item.name"
               :role="item.known_for_department || 'Actor'"
               :profileUrl="item.profile_path"
+            />
+          </NuxtLink>
+        </template>
+        <template v-else v-for="item in hotMedia" :key="`hot-${item.id}`">
+          <NuxtLink
+            v-if="item.media_type === 'movie' || item.media_type === 'tv'"
+            :to="`/${item.id}?mediaType=${item.media_type}&from=search&searchTerm=${searchQuery}`"
+          >
+            <BaseMovieCardSmall
+              class="shrink-0 mx-2"
+              :movieTitle="item.media_type === 'movie' ? item.title : item.name"
+              :rating="item.vote_average"
+              :releaseDate="getReleaseDate(item)"
+              :posterUrl="item.poster_path"
             />
           </NuxtLink>
         </template>
@@ -99,7 +113,7 @@ const {
   refresh,
 } = useAsyncData(
   "Hot-media",
-  () => $fetch<SearchResult[]>(`/api/HotMediaData`),
+  () => $fetch<SearchResult[]>(`/api/HotMediaData?unlimited=true`),
   { default: () => [] }
 );
 

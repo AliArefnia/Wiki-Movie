@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
     const NUMBER_OF_SELECTED_TVS = 3;
     const query = getQuery(event);
     const mediaType = query.type || "all";
+    const unlimited = query.unlimited === "true" ? true : false;
 
     const fetchHeaders = {
       accept: "application/json",
@@ -55,9 +56,13 @@ export default defineEventHandler(async (event) => {
       selectedForHero = tvs.slice(0, NUMBER_OF_SELECTED_TVS);
     } else {
       const [movies, tvs] = await Promise.all([fetchMovies(), fetchTVs()]);
-      const selectedMovies = movies.slice(0, NUMBER_OF_SELECTED_MOVIES);
-      const selectedTVs = tvs.slice(0, NUMBER_OF_SELECTED_TVS);
-      selectedForHero = [...selectedMovies, ...selectedTVs];
+      if (!unlimited) {
+        const selectedMovies = movies.slice(0, NUMBER_OF_SELECTED_MOVIES);
+        const selectedTVs = tvs.slice(0, NUMBER_OF_SELECTED_TVS);
+        selectedForHero = [...selectedMovies, ...selectedTVs];
+      } else {
+        selectedForHero = [...movies, ...tvs];
+      }
     }
 
     return selectedForHero;

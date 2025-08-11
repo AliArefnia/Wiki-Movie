@@ -25,7 +25,7 @@
           id="herocard"
           :movieTitle="getTitle(media)"
           :rating="media.vote_average"
-          :posterUrl="media.poster_path || '/images/placeholder.png'"
+          :posterUrl="media.poster_path"
           class="transform transition-transform duration-300 group-hover:scale-105 will-change-transform"
         />
 

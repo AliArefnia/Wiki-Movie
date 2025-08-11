@@ -27,8 +27,10 @@
 const props = defineProps<{
   movieTitle: string;
   rating: number;
-  posterUrl: string;
+  posterUrl: string | null;
 }>();
+
+import moviePlaceholder from "/images/moviePlaceholder.png";
 
 const imageWidth = ref(0);
 const cardWidth = ref(185);
@@ -36,8 +38,10 @@ const imageHeight = ref(0);
 const isImageLoaded = ref(false);
 
 const imageURL = computed(() => {
-  const width = imageWidth.value || 185;
-  return `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`;
+  const width = imageWidth.value || 92;
+  return props.posterUrl && props.posterUrl !== "null"
+    ? `https://image.tmdb.org/t/p/w${width}${props.posterUrl}`
+    : moviePlaceholder;
 });
 
 function getCardWidth() {

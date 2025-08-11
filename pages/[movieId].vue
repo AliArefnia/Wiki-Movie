@@ -26,7 +26,7 @@
       <!-- Content Container -->
       <div
         :class="[
-          'relative z-10 max-w-6xl mx-auto px-6',
+          'relative z-10 max-w-6xl mx-auto px-2 sm:px-6',
           mediaType === 'movie' || mediaType === 'tv'
             ? 'pt-40 sm:pt-20'
             : 'pt-10',

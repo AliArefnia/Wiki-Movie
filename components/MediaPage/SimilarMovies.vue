@@ -1,6 +1,6 @@
 <template>
   <div class="mt-10">
-    <h3 class="font-display mx-4 text-2xl">Similar Movies</h3>
+    <h3 class="font-display mx-2 sm:mx-4 text-2xl">Similar Movies</h3>
     <div class="relative">
       <!-- Loading -->
       <div

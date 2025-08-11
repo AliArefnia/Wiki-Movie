@@ -1,6 +1,6 @@
 <template>
   <div class="mt-10 text-white">
-    <h3 class="font-display mx-4 text-2xl">Top Cast</h3>
+    <h3 class="font-display mx-2 sm:mx-4 text-2xl">Top Cast</h3>
     <div class="flex overflow-auto py-4">
       <!-- Loading -->
       <div
@@ -36,7 +36,7 @@
       </p>
     </div>
 
-    <h3 class="font-display mx-4 text-2xl mt-6">Crew</h3>
+    <h3 class="font-display mx-2 sm:mx-4 text-2xl mt-6">Crew</h3>
     <div class="flex overflow-auto py-4">
       <!-- Loading -->
       <div

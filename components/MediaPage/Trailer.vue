@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="font-display mt-8 mx-4 text-2xl">Official Trailer</h3>
+    <h3 class="font-display mt-8 mx-2 sm:mx-4 text-2xl">Official Trailer</h3>
     <!-- Loading -->
     <div
       v-if="status === 'pending'"

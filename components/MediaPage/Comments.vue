@@ -1,6 +1,8 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto my-10">
-    <h3 class="text-2xl font-display font-bold text-white mb-6">Comments</h3>
+  <div class="px-2 sm:px-6 lg:px-8 max-w-3xl mx-auto my-10">
+    <h3 class="text-2xl font-display font-bold text-white mb-6 mx-2 sm:mx-4">
+      Comments
+    </h3>
 
     <!-- Input Section -->
     <div

@@ -1,21 +1,10 @@
 <template>
   <div>
     <div
-      class="relative rounded-2xl overflow-hidden font-sans cursor-pointer flex justify-center"
-      :class="{ 'w-full': props.soloMovie, 'w-fit': !props.soloMovie }"
-      @click="showIframe = true"
+      class="relative rounded-2xl overflow-hidden font-sans cursor-pointer flex justify-center my-4"
     >
       <transition name="fade" mode="out-in">
-        <NuxtImg
-          v-if="!showIframe"
-          :src="thumbnailUrl"
-          :width="trailerWidth"
-          :height="trailerHeight"
-          class="object-cover transition-opacity duration-500 rounded-2xl"
-          :alt="`${trailerName} Thumbnail`"
-        />
         <iframe
-          v-else
           :width="trailerWidth"
           :height="trailerHeight"
           :src="`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`"
@@ -51,7 +40,6 @@ const props = defineProps<{
 const movieTrailerUrl =
   "https://www.youtube.com/embed/" + `${props.officialTrailerKey}`;
 
-const showIframe = ref(false);
 const trailerWidth = ref(200);
 const trailerHeight = ref(112);
 

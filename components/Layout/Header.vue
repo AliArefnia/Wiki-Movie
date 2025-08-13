@@ -1,10 +1,8 @@
 <template>
   <header
-    class="bg-surface-card text-white shadow-lg sticky top-0 z-20 h-[60px]"
+    class="bg-surface-card text-white shadow-lg sticky z-20 top-0 h-[60px]"
   >
-    <div
-      class="container mx-4 sm:mx-auto lg:mx-20 flex justify-between items-center p-4 relative"
-    >
+    <div class="w-full mx-4 flex justify-between items-center p-4 relative">
       <aside
         ref="sidebarRef"
         class="h-screen -z-50"
@@ -116,12 +114,15 @@
           </BaseButton>
         </Transition>
       </ClientOnly>
-      <img
-        :src="Logo"
-        alt="Wiki Movie Logo"
-        class="w-14 m-0 absolute right-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
-        @click="navigateTo('/')"
-      />
+      <div class="flex space-x-4">
+        <Footer v-if="width > breakpoint"></Footer>
+        <img
+          :src="Logo"
+          alt="Wiki Movie Logo"
+          class="w-14 m-0 hover:cursor-pointer hover:scale-105 transition-all duration-200 hover:drop-shadow-[0_0_8px_rgba(255,0,128,0.4)]"
+          @click="navigateTo('/')"
+        />
+      </div>
     </div>
   </header>
 </template>
@@ -131,6 +132,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useUserData } from "~/store/user";
 import Logo from "@/public/Logo.webp";
+import Footer from "./Footer.vue";
 const userData = useUserData();
 const userRole = computed(() => userData.GetUserRole);
 
@@ -140,6 +142,21 @@ const sidebarRef = ref<HTMLElement | null>(null);
 const router = useRouter();
 const route = useRoute();
 const isInHome = computed(() => route.path === "/");
+
+const width = ref(1024);
+const breakpoint = 768;
+
+function updateWidth() {
+  width.value = window.innerWidth;
+}
+
+onMounted(() => {
+  updateWidth();
+  window.addEventListener("resize", updateWidth);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
 
 const goBack = () => {
   if (route.query.from) {

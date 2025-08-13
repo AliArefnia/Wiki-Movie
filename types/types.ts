@@ -61,6 +61,22 @@ export interface TvDetail {
   number_of_seasons: number;
   genres: Genre[];
   tagline: string;
+  seasons: Season[];
+}
+
+export interface Episode {
+  id: number;
+  episode_number: number;
+  name: string;
+}
+
+export interface Season {
+  season_number: number;
+  name: string;
+  episode_count: number;
+  air_date?: string;
+  poster_path?: string;
+  episodes?: Episode[];
 }
 
 export interface PersonDetail {

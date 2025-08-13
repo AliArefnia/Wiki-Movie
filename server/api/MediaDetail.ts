@@ -62,6 +62,7 @@ export default defineEventHandler(async (event: H3Event) => {
         genres: res.genres ?? [],
         genre_ids: res.genres?.map((g: any) => g.id) ?? [],
         number_of_seasons: res.number_of_seasons,
+        seasons: res.seasons,
       };
     }
 

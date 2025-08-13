@@ -59,6 +59,21 @@
           </SectionLazy>
         </div>
 
+        <!-- Streaming  -->
+        <div
+          v-if="mediaType === 'movie' || mediaType === 'tv'"
+          id="streamingPlayer"
+        >
+          <div v-if="showStreaming">
+            <SectionLazy height="100">
+              <Stream
+                :media-id="mediaDetail.id"
+                :media-type="mediaType"
+                :media-seasons="seasons"
+              ></Stream>
+            </SectionLazy>
+          </div>
+        </div>
         <!-- SimilarMovies -->
         <div
           v-if="mediaType === 'movie' || mediaType === 'tv'"
@@ -110,9 +125,10 @@ import Comments from "~/components/MediaPage/Comments.vue";
 import SectionLazy from "~/components/base/SectionLazy.vue";
 import BaseLoader from "~/components/base/BaseLoader.vue";
 import Backdrop from "~/components/MediaPage/Backdrop.vue";
-
+import Stream from "~/components/MediaPage/Stream.vue";
 import type { MediaDetailUnion, MovieDetail, TvDetail } from "~/types/types";
 
+const config = useRuntimeConfig();
 const route = useRoute();
 const id = computed(() => route.params.movieId);
 
@@ -147,6 +163,17 @@ const displayTitle = computed(() => {
     (mediaDetail.value as MovieDetail)?.title ||
     (mediaDetail.value as TvDetail)?.name
   );
+});
+
+const showStreaming = computed(() => {
+  return !!config.public.STREAM_BASE_URL;
+});
+
+const seasons = computed(() => {
+  if (mediaType === "tv") {
+    return (mediaDetail.value as TvDetail).seasons;
+  }
+  return;
 });
 
 definePageMeta({

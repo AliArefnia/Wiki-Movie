@@ -78,7 +78,7 @@ async function fetchMediaByGenre() {
   }
 
   let data = await $fetch<MediaItem[]>(
-    `/api/MediaByGenre?genreId=${genre.id}&page=${page.value}`
+    `/api/MediaByGenre?genreId=${genre.id}&page=${page.value}?mediaType=${mediaType}`
   );
   genreMedia.value.push(...data);
   page.value++;

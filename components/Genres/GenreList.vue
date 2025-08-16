@@ -28,7 +28,7 @@
         <NuxtLink
           v-for="genre in activeGenres"
           :key="genre.id"
-          :to="`/genre/${genre.name}`"
+          :to="`/genre/${genre.name}?mediaType=${active}`"
         >
           <BaseGenreCard
             class="shrink-0 mx-2 hover:bg-primary"

@@ -4,6 +4,13 @@ import { visualizer } from "rollup-plugin-visualizer";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig(<any>{
+  nitro: {
+    preset: "node-server",
+  },
+  devServer: {
+    port: process.env.PORT || 3000,
+    host: "0.0.0.0",
+  },
   runtimeConfig: {
     public: {
       STREAM_BASE_URL: "",

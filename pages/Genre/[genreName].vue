@@ -18,9 +18,10 @@
       <NuxtLink
         v-for="media in genreMedia"
         :key="media.id"
-        :to="`/${media.id}?from=/genre/${route.params.genreName}&mediaType=${media.media_type}`"
+        :to="`/${media.id}?mediaType=${media.media_type}&from=/genre/${route.params.genreName}`"
       >
         <BaseMovieCardSmall
+          :key="media.id"
           class="shrink-0 mx-2"
           :movieTitle="`${
             media.media_type === 'movie' ? media.title : media.name

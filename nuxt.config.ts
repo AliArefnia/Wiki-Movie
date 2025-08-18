@@ -13,6 +13,7 @@ export default defineNuxtConfig(<any>{
   },
   runtimeConfig: {
     public: {
+      STREAM_BASE_URL: process.env.NUXT_PUBLIC_STREAM_BASE_URL,
       TMDB_API_KEY: process.env.NUXT_PUBLIC_TMDB_API_KEY,
       SUPABASE_URL: process.env.NUXT_PUBLIC_SUPABASE_URL,
       SUPABASE_KEY: process.env.NUXT_PUBLIC_SUPABASE_KEY,

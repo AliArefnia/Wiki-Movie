@@ -166,9 +166,7 @@ const displayTitle = computed(() => {
 });
 
 const showStreaming = computed(() => {
-  return Boolean(
-    config.public.STREAM_BASE_URL && config.public.STREAM_BASE_URL.trim() !== ""
-  );
+  return !!config.public.STREAM_BASE_URL;
 });
 
 const seasons = computed(() => {
